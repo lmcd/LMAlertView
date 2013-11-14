@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ScS-l3-ee1">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="m26-1j-T7e">
+            <objects>
+                <viewController id="ScS-l3-ee1" customClass="LMViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="oMo-Hg-E8y"/>
+                        <viewControllerLayoutGuide type="bottom" id="1wL-hC-WLY"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="11W-K4-nd7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UeF-NG-5vd">
+                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Native" id="C3T-p2-xXX">
+                                        <connections>
+                                            <action selector="nativeButtonTapped:" destination="ScS-l3-ee1" id="hUz-tz-jTS"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="iwJ-TJ-uo4"/>
+                                    <barButtonItem title="Custom" id="BiO-kl-Iyu">
+                                        <connections>
+                                            <action selector="customButtonTapped:" destination="ScS-l3-ee1" id="dBE-CR-wX5"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Rating" id="Wo7-80-6Jk">
+                                        <connections>
+                                            <action selector="ratingButtonTapped:" destination="ScS-l3-ee1" id="hOt-Xi-DDP"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Card" id="uGp-nk-iMH">
+                                        <connections>
+                                            <action selector="cardButtonTapped:" destination="ScS-l3-ee1" id="YJR-hg-JOd"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bBn-KP-gkT">
+                                <rect key="frame" x="36" y="272" width="120" height="120"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yfz-KQ-oVD">
+                                <rect key="frame" x="164" y="272" width="120" height="120"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xJq-Xf-00U">
+                                <rect key="frame" x="164" y="144" width="120" height="120"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="deviceRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4HV-5z-071">
+                                <rect key="frame" x="36" y="144" width="120" height="120"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="LeT-DY-iqG"/>
+                                    <constraint firstAttribute="height" constant="120" id="UuG-71-xZo"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="4HV-5z-071" secondAttribute="centerY" constant="80" id="K3p-J7-Pw6"/>
+                            <constraint firstAttribute="trailing" secondItem="UeF-NG-5vd" secondAttribute="trailing" id="Lrh-fc-LcY"/>
+                            <constraint firstAttribute="centerY" secondItem="xJq-Xf-00U" secondAttribute="centerY" constant="80" id="QxX-ru-wjD"/>
+                            <constraint firstItem="4HV-5z-071" firstAttribute="width" secondItem="bBn-KP-gkT" secondAttribute="width" id="R9z-bA-IQd"/>
+                            <constraint firstItem="1wL-hC-WLY" firstAttribute="top" secondItem="UeF-NG-5vd" secondAttribute="bottom" id="TYg-6j-l8F"/>
+                            <constraint firstAttribute="centerX" secondItem="xJq-Xf-00U" secondAttribute="centerX" constant="-64" id="UEY-R0-U5C"/>
+                            <constraint firstItem="UeF-NG-5vd" firstAttribute="leading" secondItem="11W-K4-nd7" secondAttribute="leading" id="VEE-1m-xhh"/>
+                            <constraint firstAttribute="centerY" secondItem="yfz-KQ-oVD" secondAttribute="centerY" constant="-48" id="Vla-1h-QhU"/>
+                            <constraint firstAttribute="centerX" secondItem="yfz-KQ-oVD" secondAttribute="centerX" constant="-64" id="aco-j0-MXB"/>
+                            <constraint firstItem="4HV-5z-071" firstAttribute="height" secondItem="bBn-KP-gkT" secondAttribute="height" id="iJe-L6-LK0"/>
+                            <constraint firstAttribute="centerX" secondItem="bBn-KP-gkT" secondAttribute="centerX" constant="64" id="l0c-J9-8Xf"/>
+                            <constraint firstItem="yfz-KQ-oVD" firstAttribute="width" secondItem="4HV-5z-071" secondAttribute="width" id="mb1-k1-OwI"/>
+                            <constraint firstItem="yfz-KQ-oVD" firstAttribute="height" secondItem="4HV-5z-071" secondAttribute="height" id="mqX-31-4Pu"/>
+                            <constraint firstItem="xJq-Xf-00U" firstAttribute="width" secondItem="4HV-5z-071" secondAttribute="width" id="ozC-9O-5WS"/>
+                            <constraint firstItem="xJq-Xf-00U" firstAttribute="height" secondItem="4HV-5z-071" secondAttribute="height" id="stS-xc-gyO"/>
+                            <constraint firstAttribute="centerY" secondItem="bBn-KP-gkT" secondAttribute="centerY" constant="-48" id="vjU-Zk-ApV"/>
+                            <constraint firstAttribute="centerX" secondItem="4HV-5z-071" secondAttribute="centerX" constant="64" id="zUX-TQ-lFp"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3ew-y6-Sa8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="367" y="-604"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
