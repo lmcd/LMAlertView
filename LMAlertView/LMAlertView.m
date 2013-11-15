@@ -196,7 +196,6 @@
 	
 	_toolbar = [[UIToolbar alloc] initWithFrame:(CGRect){.size = self.representationView.frame.size}];
 	_toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	//[_alertBackgroundView addSubview:_toolbar];
 	
 	UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Radial.png"]];
 	imageView.frame = _toolbar.frame;
