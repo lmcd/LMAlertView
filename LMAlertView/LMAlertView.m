@@ -20,6 +20,8 @@
 
 @property (nonatomic, strong) UILabel *messageLabel;
 
+@property (strong, nonatomic) UIWindow* window;
+
 @end
 
 @implementation LMAlertView
@@ -167,14 +169,13 @@
 
 - (void)setupWithSize:(CGSize)size
 {
-	//id<UIApplicationDelegate> appDelegate = [[UIApplication sharedApplication] delegate];
-	//UIView *mainView = [[appDelegate window].subviews firstObject];
-	
 	// Main container that fits the whole screen
 	_alertContainerView = [[UIView alloc] initWithFrame:(CGRect){.size = [[UIScreen mainScreen] bounds].size}];
+	_alertContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	
 	_backgrView = [[UIView alloc] initWithFrame:_alertContainerView.frame];
 	_backgrView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.4];
+	_backgrView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[_alertContainerView addSubview:_backgrView];
 	
 	CGRect maskRect = CGRectZero;
@@ -182,6 +183,7 @@
 	
 	CGPoint origin = CGPointMake([_backgrView bounds].size.width/2.0 - maskRect.size.width/2.0, [_backgrView bounds].size.height/2.0 - maskRect.size.height/2.0);
 	_representationView = [[UIView alloc] initWithFrame:(CGRect){.origin = origin, .size = maskRect.size}];
+	_representationView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 	[_representationView.layer setMasksToBounds:YES];
 	[_representationView.layer setCornerRadius:7.0];
 	
@@ -211,13 +213,15 @@
 - (void)setup
 {
 	[self setupWithSize:CGSizeMake(270.0, 152.0)];
-}
+}	
 
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag
 {
 	// Temporary bugfix
 	[self removeFromSuperview];
-	[self.alertContainerView removeFromSuperview];
+	
+	self.window.hidden = YES;
+	self.window = nil;
 }
 
 - (id)springAnimationForKeyPath:(NSString *)keyPath
@@ -237,11 +241,22 @@
 
 - (void)show
 {
+	id<UIApplicationDelegate> appDelegate = [[UIApplication sharedApplication] delegate];
+	
+	self.window = [[UIWindow alloc] initWithFrame:[appDelegate window].frame];
+	
+	UIViewController *viewController = [[UIViewController alloc] init];
+	viewController.view = self.alertContainerView;
+	viewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	
+	self.window.rootViewController = viewController;
+	self.window.backgroundColor = [UIColor clearColor];
+	self.window.windowLevel = UIWindowLevelAlert;
+	self.window.hidden = NO;
+	
+	[self.window makeKeyAndVisible];
+	
 	[CATransaction begin]; {
-		// todo - use a separate window
-		id<UIApplicationDelegate> appDelegate = [[UIApplication sharedApplication] delegate];
-		[[appDelegate window] addSubview:self.alertContainerView];
-		
 		CATransform3D transformFrom = CATransform3DMakeScale(1.26, 1.26, 1.0);
 		CATransform3D transformTo = CATransform3DMakeScale(1.0, 1.0, 1.0);
 		
