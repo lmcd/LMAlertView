@@ -142,14 +142,22 @@
 	
 	UIImageView *card1ImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Visa"]];
 	card1ImageView.frame = CGRectMake(45.0, yOffset, card1ImageView.frame.size.width, card1ImageView.frame.size.height);
+	card1ImageView.layer.cornerRadius = 5.0;
+	card1ImageView.layer.masksToBounds = YES;
 	[contentView addSubview:card1ImageView];
 	
 	UIImageView *card2ImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MasterCard"]];
 	card2ImageView.frame = CGRectMake(110.0, yOffset, card1ImageView.frame.size.width, card1ImageView.frame.size.height);
+	card2ImageView.layer.cornerRadius = 5.0;
+	card2ImageView.layer.masksToBounds = YES;
 	[contentView addSubview:card2ImageView];
 	
 	UIButton *addButton = [UIButton buttonWithType:UIButtonTypeSystem];
 	addButton.frame = CGRectMake(175.0, yOffset, 51.0, 32.0);
+	addButton.layer.cornerRadius = 5.0;
+	addButton.layer.masksToBounds = YES;
+	addButton.layer.borderWidth = 1.0;
+	addButton.layer.borderColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0].CGColor;
 	[addButton setImage:[UIImage imageNamed:@"Plus"] forState:UIControlStateNormal];
 	[contentView addSubview:addButton];
 	
