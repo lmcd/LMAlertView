@@ -32,21 +32,19 @@ pod 'LMAlertView', :git => 'https://github.com/lmcd/LMAlertView.git'
 ## Usage
 
 ```objc
-// Property temporarily required - fix on the way
-self.alertView = [[LMAlertView alloc] initWithTitle:@"Test"
+LMAlertView *alertView = [[LMAlertView alloc] initWithTitle:@"Test"
                                             message:@"Message here"
                                            delegate:nil
                                   cancelButtonTitle:@"Done"
                                   otherButtonTitles:nil];
 
 // Add your subviews here to customise
-UIView *contentView = self.alertView.contentView;
+UIView *contentView = alertView.contentView;
 
-[self.alertView show];
+[alertView show];
 ```
 
 ## Known Issues
 
-- `LMAlertView` isn't being added to the view hierarchy, or retained anywhere else, so the view is released by the time the cancel button is pressed, causing the app to crash (the target for the button is in the view class). As a temporary fix, please assign any `LMAlertView` objects to properties, or find another way of retaining them until they're dismissed.
 - This project relies on [@robb](http://github.com/robb)'s implementation of `CASpringAnimation` to be App Store friendly, but the dependancy is out of date in CocoaPods. Animations will appear jerky until this is fixed on his end.
 - Any other GH issue submitted by me
