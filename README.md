@@ -21,6 +21,12 @@ Video:
 - https://youtube.com/watch?v=G6n7oNL0-S8&feature=youtu.be (YouTube)
 - http://lmcd.me/LMAlertView-3.mov (Original)
 
+## Installation
+
+Use the awesome CocoaPods to add `LMAlertView` to your project:
+
+    pod 'LMAlertView', :git => 'https://github.com/lmcd/LMAlertView.git'
+
 ## Usage
 
     LMAlertView *alertView = [[LMAlertView alloc] initWithTitle:@"Test"
