@@ -43,5 +43,5 @@ Use the awesome CocoaPods to add `LMAlertView` to your project:
 
 ## Known Issues
 
-- `LMAlertView` isn't being added to the view hierarchy, or retained anywhere else, so the view is released by the time the cancel button is pressed, causing the app to crash (the target for the button is in the view class). As a temporary fix, please assign any 'LMAlertView' objects to properties, or find another way of retaining them until they're dismissed.
+- `LMAlertView` isn't being added to the view hierarchy, or retained anywhere else, so the view is released by the time the cancel button is pressed, causing the app to crash (the target for the button is in the view class). As a temporary fix, please assign any `LMAlertView` objects to properties, or find another way of retaining them until they're dismissed.
 - Any othe GH issue submitted by me
