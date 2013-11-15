@@ -61,10 +61,10 @@
 			frontmostViewController = viewController;
 		}
 		
-		CGSize frame = frontmostViewController.view.frame.size;
-		frame.height += 44.0;
+		CGSize size = frontmostViewController.view.frame.size;
+		size.height += 44.0;
 		
-		[self setupWithSize:frame];
+		[self setupWithSize:size];
 		
 		UIViewController *destinationViewController = viewController;
 		destinationViewController.view.frame = self.contentView.frame;
@@ -126,6 +126,8 @@
 				[_otherButtonsTitles addObject:obj];
 			}
 			va_end(args);
+			
+			_firstOtherButtonIndex = 1;
 		}
 		
 		_numberOfButtons = [_otherButtonsTitles count];
@@ -205,8 +207,8 @@
 			[lineView addSubview:lineViewInner];
         }
 		
-		BOOL buttonsShouldStack = (self.numberOfButtons != 2);
-		BOOL sideBySideButtons = !buttonsShouldStack;
+		BOOL sideBySideButtons = (self.numberOfButtons == 2);
+		BOOL buttonsShouldStack = !sideBySideButtons;
 		
 		if (sideBySideButtons) {
 			CGFloat halfWidth = (alertWidth / 2.0);
@@ -216,12 +218,7 @@
 			[lineView addSubview:lineVerticalViewInner];
 			
 			_buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, halfWidth, buttonHeight)];
-			_buttonTableView.tag = 0;
-			
-			_firstOtherButtonIndex = 1;
-			
 			_otherTableView = [self tableViewWithFrame:CGRectMake(halfWidth, yOffset, halfWidth, buttonHeight)];
-			_otherTableView.tag = 1;
 			
 			yOffset += buttonHeight;
 		}
@@ -232,18 +229,19 @@
 				CGFloat tableHeight = buttonsShouldStack ? numberOfOtherButtons * buttonHeight : buttonHeight;
 				
 				_buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, tableHeight)];
-				_buttonTableView.tag = 0;
 				
 				yOffset += tableHeight;
 			}
 			
 			if (cancelButtonTitle != nil) {
 				_otherTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, buttonHeight)];
-				_otherTableView.tag = 1;
 				
 				yOffset += buttonHeight;
 			}
 		}
+		
+		_buttonTableView.tag = 0;
+		_otherTableView.tag = 1;
 
 		CGFloat alertHeight = yOffset;
 		[self setupWithSize:CGSizeMake(alertWidth, alertHeight)];
@@ -335,8 +333,10 @@
 
 - (void)setupWithSize:(CGSize)size
 {
+	CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+	
 	// Main container that fits the whole screen
-	_alertContainerView = [[UIView alloc] initWithFrame:(CGRect){.size = [[UIScreen mainScreen] bounds].size}];
+	_alertContainerView = [[UIView alloc] initWithFrame:(CGRect){.size = screenSize}];
 	_alertContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	
 	_backgroundView = [[UIView alloc] initWithFrame:_alertContainerView.frame];
@@ -344,10 +344,8 @@
 	_backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[_alertContainerView addSubview:_backgroundView];
 	
-	CGRect frame = (CGRect){.size = size};
-	
-	_representationView = [[UIView alloc] initWithFrame:frame];
-    _representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, [[UIScreen mainScreen] bounds].size.height / 2.0);
+	_representationView = [[UIView alloc] initWithFrame:(CGRect){.size = size}];
+    _representationView.center = CGPointMake(screenSize.width / 2.0, screenSize.height / 2.0);
 	
 	_representationView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 	[_representationView.layer setMasksToBounds:YES];
@@ -377,7 +375,7 @@
 	[self.alertContainerView addSubview:self.representationView];
 }
 
-- (id)springAnimationForKeyPath:(NSString *)keyPath
+- (kSpringAnimationClassName *)springAnimationForKeyPath:(NSString *)keyPath
 {
 	kSpringAnimationClassName *animation = [[kSpringAnimationClassName alloc] init];
 	
@@ -571,6 +569,11 @@
 	self.messageLabel.textAlignment = NSTextAlignmentCenter;
 }
 
+- (bool)hasCancelButton
+{
+	return (self.cancelButtonIndex != -1);
+}
+
 #pragma mark UITableViewDataSource delegate methods
 
 - (id)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -586,7 +589,7 @@
 	if (self.numberOfButtons == 1) {
 		buttonIndex = 0;
 		
-		if (self.cancelButtonTitle != nil) {
+		if ([self hasCancelButton]) {
 			labelText = self.cancelButtonTitle;
 		}
 		else {
@@ -600,16 +603,16 @@
 	else if (self.numberOfButtons == 2) {
 		buttonIndex = tableView.tag;
 		
-		if (self.cancelButtonIndex == -1) {
-			labelText = self.otherButtonsTitles[buttonIndex];
-		}
-		else {
+		if ([self hasCancelButton]) {
 			if (buttonIndex == 0) {
 				labelText = self.cancelButtonTitle;
 			}
 			else {
 				labelText = self.otherButtonsTitles[0];
 			}
+		}
+		else {
+			labelText = self.otherButtonsTitles[buttonIndex];
 		}
 		
 		boldButton = buttonIndex == 1;
@@ -628,7 +631,7 @@
 		else {
 			labelText = self.otherButtonsTitles[buttonIndex];
 			
-			if (self.cancelButtonIndex == -1 && buttonIndex == ([self.otherButtonsTitles count] - 1)) {
+			if (![self hasCancelButton] && buttonIndex == ([self.otherButtonsTitles count] - 1)) {
 				boldButton = YES;
 			}
 			
