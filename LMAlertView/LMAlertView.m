@@ -416,6 +416,10 @@
 
 - (void)show
 {
+	if ([self.delegate respondsToSelector:@selector(willPresentAlertView:)]) {
+		[self.delegate willPresentAlertView:self];
+	}
+	
 	id<UIApplicationDelegate> appDelegate = [[UIApplication sharedApplication] delegate];
 	
 	// You can have more than one UIWindow in the view hierachy, which is how UIAlertView works
@@ -459,6 +463,11 @@
 		modalTransformAnimation.fromValue = [NSValue valueWithCATransform3D:transformFrom];
 		// CASpringAnimation has all toValues as nil, but RBBSpringAnimation doesn't support it
 		modalTransformAnimation.toValue = [NSValue valueWithCATransform3D:transformTo];
+		modalTransformAnimation.completion = ^(BOOL finished){
+			if ([self.delegate respondsToSelector:@selector(didPresentAlertView:)]) {
+				[self.delegate didPresentAlertView:self];
+			}
+		};
 		self.representationView.layer.transform = transformTo;
 		
 		// Zoom in the modal
