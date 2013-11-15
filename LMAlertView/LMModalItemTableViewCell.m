@@ -33,11 +33,10 @@
     return self;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+- (void)setIsEnabled:(BOOL)isEnabled
 {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+	_isEnabled = isEnabled;
+	self.textLabel.enabled = isEnabled;
 }
 
 @end
