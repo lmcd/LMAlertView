@@ -12,5 +12,5 @@ Pod::Spec.new do |s|
   s.dependency 'RBBAnimation'
 
   s.public_header_files = 'LMAlertView/*.h'
-  s.source_files = 'LMAlertView/LMAlertView.h'
+  s.source_files = 'LMAlertView', 'LMAlertView/**/*.{h,m}'
 end
