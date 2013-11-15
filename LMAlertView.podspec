@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.ios.deployment_target = '7.0'
-  s.dependency 'RBBAnimation'
+  s.dependency 'RBBAnimation', :git => 'https://github.com/robb/RBBAnimation'
 
   s.public_header_files = 'LMAlertView/*.h'
   s.source_files = 'LMAlertView', 'LMAlertView/**/*.{h,m}'
