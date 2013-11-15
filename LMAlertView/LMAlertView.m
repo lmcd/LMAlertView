@@ -247,7 +247,6 @@
 	
 	UIViewController *viewController = [[UIViewController alloc] init];
 	viewController.view = self.alertContainerView;
-	viewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	
 	self.window.rootViewController = viewController;
 	self.window.backgroundColor = [UIColor clearColor];
