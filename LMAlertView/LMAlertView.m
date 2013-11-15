@@ -279,7 +279,7 @@
 		[self.backgrView.layer addAnimation:opacityAnimation forKey:@"opacity"];
 
 		// Fade in the modal
-		// Would love to fade out all these things at once, but UIToolbar doesn't like it
+		// Would love to fade in all these things at once, but UIToolbar doesn't like it
 		[self.toolbar.layer addAnimation:opacityAnimation forKey:@"opacity"];
 		[self.alertBackgroundView.layer addAnimation:opacityAnimation forKey:@"opacity"];
 		[self.contentView.layer addAnimation:opacityAnimation forKey:@"opacity"];
