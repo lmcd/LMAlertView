@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#define USE_PRIVATE_SPRING_ANIMATION_CLASS 1
-
 #ifdef USE_PRIVATE_SPRING_ANIMATION_CLASS
 #define kSpringAnimationClassName CASpringAnimation
 
@@ -25,6 +23,7 @@
 - (float)velocity;
 @end
 #else
+#import <RBBSpringAnimation.h>
 #define kSpringAnimationClassName RBBSpringAnimation
 #endif
 

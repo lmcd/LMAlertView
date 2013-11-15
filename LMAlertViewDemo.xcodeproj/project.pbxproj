@@ -304,6 +304,11 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LMAlertViewDemo/LMAlertViewDemo-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"USE_PRIVATE_SPRING_ANIMATION_CLASS=1",
+				);
 				INFOPLIST_FILE = "LMAlertViewDemo/LMAlertViewDemo-Info.plist";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = LMAlertViewDemo;
@@ -318,6 +323,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LMAlertViewDemo/LMAlertViewDemo-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "USE_PRIVATE_SPRING_ANIMATION_CLASS=1";
 				INFOPLIST_FILE = "LMAlertViewDemo/LMAlertViewDemo-Info.plist";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = LMAlertViewDemo;

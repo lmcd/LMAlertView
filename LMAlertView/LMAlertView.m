@@ -243,7 +243,7 @@
 		CATransform3D transformFrom = CATransform3DMakeScale(1.26, 1.26, 1.0);
 		CATransform3D transformTo = CATransform3DMakeScale(1.0, 1.0, 1.0);
 		
-		CASpringAnimation *modalTransformAnimation = [self springAnimationForKeyPath:@"transform"];
+		kSpringAnimationClassName *modalTransformAnimation = [self springAnimationForKeyPath:@"transform"];
 		modalTransformAnimation.fromValue = [NSValue valueWithCATransform3D:transformFrom];
 		modalTransformAnimation.toValue = [NSValue valueWithCATransform3D:transformTo];
 		self.representationView.layer.transform = transformTo;
@@ -251,7 +251,7 @@
 		// Zoom in the modal
 		[self.representationView.layer addAnimation:modalTransformAnimation forKey:@"transform"];
 		
-		CASpringAnimation *opacityAnimation = [self springAnimationForKeyPath:@"opacity"];
+		kSpringAnimationClassName *opacityAnimation = [self springAnimationForKeyPath:@"opacity"];
 		opacityAnimation.fromValue = @0.0f;
 		opacityAnimation.toValue = @1.0f;
 		self.backgrView.layer.opacity = 1.0;
@@ -276,7 +276,7 @@
 		CATransform3D transformFrom = CATransform3DMakeScale(1.0, 1.0, 1.0);
 		CATransform3D transformTo = CATransform3DMakeScale(0.840, 0.840, 1.0);
 		
-		CASpringAnimation *modalTransformAnimation = [self springAnimationForKeyPath:@"transform"];
+		kSpringAnimationClassName *modalTransformAnimation = [self springAnimationForKeyPath:@"transform"];
 		modalTransformAnimation.fromValue = [NSValue valueWithCATransform3D:transformFrom];
 		modalTransformAnimation.toValue = [NSValue valueWithCATransform3D:transformTo];
 		self.representationView.layer.transform = transformTo;
@@ -284,7 +284,7 @@
 		// Zoom out the modal
 		[self.representationView.layer addAnimation:modalTransformAnimation forKey:@"transform"];
 		
-		CASpringAnimation *opacityAnimation = [self springAnimationForKeyPath:@"opacity"];
+		kSpringAnimationClassName *opacityAnimation = [self springAnimationForKeyPath:@"opacity"];
 		opacityAnimation.delegate = self;
 		opacityAnimation.fromValue = @1.0f;
 		opacityAnimation.toValue = @0.0f;
