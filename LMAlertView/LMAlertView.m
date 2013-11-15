@@ -282,13 +282,13 @@
 		kSpringAnimationClassName *modalTransformAnimation = [self springAnimationForKeyPath:@"transform"];
 		modalTransformAnimation.fromValue = [NSValue valueWithCATransform3D:transformFrom];
 		modalTransformAnimation.toValue = [NSValue valueWithCATransform3D:transformTo];
+		modalTransformAnimation.delegate = self;
 		self.representationView.layer.transform = transformTo;
 		
 		// Zoom out the modal
 		[self.representationView.layer addAnimation:modalTransformAnimation forKey:@"transform"];
 		
 		kSpringAnimationClassName *opacityAnimation = [self springAnimationForKeyPath:@"opacity"];
-		opacityAnimation.delegate = self;
 		opacityAnimation.fromValue = @1.0f;
 		opacityAnimation.toValue = @0.0f;
 		self.backgrView.layer.opacity = 0.0;
