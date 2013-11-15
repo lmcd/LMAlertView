@@ -189,6 +189,7 @@
 	_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.representationView addSubview:_contentView];
 	
+	[self.representationView addSubview:self];
 	
 	_alertBackgroundView = [[UIView alloc] initWithFrame:(CGRect){.size = self.representationView.frame.size}];
 	_alertBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -215,6 +216,8 @@
 
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag
 {
+	// Temporary bugfix
+	[self removeFromSuperview];
 	[self.alertContainerView removeFromSuperview];
 }
 

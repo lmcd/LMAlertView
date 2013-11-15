@@ -38,9 +38,9 @@
 }
 
 - (IBAction)customButtonTapped:(id)sender {
-	self.customAlertView = [[LMAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil];
+	LMAlertView *customAlertView = [[LMAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil];
 	
-	[self.customAlertView show];
+	[customAlertView show];
 }
 
 - (IBAction)ratingButtonTapped:(id)sender {
