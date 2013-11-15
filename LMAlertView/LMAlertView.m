@@ -613,6 +613,7 @@
 		}
 		
 		boldButton = buttonIndex == 1;
+		lastRow = YES;
 	}
 	// More than 2 stacked buttons
 	else {
