@@ -16,3 +16,16 @@ Star rating demo:
 Credit card selection demo:
 
 ![LMAlertView-review@2x](http://lmcd.me/LMAlertView-card@2x.png)
+
+## Usage
+
+    LMAlertView *alertView = [[LMAlertView alloc] initWithTitle:@"Test"
+                                                        message:@"Message here"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Done"
+                                              otherButtonTitles:nil];
+                                           
+    // Add your subviews here to customise
+    UIView *contentView = alertView.contentView;
+    
+    [alertView show];
