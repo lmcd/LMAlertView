@@ -11,7 +11,7 @@
 @interface LMAlertView ()
 
 @property (nonatomic, strong, readonly) UIView *alertContainerView;
-@property (nonatomic, strong, readonly) UIView *backgrView;
+@property (nonatomic, strong, readonly) UIView *backgroundView;
 
 @property (nonatomic, strong, readonly) UIView *representationView;
 @property (nonatomic, strong, readonly) UIView *alertBackgroundView;
@@ -173,15 +173,15 @@
 	_alertContainerView = [[UIView alloc] initWithFrame:(CGRect){.size = [[UIScreen mainScreen] bounds].size}];
 	_alertContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	
-	_backgrView = [[UIView alloc] initWithFrame:_alertContainerView.frame];
-	_backgrView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.4];
-	_backgrView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	[_alertContainerView addSubview:_backgrView];
+	_backgroundView = [[UIView alloc] initWithFrame:_alertContainerView.frame];
+	_backgroundView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.4];
+	_backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	[_alertContainerView addSubview:_backgroundView];
 	
 	CGRect maskRect = CGRectZero;
 	maskRect.size = size;
 	
-	CGPoint origin = CGPointMake([_backgrView bounds].size.width/2.0 - maskRect.size.width/2.0, [_backgrView bounds].size.height/2.0 - maskRect.size.height/2.0);
+	CGPoint origin = CGPointMake([_backgroundView bounds].size.width/2.0 - maskRect.size.width/2.0, [_backgroundView bounds].size.height/2.0 - maskRect.size.height/2.0);
 	_representationView = [[UIView alloc] initWithFrame:(CGRect){.origin = origin, .size = maskRect.size}];
 	_representationView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 	[_representationView.layer setMasksToBounds:YES];
@@ -270,13 +270,13 @@
 		kSpringAnimationClassName *opacityAnimation = [self springAnimationForKeyPath:@"opacity"];
 		opacityAnimation.fromValue = @0.0f;
 		opacityAnimation.toValue = @1.0f;
-		self.backgrView.layer.opacity = 1.0;
+		self.backgroundView.layer.opacity = 1.0;
 		self.toolbar.layer.opacity = 1.0;
 		self.alertBackgroundView.layer.opacity = 1.0;
 		self.contentView.layer.opacity = 1.0;
 		
 		// Fade in the gray background
-		[self.backgrView.layer addAnimation:opacityAnimation forKey:@"opacity"];
+		[self.backgroundView.layer addAnimation:opacityAnimation forKey:@"opacity"];
 
 		// Fade in the modal
 		// Would love to fade in all these things at once, but UIToolbar doesn't like it
@@ -304,13 +304,13 @@
 		kSpringAnimationClassName *opacityAnimation = [self springAnimationForKeyPath:@"opacity"];
 		opacityAnimation.fromValue = @1.0f;
 		opacityAnimation.toValue = @0.0f;
-		self.backgrView.layer.opacity = 0.0;
+		self.backgroundView.layer.opacity = 0.0;
 		self.toolbar.layer.opacity = 0.0;
 		self.alertBackgroundView.layer.opacity = 0.0;
 		self.contentView.layer.opacity = 0.0;
 		
 		// Fade out the gray background
-		[self.backgrView.layer addAnimation:opacityAnimation forKey:@"opacity"];
+		[self.backgroundView.layer addAnimation:opacityAnimation forKey:@"opacity"];
 		
 		// Fade out the modal
 		// Would love to fade out all these things at once, but UIToolbar doesn't like it
