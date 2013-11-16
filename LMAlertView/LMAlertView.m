@@ -27,15 +27,15 @@
 @implementation LMAlertView
 
 - (UIImage *)imageFromColor:(UIColor *)color {
-    CGRect rect = CGRectMake(0, 0, 1, 1);
+    CGRect rect = CGRectMake(0.0, 0.0, 1.0, 1.0);
     UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(context, [color CGColor]);
     CGContextFillRect(context, rect);
-    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 	
-    return img;
+    return image;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -117,7 +117,8 @@
 			lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, yOfs - 1.0, alertWidth, 1.0)];
 			lineView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 			
-			// We need to do this because autoresizing was round up half-pixels to one
+			// We put our 0.5px high view in to a container that's 1px high
+			// This is because autoresizing was rounding up to 1 and messing things up
 			// autolayout might fix this
 			UIView *lineViewInner = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.5, alertWidth, 0.5)];
 			lineViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
@@ -125,10 +126,13 @@
 			
 			[lineView addSubview:lineViewInner];
 			
+			// This is the default iOS 7 blue tint colour
+			UIColor *titleColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+			
 			button = [UIButton buttonWithType:UIButtonTypeCustom];
 			[button setTitle:cancelButtonTitle forState:UIControlStateNormal];
 			button.titleEdgeInsets = UIEdgeInsetsMake(1.0, 0.0, 0.0, 0.0);
-			[button setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+			[button setTitleColor:titleColor forState:UIControlStateNormal];
 			[button setBackgroundImage:[self imageFromColor:[UIColor colorWithRed:217.0/255.0 green:217.0/255.0 blue:217.0/255.0 alpha:1.0]] forState:UIControlStateHighlighted];
 			button.titleLabel.font = titleFont;
 			[button addTarget:self action:@selector(cancelButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -234,6 +238,7 @@
 	animation.mass = 3.0;
 	animation.stiffness = 1000.0;
 	animation.damping = 500.0;
+	// todo - figure out how iOS is deriving this number
 	animation.duration = 0.5058237314224243;
 	
 	return animation;
@@ -261,6 +266,7 @@
 		
 		kSpringAnimationClassName *modalTransformAnimation = [self springAnimationForKeyPath:@"transform"];
 		modalTransformAnimation.fromValue = [NSValue valueWithCATransform3D:transformFrom];
+		// CASpringAnimation has all toValues as nil, but RBBSpringAnimation doesn't support it
 		modalTransformAnimation.toValue = [NSValue valueWithCATransform3D:transformTo];
 		self.representationView.layer.transform = transformTo;
 		
