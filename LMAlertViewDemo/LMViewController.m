@@ -12,7 +12,6 @@
 
 @interface LMViewController ()
 
-@property (strong, nonatomic) LMAlertView* customAlertView;
 @property (strong, nonatomic) LMAlertView* ratingAlertView;
 @property (strong, nonatomic) LMAlertView* cardAlertView;
 
@@ -32,29 +31,34 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)nativeButtonTapped:(id)sender {
+- (IBAction)nativeButtonTapped:(id)sender
+{
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil];
+	
 	[alertView show];
 }
 
-- (IBAction)customButtonTapped:(id)sender {
+- (IBAction)customButtonTapped:(id)sender
+{
 	LMAlertView *customAlertView = [[LMAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil];
 	
 	[customAlertView show];
 }
 
-- (IBAction)ratingButtonTapped:(id)sender {
+- (IBAction)ratingButtonTapped:(id)sender
+{
 	if (self.ratingAlertView != nil) {
 		[self.ratingAlertView show];
 		return;
 	}
 	
 	self.ratingAlertView = [[LMAlertView alloc] initWithTitle:@"Rate this movie" message:@"Average" delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil];
-	[self.ratingAlertView setSize:CGSizeMake(270.0, 152.0)];
+	CGSize size = self.ratingAlertView.size;
+	[self.ratingAlertView setSize:CGSizeMake(size.width, 152.0)];
 	
 	UIView *contentView = self.ratingAlertView.contentView;
 	
-	EDStarRating *starRating = [[EDStarRating alloc] initWithFrame:CGRectMake((270.0/2.0 - 190.0/2.0), 55.0, 190.0, 50.0)];
+	EDStarRating *starRating = [[EDStarRating alloc] initWithFrame:CGRectMake((size.width/2.0 - 190.0/2.0), 55.0, 190.0, 50.0)];
 	starRating.starImage = [UIImage imageNamed:@"StarEmpty"];
 	starRating.starHighlightedImage = [UIImage imageNamed:@"StarFull"];
 	starRating.maxRating = 5.0;
@@ -70,7 +74,8 @@
 	[self.ratingAlertView show];
 }
 
-- (IBAction)cardButtonTapped:(id)sender {
+- (IBAction)cardButtonTapped:(id)sender
+{
 	self.cardAlertView = [[LMAlertView alloc] initWithTitle:@"Choose a card" message:nil delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil];
 	[self.cardAlertView setSize:CGSizeMake(270.0, 167.0)];
 	
@@ -86,9 +91,9 @@
 	card1Label.textAlignment = NSTextAlignmentCenter;
 	[contentView addSubview:card1Label];
 	
-	UIImageView *cardImageView2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MasterCard"]];
-	cardImageView2.frame = CGRectMake(110.0, 55.0, card1ImageView.frame.size.width, card1ImageView.frame.size.height);
-	[contentView addSubview:cardImageView2];
+	UIImageView *card2ImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MasterCard"]];
+	card2ImageView.frame = CGRectMake(110.0, 55.0, card1ImageView.frame.size.width, card1ImageView.frame.size.height);
+	[contentView addSubview:card2ImageView];
 	
 	UILabel *card2Label = [[UILabel alloc] initWithFrame:CGRectMake(110.0, 87.0, card1ImageView.frame.size.width, 21.0)];
 	card2Label.text = @"3123";
