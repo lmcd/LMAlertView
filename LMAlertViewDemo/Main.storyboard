@@ -118,6 +118,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" title="Twitter" id="Ygg-a9-cEL">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="gjY-bn-MXp"/>
                         <barButtonItem key="rightBarButtonItem" title="Post" style="done" id="skj-sx-E41"/>
