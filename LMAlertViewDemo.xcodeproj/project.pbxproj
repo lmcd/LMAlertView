@@ -20,6 +20,7 @@
 		165F9FAC1831A3AD00037E82 /* LMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 165F9FAB1831A3AD00037E82 /* LMAlertView.m */; };
 		165F9FB01831B6A800037E82 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 165F9FAF1831B6A800037E82 /* Main.storyboard */; };
 		169103CE183311F3003DF9E6 /* Radial.png in Resources */ = {isa = PBXBuildFile; fileRef = 169103CD183311F3003DF9E6 /* Radial.png */; };
+		16B47FB51838993700A06371 /* LMModalSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FB41838993700A06371 /* LMModalSegue.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,8 @@
 		165F9FAB1831A3AD00037E82 /* LMAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMAlertView.m; path = ../LMAlertView/LMAlertView.m; sourceTree = "<group>"; };
 		165F9FAF1831B6A800037E82 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		169103CD183311F3003DF9E6 /* Radial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Radial.png; path = ../LMAlertView/Radial.png; sourceTree = "<group>"; };
+		16B47FB31838993700A06371 /* LMModalSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMModalSegue.h; path = ../LMAlertView/LMModalSegue.h; sourceTree = "<group>"; };
+		16B47FB41838993700A06371 /* LMModalSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMModalSegue.m; path = ../LMAlertView/LMModalSegue.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +134,8 @@
 			children = (
 				165F9FAA1831A3AD00037E82 /* LMAlertView.h */,
 				165F9FAB1831A3AD00037E82 /* LMAlertView.m */,
+				16B47FB31838993700A06371 /* LMModalSegue.h */,
+				16B47FB41838993700A06371 /* LMModalSegue.m */,
 				169103CD183311F3003DF9E6 /* Radial.png */,
 			);
 			name = LMAlertView;
@@ -203,6 +208,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16B47FB51838993700A06371 /* LMModalSegue.m in Sources */,
 				162CC2051832A5E700E58F57 /* EDStarRating.m in Sources */,
 				165F9F781831632C00037E82 /* main.m in Sources */,
 				165F9F7C1831632C00037E82 /* LMAppDelegate.m in Sources */,
