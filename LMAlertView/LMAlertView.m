@@ -191,25 +191,27 @@
 	[_representationView.layer setMasksToBounds:YES];
 	[_representationView.layer setCornerRadius:7.0];
 	
-	_contentView = [[UIView alloc] initWithFrame:(CGRect){.size = self.representationView.frame.size}];
-	_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	[self.representationView addSubview:_contentView];
-	
-	[self.representationView addSubview:self];
-	
-	_alertBackgroundView = [[UIView alloc] initWithFrame:(CGRect){.size = self.representationView.frame.size}];
-	_alertBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	
 	_toolbar = [[UIToolbar alloc] initWithFrame:(CGRect){.size = self.representationView.frame.size}];
 	_toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	
+	[self.representationView addSubview:_toolbar];
+	
+	_alertBackgroundView = [[UIView alloc] initWithFrame:(CGRect){.size = self.representationView.frame.size}];
+	_alertBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	
 	UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Radial.png"]];
 	imageView.frame = _toolbar.frame;
 	imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[_alertBackgroundView addSubview:imageView];
 	
-	[self.representationView insertSubview:_alertBackgroundView atIndex:0];
-	[self.representationView insertSubview:_toolbar atIndex:0];
+	[self.representationView addSubview:_alertBackgroundView];
+	
+	_contentView = [[UIView alloc] initWithFrame:(CGRect){.size = self.representationView.frame.size}];
+	_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	[self.representationView addSubview:_contentView];
+	
+	[self.representationView addSubview:self];
 	
 	[self.alertContainerView addSubview:self.representationView];
 }
@@ -224,6 +226,7 @@
 	// Temporary bugfix
 	[self removeFromSuperview];
 	
+	// Release window from memory
 	self.window.hidden = YES;
 	self.window = nil;
 }
@@ -254,6 +257,7 @@
 	viewController.view = self.alertContainerView;
 	
 	self.window.rootViewController = viewController;
+	// Without this, the alert background will appear black on rotation
 	self.window.backgroundColor = [UIColor clearColor];
 	self.window.windowLevel = UIWindowLevelAlert;
 	self.window.hidden = NO;
