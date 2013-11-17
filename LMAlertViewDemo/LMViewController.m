@@ -38,6 +38,25 @@
 	[alertView show];
 }
 
+- (IBAction)vcButtonTapped:(id)sender
+{
+	LMAlertView *customAlertView = [[LMAlertView alloc] initWithSize:CGSizeMake(290, 200)];
+	
+	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+	UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"navigationModal"];
+	navigationController.view.frame = customAlertView.contentView.frame;
+	navigationController.view.backgroundColor = [UIColor clearColor];
+	[navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+	navigationController.navigationBar.translucent = YES;
+	navigationController.navigationBar.barStyle = UIBarStyleDefault;
+	navigationController.navigationBar.backgroundColor = [UIColor clearColor];
+	navigationController.visibleViewController.view.backgroundColor = [UIColor clearColor];
+	
+	[customAlertView.contentView addSubview:navigationController.view];
+	
+	[customAlertView show];
+}
+
 - (IBAction)customButtonTapped:(id)sender
 {
 	LMAlertView *customAlertView = [[LMAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil];

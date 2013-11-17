@@ -26,9 +26,14 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="iwJ-TJ-uo4"/>
-                                    <barButtonItem title="Custom" id="BiO-kl-Iyu">
+                                    <barButtonItem title="VC" id="BiO-kl-Iyu">
                                         <connections>
-                                            <action selector="customButtonTapped:" destination="ScS-l3-ee1" id="dBE-CR-wX5"/>
+                                            <action selector="vcButtonTapped:" destination="ScS-l3-ee1" id="Jn6-xX-Ot2"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Custom" id="Cye-Qp-1ye">
+                                        <connections>
+                                            <action selector="customButtonTapped:" destination="ScS-l3-ee1" id="CfI-vQ-NrR"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Rating" id="Wo7-80-6Jk">
@@ -93,6 +98,49 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3ew-y6-Sa8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="367" y="-604"/>
+        </scene>
+        <!--Table View Controller - Twitter-->
+        <scene sceneID="JPr-PQ-lMW">
+            <objects>
+                <tableViewController id="Yrj-0c-lgR" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="u7B-Jr-9w7">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="STa-tK-pJs">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="STa-tK-pJs" id="rrD-60-nYo">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Twitter" id="Ygg-a9-cEL">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="gjY-bn-MXp"/>
+                        <barButtonItem key="rightBarButtonItem" title="Post" style="done" id="skj-sx-E41"/>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zcj-aK-utL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="901" y="-1299"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="uRl-Dx-s7M">
+            <objects>
+                <navigationController storyboardIdentifier="navigationModal" definesPresentationContext="YES" id="7Mj-bp-gc9" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="bNU-9d-e3o">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Yrj-0c-lgR" kind="relationship" relationship="rootViewController" id="1ga-O3-9WJ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DyJ-aQ-gy7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="367" y="-1300"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
