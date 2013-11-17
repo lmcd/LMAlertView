@@ -47,8 +47,3 @@ UIView *contentView = alertView.contentView;
 
 [alertView show];
 ```
-
-## Known Issues
-
-- This project relies on [@robb](http://github.com/robb)'s implementation of `CASpringAnimation` to be App Store friendly, but the dependancy is out of date in CocoaPods. Animations will appear jerky until this is fixed on his end.
-- Any other GH issue submitted by me
