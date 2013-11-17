@@ -171,6 +171,11 @@
 	self.representationView.frame = frame;
 }
 
+- (CGSize)size
+{
+	return self.representationView.frame.size;
+}
+
 - (void)setupWithSize:(CGSize)size
 {
 	// Main container that fits the whole screen
