@@ -15,7 +15,11 @@ Star rating demo:
 
 Credit card selection demo:
 
-![LMAlertView-review@2x](http://lmcd.me/LMAlertView-card@2x.png)
+![LMAlertView-card@2x](http://lmcd.me/LMAlertView-card@2x.png)
+
+Work in progress - embedded view controllers:
+
+![LMAlertView-map@2x](http://lmcd.me/LMAlertView-map@2x.png)
 
 Video:
 - https://youtube.com/watch?v=G6n7oNL0-S8&feature=youtu.be (YouTube)
