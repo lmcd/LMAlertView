@@ -176,6 +176,30 @@
 	return self.representationView.frame.size;
 }
 
+- (void)addParallaxToView:(UIView *)view
+{
+	UIInterpolatingMotionEffect *horizontalMotionEffect =
+	[[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
+													type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+	
+	horizontalMotionEffect.minimumRelativeValue = @(-10);
+	horizontalMotionEffect.maximumRelativeValue = @(10);
+	
+	UIInterpolatingMotionEffect *verticalMotionEffect =
+	[[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y"
+													type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+	
+	verticalMotionEffect.minimumRelativeValue = @(-10);
+	verticalMotionEffect.maximumRelativeValue = @(10);
+	
+	// Create group to combine both
+	UIMotionEffectGroup *group = [UIMotionEffectGroup new];
+	group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
+	
+	// Add both effects to your view
+	[view addMotionEffect:group];
+}
+
 - (void)setupWithSize:(CGSize)size
 {
 	// Main container that fits the whole screen
@@ -196,6 +220,7 @@
 	[_representationView.layer setMasksToBounds:YES];
 	[_representationView.layer setCornerRadius:7.0];
 	
+	[self addParallaxToView:_representationView];
 	
 	_toolbar = [[UIToolbar alloc] initWithFrame:(CGRect){.size = self.representationView.frame.size}];
 	_toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
