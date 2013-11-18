@@ -20,7 +20,7 @@
 
 @property (nonatomic, strong) UILabel *messageLabel;
 
-@property (strong, nonatomic) UIWindow* window;
+@property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) UIViewController *controller;
 
 @end
