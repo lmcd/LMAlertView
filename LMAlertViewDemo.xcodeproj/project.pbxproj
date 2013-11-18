@@ -23,7 +23,6 @@
 		16B47FB51838993700A06371 /* LMModalSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FB41838993700A06371 /* LMModalSegue.m */; };
 		16B47FB81838CED100A06371 /* LMModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FB71838CED100A06371 /* LMModalViewController.m */; };
 		16B47FBB18396E0100A06371 /* LMNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FBA18396E0100A06371 /* LMNavigationBar.m */; };
-		16B47FBE1839A42000A06371 /* LMTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FBD1839A42000A06371 /* LMTransitionController.m */; };
 		16B47FC7183A33E800A06371 /* CALayer+ModalAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FC6183A33E800A06371 /* CALayer+ModalAlert.m */; };
 /* End PBXBuildFile section */
 
@@ -55,8 +54,6 @@
 		16B47FB71838CED100A06371 /* LMModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMModalViewController.m; sourceTree = "<group>"; };
 		16B47FB918396E0100A06371 /* LMNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMNavigationBar.h; sourceTree = "<group>"; };
 		16B47FBA18396E0100A06371 /* LMNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMNavigationBar.m; sourceTree = "<group>"; };
-		16B47FBC1839A42000A06371 /* LMTransitionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMTransitionController.h; sourceTree = "<group>"; };
-		16B47FBD1839A42000A06371 /* LMTransitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMTransitionController.m; sourceTree = "<group>"; };
 		16B47FC5183A33E800A06371 /* CALayer+ModalAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+ModalAlert.h"; sourceTree = "<group>"; };
 		16B47FC6183A33E800A06371 /* CALayer+ModalAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+ModalAlert.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -149,8 +146,6 @@
 				165F9FAA1831A3AD00037E82 /* LMAlertView.h */,
 				165F9FAB1831A3AD00037E82 /* LMAlertView.m */,
 				16B47FB31838993700A06371 /* LMModalSegue.h */,
-				16B47FBC1839A42000A06371 /* LMTransitionController.h */,
-				16B47FBD1839A42000A06371 /* LMTransitionController.m */,
 				16B47FB41838993700A06371 /* LMModalSegue.m */,
 				16B47FB918396E0100A06371 /* LMNavigationBar.h */,
 				16B47FBA18396E0100A06371 /* LMNavigationBar.m */,
@@ -237,7 +232,6 @@
 				162CC2051832A5E700E58F57 /* EDStarRating.m in Sources */,
 				16B47FBB18396E0100A06371 /* LMNavigationBar.m in Sources */,
 				16B47FC7183A33E800A06371 /* CALayer+ModalAlert.m in Sources */,
-				16B47FBE1839A42000A06371 /* LMTransitionController.m in Sources */,
 				165F9F781831632C00037E82 /* main.m in Sources */,
 				165F9F7C1831632C00037E82 /* LMAppDelegate.m in Sources */,
 				165F9FAC1831A3AD00037E82 /* LMAlertView.m in Sources */,
