@@ -21,6 +21,10 @@
 		165F9FB01831B6A800037E82 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 165F9FAF1831B6A800037E82 /* Main.storyboard */; };
 		169103CE183311F3003DF9E6 /* Radial.png in Resources */ = {isa = PBXBuildFile; fileRef = 169103CD183311F3003DF9E6 /* Radial.png */; };
 		16B47FB51838993700A06371 /* LMModalSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FB41838993700A06371 /* LMModalSegue.m */; };
+		16B47FB81838CED100A06371 /* LMModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FB71838CED100A06371 /* LMModalViewController.m */; };
+		16B47FBB18396E0100A06371 /* LMNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FBA18396E0100A06371 /* LMNavigationBar.m */; };
+		16B47FBE1839A42000A06371 /* LMTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FBD1839A42000A06371 /* LMTransitionController.m */; };
+		16B47FC7183A33E800A06371 /* CALayer+ModalAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FC6183A33E800A06371 /* CALayer+ModalAlert.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +51,14 @@
 		169103CD183311F3003DF9E6 /* Radial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Radial.png; path = ../LMAlertView/Radial.png; sourceTree = "<group>"; };
 		16B47FB31838993700A06371 /* LMModalSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMModalSegue.h; path = ../LMAlertView/LMModalSegue.h; sourceTree = "<group>"; };
 		16B47FB41838993700A06371 /* LMModalSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMModalSegue.m; path = ../LMAlertView/LMModalSegue.m; sourceTree = "<group>"; };
+		16B47FB61838CED100A06371 /* LMModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMModalViewController.h; sourceTree = "<group>"; };
+		16B47FB71838CED100A06371 /* LMModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMModalViewController.m; sourceTree = "<group>"; };
+		16B47FB918396E0100A06371 /* LMNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMNavigationBar.h; sourceTree = "<group>"; };
+		16B47FBA18396E0100A06371 /* LMNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMNavigationBar.m; sourceTree = "<group>"; };
+		16B47FBC1839A42000A06371 /* LMTransitionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMTransitionController.h; sourceTree = "<group>"; };
+		16B47FBD1839A42000A06371 /* LMTransitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMTransitionController.m; sourceTree = "<group>"; };
+		16B47FC5183A33E800A06371 /* CALayer+ModalAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+ModalAlert.h"; sourceTree = "<group>"; };
+		16B47FC6183A33E800A06371 /* CALayer+ModalAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+ModalAlert.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +123,8 @@
 				165F9F7B1831632C00037E82 /* LMAppDelegate.m */,
 				165F9F801831632C00037E82 /* LMViewController.h */,
 				165F9F811831632C00037E82 /* LMViewController.m */,
+				16B47FB61838CED100A06371 /* LMModalViewController.h */,
+				16B47FB71838CED100A06371 /* LMModalViewController.m */,
 				165F9F831831632C00037E82 /* Images.xcassets */,
 				165F9FAF1831B6A800037E82 /* Main.storyboard */,
 				165F9F721831632C00037E82 /* Supporting Files */,
@@ -135,7 +149,13 @@
 				165F9FAA1831A3AD00037E82 /* LMAlertView.h */,
 				165F9FAB1831A3AD00037E82 /* LMAlertView.m */,
 				16B47FB31838993700A06371 /* LMModalSegue.h */,
+				16B47FBC1839A42000A06371 /* LMTransitionController.h */,
+				16B47FBD1839A42000A06371 /* LMTransitionController.m */,
 				16B47FB41838993700A06371 /* LMModalSegue.m */,
+				16B47FB918396E0100A06371 /* LMNavigationBar.h */,
+				16B47FBA18396E0100A06371 /* LMNavigationBar.m */,
+				16B47FC5183A33E800A06371 /* CALayer+ModalAlert.h */,
+				16B47FC6183A33E800A06371 /* CALayer+ModalAlert.m */,
 				169103CD183311F3003DF9E6 /* Radial.png */,
 			);
 			name = LMAlertView;
@@ -170,6 +190,11 @@
 				CLASSPREFIX = LM;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Bestir Ltd";
+				TargetAttributes = {
+					165F9F671831632C00037E82 = {
+						DevelopmentTeam = NSBXZ77GCW;
+					};
+				};
 			};
 			buildConfigurationList = 165F9F631831632C00037E82 /* Build configuration list for PBXProject "LMAlertViewDemo" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -210,10 +235,14 @@
 			files = (
 				16B47FB51838993700A06371 /* LMModalSegue.m in Sources */,
 				162CC2051832A5E700E58F57 /* EDStarRating.m in Sources */,
+				16B47FBB18396E0100A06371 /* LMNavigationBar.m in Sources */,
+				16B47FC7183A33E800A06371 /* CALayer+ModalAlert.m in Sources */,
+				16B47FBE1839A42000A06371 /* LMTransitionController.m in Sources */,
 				165F9F781831632C00037E82 /* main.m in Sources */,
 				165F9F7C1831632C00037E82 /* LMAppDelegate.m in Sources */,
 				165F9FAC1831A3AD00037E82 /* LMAlertView.m in Sources */,
 				165F9F821831632C00037E82 /* LMViewController.m in Sources */,
+				16B47FB81838CED100A06371 /* LMModalViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,6 +337,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/lee1/LMAlertView,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LMAlertViewDemo/LMAlertViewDemo-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -318,6 +353,7 @@
 				INFOPLIST_FILE = "LMAlertViewDemo/LMAlertViewDemo-Info.plist";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = LMAlertViewDemo;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -327,12 +363,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/lee1/LMAlertView,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LMAlertViewDemo/LMAlertViewDemo-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "USE_PRIVATE_SPRING_ANIMATION_CLASS=1";
 				INFOPLIST_FILE = "LMAlertViewDemo/LMAlertViewDemo-Info.plist";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = LMAlertViewDemo;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
