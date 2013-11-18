@@ -19,6 +19,8 @@ Credit card selection demo:
 
 Work in progress - embedded view controllers:
 
+![LMAlertView-storyboard@2x](http://lmcd.me/LMAlertView-storyboard.png)
+
 ![LMAlertView-map@2x](http://lmcd.me/LMAlertView-map@2x.png)
 
 Video:
