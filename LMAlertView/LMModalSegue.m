@@ -13,28 +13,8 @@
 
 - (void)perform
 {
-	UIViewController *frontmostViewController;
+	LMAlertView *alertView = [[LMAlertView alloc] initWithViewController:[self destinationViewController]];
 	
-	if ([[self destinationViewController] isKindOfClass:[UINavigationController class]]) {
-		UINavigationController *navigationController = [self destinationViewController];
-		frontmostViewController = navigationController.visibleViewController;
-		
-		[navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-		navigationController.navigationBar.translucent = YES;
-		navigationController.navigationBar.barStyle = UIBarStyleDefault;
-	}
-	else {
-		frontmostViewController = [self destinationViewController];
-	}
-	
-	frontmostViewController.view.backgroundColor = [UIColor clearColor];
-	
-	LMAlertView *alertView = [[LMAlertView alloc] initWithSize:frontmostViewController.view.frame.size];
-	
-	UIViewController *destinationViewController = [self destinationViewController];
-	destinationViewController.view.frame = alertView.contentView.frame;
-	
-	[alertView.contentView addSubview:destinationViewController.view];
 	[alertView show];
 }
 

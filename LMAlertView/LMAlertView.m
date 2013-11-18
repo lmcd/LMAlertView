@@ -21,6 +21,7 @@
 @property (nonatomic, strong) UILabel *messageLabel;
 
 @property (strong, nonatomic) UIWindow* window;
+@property (nonatomic, strong) UIViewController *controller;
 
 @end
 
@@ -38,20 +39,46 @@
     return image;
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        //[self setup];
-    }
-    return self;
-}
-
 - (id)initWithSize:(CGSize)size
 {
     self = [super init];
     if (self) {
         [self setupWithSize:size];
+    }
+    return self;
+}
+
+- (id)initWithViewController:(UIViewController *)viewController
+{
+    self = [super init];
+    if (self) {
+		_controller = viewController;
+		
+		UIViewController *frontmostViewController;
+		
+		if ([viewController isKindOfClass:[UINavigationController class]]) {
+			UINavigationController *navigationController = (UINavigationController *)viewController;
+			frontmostViewController = navigationController.visibleViewController;
+			
+			[navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+			navigationController.navigationBar.translucent = YES;
+			navigationController.navigationBar.barStyle = UIBarStyleDefault;
+		}
+		else {
+			frontmostViewController = viewController;
+		}
+		
+		frontmostViewController.view.backgroundColor = [UIColor clearColor];
+		
+		CGSize frame = frontmostViewController.view.frame.size;
+		frame.height += 44.0;
+		
+		[self setupWithSize:frame];
+		
+		UIViewController *destinationViewController = viewController;
+		destinationViewController.view.frame = self.contentView.frame;
+		
+		[self.contentView addSubview:destinationViewController.view];
     }
     return self;
 }
