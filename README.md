@@ -15,7 +15,13 @@ Star rating demo:
 
 Credit card selection demo:
 
-![LMAlertView-review@2x](http://lmcd.me/LMAlertView-card@2x.png)
+![LMAlertView-card@2x](http://lmcd.me/LMAlertView-card@2x.png)
+
+Work in progress - embedded view controllers:
+
+![LMAlertView-storyboard@2x](http://lmcd.me/LMAlertView-storyboard.png)
+
+![LMAlertView-map@2x](http://lmcd.me/LMAlertView-map@2x.png)
 
 Video:
 - https://youtube.com/watch?v=G6n7oNL0-S8&feature=youtu.be (YouTube)
@@ -43,8 +49,3 @@ UIView *contentView = alertView.contentView;
 
 [alertView show];
 ```
-
-## Known Issues
-
-- This project relies on [@robb](http://github.com/robb)'s implementation of `CASpringAnimation` to be App Store friendly, but the dependancy is out of date in CocoaPods. Animations will appear jerky until this is fixed on his end.
-- Any other GH issue submitted by me
