@@ -24,6 +24,7 @@
 		16B47FB81838CED100A06371 /* LMModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FB71838CED100A06371 /* LMModalViewController.m */; };
 		16B47FBB18396E0100A06371 /* LMNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FBA18396E0100A06371 /* LMNavigationBar.m */; };
 		16B47FC7183A33E800A06371 /* CALayer+ModalAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FC6183A33E800A06371 /* CALayer+ModalAlert.m */; };
+		16B47FCA183B521D00A06371 /* LMEmbeddedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FC9183B521D00A06371 /* LMEmbeddedViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,8 @@
 		16B47FBA18396E0100A06371 /* LMNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMNavigationBar.m; sourceTree = "<group>"; };
 		16B47FC5183A33E800A06371 /* CALayer+ModalAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+ModalAlert.h"; sourceTree = "<group>"; };
 		16B47FC6183A33E800A06371 /* CALayer+ModalAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+ModalAlert.m"; sourceTree = "<group>"; };
+		16B47FC8183B521D00A06371 /* LMEmbeddedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMEmbeddedViewController.h; sourceTree = "<group>"; };
+		16B47FC9183B521D00A06371 /* LMEmbeddedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMEmbeddedViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +154,8 @@
 				16B47FBA18396E0100A06371 /* LMNavigationBar.m */,
 				16B47FC5183A33E800A06371 /* CALayer+ModalAlert.h */,
 				16B47FC6183A33E800A06371 /* CALayer+ModalAlert.m */,
+				16B47FC8183B521D00A06371 /* LMEmbeddedViewController.h */,
+				16B47FC9183B521D00A06371 /* LMEmbeddedViewController.m */,
 				169103CD183311F3003DF9E6 /* Radial.png */,
 			);
 			name = LMAlertView;
@@ -235,6 +240,7 @@
 				165F9F781831632C00037E82 /* main.m in Sources */,
 				165F9F7C1831632C00037E82 /* LMAppDelegate.m in Sources */,
 				165F9FAC1831A3AD00037E82 /* LMAlertView.m in Sources */,
+				16B47FCA183B521D00A06371 /* LMEmbeddedViewController.m in Sources */,
 				165F9F821831632C00037E82 /* LMViewController.m in Sources */,
 				16B47FB81838CED100A06371 /* LMModalViewController.m in Sources */,
 			);

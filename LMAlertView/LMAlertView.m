@@ -7,6 +7,7 @@
 //
 
 #import "LMAlertView.h"
+#import "LMEmbeddedViewController.h"
 
 @interface LMAlertView ()
 
@@ -283,8 +284,8 @@
 	
 	self.window = [[UIWindow alloc] initWithFrame:[appDelegate window].frame];
 	
-	UIViewController *viewController = [[UIViewController alloc] init];
-	viewController.view = self.alertContainerView;
+	LMEmbeddedViewController *viewController = [[LMEmbeddedViewController alloc] init];
+	viewController.alertView = self;
 	
 	self.window.rootViewController = viewController;
 	
@@ -295,6 +296,18 @@
 	self.window.hidden = NO;
 	
 	[self.window makeKeyAndVisible];
+	
+	if (self.controller == nil) {
+		viewController.view = self.alertContainerView;
+	}
+	else {
+		UIViewController *viewController2 = [[UIViewController alloc] init];
+		viewController2.view = self.alertContainerView;
+		
+		[viewController presentViewController:viewController2 animated:NO completion:nil];
+		
+		[viewController2 addChildViewController:self.controller];
+	}
 	
 	[CATransaction begin]; {
 		CATransform3D transformFrom = CATransform3DMakeScale(1.26, 1.26, 1.0);

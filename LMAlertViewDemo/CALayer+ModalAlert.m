@@ -7,6 +7,7 @@
 //
 
 #import "CALayer+ModalAlert.h"
+#import "LMEmbeddedViewController.h"
 #import <objc/runtime.h>
 
 @implementation CALayer (ModalAlert)
@@ -23,12 +24,9 @@
 }
 
 - (void)_addAnimation:(CAAnimation *)anim forKey:(NSString *)key {
-	UIView *view = [self delegate];
-	CABasicAnimation *basicAnim = (CABasicAnimation *)anim;
+	UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
 	
-	// todo - add test here to see if we're in a LMAlertView
-	if (YES) {
-		// Get rid of _UIParallaxDimmingView. It's making the transparent nav controller go dark when animating
+	if ([keyWindow.rootViewController isKindOfClass:[LMEmbeddedViewController class]]) {
 		UIView *view = [self delegate];
 		CABasicAnimation *basicAnim = (CABasicAnimation *)anim;
 		CGFloat modalWidth = 290.0;
