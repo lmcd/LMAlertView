@@ -94,7 +94,7 @@
 		
 		UIFont *titleFont = [UIFont boldSystemFontOfSize:17.0];
 		
-		CGFloat yOfs = topBottomMargin;
+		CGFloat yOffset = topBottomMargin;
 		
 		UILabel *titleLabel;
 		UIView *lineView;
@@ -120,14 +120,14 @@
 			titleLabel.textAlignment = NSTextAlignmentCenter;
 			
 			CGSize sizeThatFits = [titleLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
-			titleLabel.frame = CGRectMake(sideMargin, yOfs, labelWidth, sizeThatFits.height);
+			titleLabel.frame = CGRectMake(sideMargin, yOffset, labelWidth, sizeThatFits.height);
 			
-			yOfs += titleLabel.frame.size.height;
+			yOffset += titleLabel.frame.size.height;
 		}
 		
 		// 4 px gap between title and message
 		// Even if a title doesn't exist, the 4px is still present
-		yOfs += 4.0;
+		yOffset += 4.0;
 		
 		if (message != nil) {
 			self.messageLabel = [[UILabel alloc] init];
@@ -135,17 +135,16 @@
 			self.message = message;
 			
 			CGSize sizeThatFits = [self.messageLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
-			self.messageLabel.frame = CGRectMake(sideMargin, yOfs, labelWidth, sizeThatFits.height);
+			self.messageLabel.frame = CGRectMake(sideMargin, yOffset, labelWidth, sizeThatFits.height);
 			
-			yOfs += self.messageLabel.frame.size.height;
+			yOffset += self.messageLabel.frame.size.height;
 		}
 		
-		yOfs += topBottomMargin;
+		yOffset += topBottomMargin;
 		
         // Lines setup
-        if (cancelButtonTitle || otherButtonTitles)
-        {
-			lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, yOfs - 1.0, alertWidth, 1.0)];
+        if (cancelButtonTitle || otherButtonTitles) {
+			lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, yOffset - 1.0, alertWidth, 1.0)];
 			lineView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 			
 			// We put our 0.5px high view in to a container that's 1px high
@@ -157,8 +156,7 @@
 			
 			[lineView addSubview:lineViewInner];
             
-            if (cancelButtonTitle && otherButtonTitles)
-            {
+            if (cancelButtonTitle && otherButtonTitles) {
                 UIView *lineVerticalViewInner = [[UIView alloc] initWithFrame:CGRectMake((alertWidth / 2.f) + 0.5, 0.5, 0.5, buttonHeight + 0.5)];
                 lineVerticalViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
                 [lineView addSubview:lineVerticalViewInner];
@@ -166,14 +164,12 @@
         }
         
         // Buttons setup
-        if (otherButtonTitles != nil && cancelButtonTitle == nil)
-        {
+        if (otherButtonTitles != nil && cancelButtonTitle == nil) {
             cancelButtonTitle = otherButtonTitles;
             otherButtonTitles = nil;
         }
         
-        if (cancelButtonTitle != nil)
-        {
+        if (cancelButtonTitle != nil) {
 			cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
             cancelButton.tag = 0;
 			[cancelButton setTitle:cancelButtonTitle forState:UIControlStateNormal];
@@ -182,11 +178,11 @@
 			[cancelButton setBackgroundImage:[self imageFromColor:[UIColor colorWithRed:217.0/255.0 green:217.0/255.0 blue:217.0/255.0 alpha:1.0]] forState:UIControlStateHighlighted];
 			cancelButton.titleLabel.font = (otherButtonTitles) ? [UIFont systemFontOfSize:17.0] : titleFont;
 			[cancelButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
-			cancelButton.frame = CGRectMake(0.0, yOfs, alertWidth, buttonHeight);
+			cancelButton.frame = CGRectMake(0.0, yOffset, alertWidth, buttonHeight);
 			cancelButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 		}
-        if (otherButtonTitles != nil)
-        {
+		
+        if (otherButtonTitles != nil) {
             otherButton = [UIButton buttonWithType:UIButtonTypeCustom];
             otherButton.tag = 1;
 			[otherButton setTitle:otherButtonTitles forState:UIControlStateNormal];
@@ -195,14 +191,15 @@
 			[otherButton setBackgroundImage:[self imageFromColor:[UIColor colorWithRed:217.0/255.0 green:217.0/255.0 blue:217.0/255.0 alpha:1.0]] forState:UIControlStateHighlighted];
 			otherButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0];
 			[otherButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
-			otherButton.frame = CGRectMake((alertWidth / 2.0) + 1, yOfs, alertWidth / 2.0, buttonHeight);
+			otherButton.frame = CGRectMake((alertWidth / 2.0) + 1, yOffset, alertWidth / 2.0, buttonHeight);
 			otherButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
             
-            cancelButton.frame = CGRectMake(0.0, yOfs, (alertWidth / 2.0) + 0.5, buttonHeight);
+            cancelButton.frame = CGRectMake(0.0, yOffset, (alertWidth / 2.0) + 0.5, buttonHeight);
         }
-        yOfs += buttonHeight;
+		
+        yOffset += buttonHeight;
 
-		CGFloat alertHeight = yOfs;
+		CGFloat alertHeight = yOffset;
 		[self setupWithSize:CGSizeMake(alertWidth, alertHeight)];
 		
 		// Add everything to the content view
