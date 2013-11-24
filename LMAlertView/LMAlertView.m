@@ -68,8 +68,6 @@
 			frontmostViewController = viewController;
 		}
 		
-		frontmostViewController.view.backgroundColor = [UIColor clearColor];
-		
 		CGSize frame = frontmostViewController.view.frame.size;
 		frame.height += 44.0;
 		
@@ -214,11 +212,11 @@
 	_backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[_alertContainerView addSubview:_backgroundView];
 	
-	CGRect maskRect = CGRectZero;
-	maskRect.size = size;
+	CGRect frame;
+	frame.size = size;
+	frame.origin = CGPointMake([_backgroundView bounds].size.width/2.0 - frame.size.width/2.0, [_backgroundView bounds].size.height/2.0 - frame.size.height/2.0);
 	
-	CGPoint origin = CGPointMake([_backgroundView bounds].size.width/2.0 - maskRect.size.width/2.0, [_backgroundView bounds].size.height/2.0 - maskRect.size.height/2.0);
-	_representationView = [[UIView alloc] initWithFrame:(CGRect){.origin = origin, .size = maskRect.size}];
+	_representationView = [[UIView alloc] initWithFrame:frame];
 	_representationView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 	[_representationView.layer setMasksToBounds:YES];
 	[_representationView.layer setCornerRadius:7.0];
@@ -289,8 +287,10 @@
 	viewController.view = self.alertContainerView;
 	
 	self.window.rootViewController = viewController;
+	
 	// Without this, the alert background will appear black on rotation
 	self.window.backgroundColor = [UIColor clearColor];
+	// Same window level as regular alert views (above main window and status bar)
 	self.window.windowLevel = UIWindowLevelAlert;
 	self.window.hidden = NO;
 	

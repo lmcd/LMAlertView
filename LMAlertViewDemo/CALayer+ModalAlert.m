@@ -29,25 +29,31 @@
 	// todo - add test here to see if we're in a LMAlertView
 	if (YES) {
 		// Get rid of _UIParallaxDimmingView. It's making the transparent nav controller go dark when animating
+		UIView *view = [self delegate];
+		CABasicAnimation *basicAnim = (CABasicAnimation *)anim;
+		CGFloat modalWidth = 290.0;
+		
+		// Hide _UIParallaxDimmingView. It's making the transparent nav controller go dark when animating
 		if ([[[view class] description] hasSuffix:@"DimmingView"]){
 			view.hidden = YES;
 		}
 		
 		// When pushing a view controller, make the one underneath slide out all the way
 		if ([key isEqualToString:@"position"]) {
-			if ([basicAnim.fromValue CGPointValue].x == 58) {
-				basicAnim.fromValue = [NSValue valueWithCGPoint:CGPointMake(-(290/2), [basicAnim.fromValue CGPointValue].y)];
+			if ([basicAnim.fromValue CGPointValue].x == (modalWidth / 5.0)) {
+				basicAnim.fromValue = [NSValue valueWithCGPoint:CGPointMake(-(modalWidth / 2.0), [basicAnim.fromValue CGPointValue].y)];
 			}
 		}
 		
-		if (view.frame.origin.x == -87.0) {
+		if (view.frame.origin.x == (-0.3 * modalWidth)) {
 			CGRect frame = view.frame;
-			frame.origin.x = -290;
+			frame.origin.x = -modalWidth;
 			
 			view.frame = frame;
 		}
 	}
 	
+	// Note: this calls original Apple implementation of addAnimation:forKey:
 	[self _addAnimation:anim forKey:key];
 }
 

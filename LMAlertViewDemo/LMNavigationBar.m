@@ -18,6 +18,7 @@
 	
 	CGRect superviewFrame = self.superview.frame;
 	
+	// Adjust width and position of nav bar to add 6px margin on each side
 	self.frame = CGRectMake(marginWidth, self.frame.origin.y, superviewFrame.size.width - (marginWidth * 2.0), self.frame.size.height);
 	
 	UIView *backgroundView = [self.subviews firstObject];
