@@ -34,6 +34,7 @@
 @property (unsafe_unretained) id<UIAlertViewDelegate> delegate;
 
 - (id)initWithSize:(CGSize)size;
+- (id)initWithViewController:(UIViewController *)viewController;
 - (id)initWithTitle:(NSString *)title message:(NSString *)message delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION;
 
 - (void)setSize:(CGSize)size;

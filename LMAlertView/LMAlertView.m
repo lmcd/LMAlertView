@@ -7,6 +7,7 @@
 //
 
 #import "LMAlertView.h"
+#import "LMEmbeddedViewController.h"
 
 @interface LMAlertView ()
 
@@ -20,7 +21,8 @@
 
 @property (nonatomic, strong) UILabel *messageLabel;
 
-@property (strong, nonatomic) UIWindow* window;
+@property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) UIViewController *controller;
 
 @end
 
@@ -38,20 +40,44 @@
     return image;
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        //[self setup];
-    }
-    return self;
-}
-
 - (id)initWithSize:(CGSize)size
 {
     self = [super init];
     if (self) {
         [self setupWithSize:size];
+    }
+    return self;
+}
+
+- (id)initWithViewController:(UIViewController *)viewController
+{
+    self = [super init];
+    if (self) {
+		_controller = viewController;
+		
+		UIViewController *frontmostViewController;
+		
+		if ([viewController isKindOfClass:[UINavigationController class]]) {
+			UINavigationController *navigationController = (UINavigationController *)viewController;
+			frontmostViewController = navigationController.visibleViewController;
+			
+			[navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+			navigationController.navigationBar.translucent = YES;
+			navigationController.navigationBar.barStyle = UIBarStyleDefault;
+		}
+		else {
+			frontmostViewController = viewController;
+		}
+		
+		CGSize frame = frontmostViewController.view.frame.size;
+		frame.height += 44.0;
+		
+		[self setupWithSize:frame];
+		
+		UIViewController *destinationViewController = viewController;
+		destinationViewController.view.frame = self.contentView.frame;
+		
+		[self.contentView addSubview:destinationViewController.view];
     }
     return self;
 }
@@ -187,11 +213,11 @@
 	_backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[_alertContainerView addSubview:_backgroundView];
 	
-	CGRect maskRect = CGRectZero;
-	maskRect.size = size;
+	CGRect frame;
+	frame.size = size;
+	frame.origin = CGPointMake([_backgroundView bounds].size.width/2.0 - frame.size.width/2.0, [_backgroundView bounds].size.height/2.0 - frame.size.height/2.0);
 	
-	CGPoint origin = CGPointMake([_backgroundView bounds].size.width/2.0 - maskRect.size.width/2.0, [_backgroundView bounds].size.height/2.0 - maskRect.size.height/2.0);
-	_representationView = [[UIView alloc] initWithFrame:(CGRect){.origin = origin, .size = maskRect.size}];
+	_representationView = [[UIView alloc] initWithFrame:frame];
 	_representationView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 	[_representationView.layer setMasksToBounds:YES];
 	[_representationView.layer setCornerRadius:7.0];
@@ -258,16 +284,30 @@
 	
 	self.window = [[UIWindow alloc] initWithFrame:[appDelegate window].frame];
 	
-	UIViewController *viewController = [[UIViewController alloc] init];
-	viewController.view = self.alertContainerView;
+	LMEmbeddedViewController *viewController = [[LMEmbeddedViewController alloc] init];
+	viewController.alertView = self;
 	
 	self.window.rootViewController = viewController;
+	
 	// Without this, the alert background will appear black on rotation
 	self.window.backgroundColor = [UIColor clearColor];
+	// Same window level as regular alert views (above main window and status bar)
 	self.window.windowLevel = UIWindowLevelAlert;
 	self.window.hidden = NO;
 	
 	[self.window makeKeyAndVisible];
+	
+	if (self.controller == nil) {
+		viewController.view = self.alertContainerView;
+	}
+	else {
+		UIViewController *viewController2 = [[UIViewController alloc] init];
+		viewController2.view = self.alertContainerView;
+		
+		[viewController presentViewController:viewController2 animated:NO completion:nil];
+		
+		[viewController2 addChildViewController:self.controller];
+	}
 	
 	[CATransaction begin]; {
 		CATransform3D transformFrom = CATransform3DMakeScale(1.26, 1.26, 1.0);
