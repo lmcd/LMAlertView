@@ -53,12 +53,12 @@
 		16B47FB41838993700A06371 /* LMModalSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMModalSegue.m; path = ../LMAlertView/LMModalSegue.m; sourceTree = "<group>"; };
 		16B47FB61838CED100A06371 /* LMModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMModalViewController.h; sourceTree = "<group>"; };
 		16B47FB71838CED100A06371 /* LMModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMModalViewController.m; sourceTree = "<group>"; };
-		16B47FB918396E0100A06371 /* LMNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMNavigationBar.h; sourceTree = "<group>"; };
-		16B47FBA18396E0100A06371 /* LMNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMNavigationBar.m; sourceTree = "<group>"; };
-		16B47FC5183A33E800A06371 /* CALayer+ModalAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+ModalAlert.h"; sourceTree = "<group>"; };
-		16B47FC6183A33E800A06371 /* CALayer+ModalAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+ModalAlert.m"; sourceTree = "<group>"; };
-		16B47FC8183B521D00A06371 /* LMEmbeddedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMEmbeddedViewController.h; sourceTree = "<group>"; };
-		16B47FC9183B521D00A06371 /* LMEmbeddedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMEmbeddedViewController.m; sourceTree = "<group>"; };
+		16B47FB918396E0100A06371 /* LMNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMNavigationBar.h; path = ../LMAlertView/LMNavigationBar.h; sourceTree = "<group>"; };
+		16B47FBA18396E0100A06371 /* LMNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMNavigationBar.m; path = ../LMAlertView/LMNavigationBar.m; sourceTree = "<group>"; };
+		16B47FC5183A33E800A06371 /* CALayer+ModalAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CALayer+ModalAlert.h"; path = "../LMAlertView/CALayer+ModalAlert.h"; sourceTree = "<group>"; };
+		16B47FC6183A33E800A06371 /* CALayer+ModalAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CALayer+ModalAlert.m"; path = "../LMAlertView/CALayer+ModalAlert.m"; sourceTree = "<group>"; };
+		16B47FC8183B521D00A06371 /* LMEmbeddedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMEmbeddedViewController.h; path = ../LMAlertView/LMEmbeddedViewController.h; sourceTree = "<group>"; };
+		16B47FC9183B521D00A06371 /* LMEmbeddedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMEmbeddedViewController.m; path = ../LMAlertView/LMEmbeddedViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
