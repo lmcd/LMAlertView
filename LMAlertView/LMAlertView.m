@@ -72,7 +72,10 @@
 		
 		UILabel *titleLabel;
 		UIView *lineView;
-		UIButton *button;
+        // This is the default iOS 7 blue tint colour
+        UIColor *titleColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+		UIButton *cancelButton;
+        UIButton *otherButton;
 		
 		if (title != nil) {
 			// The UILabels in UIAlertView mysteriously have no paragraph style but STILL have line heights
@@ -113,7 +116,9 @@
 		
 		yOfs += topBottomMargin;
 		
-		if (cancelButtonTitle != nil) {
+        // Lines setup
+        if (cancelButtonTitle || otherButtonTitles)
+        {
 			lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, yOfs - 1.0, alertWidth, 1.0)];
 			lineView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 			
@@ -125,23 +130,52 @@
 			lineViewInner.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 			
 			[lineView addSubview:lineViewInner];
-			
-			// This is the default iOS 7 blue tint colour
-			UIColor *titleColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
-			
-			button = [UIButton buttonWithType:UIButtonTypeCustom];
-			[button setTitle:cancelButtonTitle forState:UIControlStateNormal];
-			button.titleEdgeInsets = UIEdgeInsetsMake(1.0, 0.0, 0.0, 0.0);
-			[button setTitleColor:titleColor forState:UIControlStateNormal];
-			[button setBackgroundImage:[self imageFromColor:[UIColor colorWithRed:217.0/255.0 green:217.0/255.0 blue:217.0/255.0 alpha:1.0]] forState:UIControlStateHighlighted];
-			button.titleLabel.font = titleFont;
-			[button addTarget:self action:@selector(cancelButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-			button.frame = CGRectMake(0.0, yOfs, alertWidth, buttonHeight);
-			button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-			
-			yOfs += buttonHeight;
+            
+            if (cancelButtonTitle && otherButtonTitles)
+            {
+                UIView *lineVerticalViewInner = [[UIView alloc] initWithFrame:CGRectMake((alertWidth / 2.f) + 0.5, 0.5, 0.5, buttonHeight + 0.5)];
+                lineVerticalViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+                [lineView addSubview:lineVerticalViewInner];
+            }
+        }
+        
+        // Buttons setup
+        if (otherButtonTitles != nil && cancelButtonTitle == nil)
+        {
+            cancelButtonTitle = otherButtonTitles;
+            otherButtonTitles = nil;
+        }
+        
+        if (cancelButtonTitle != nil)
+        {
+			cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            cancelButton.tag = 0;
+			[cancelButton setTitle:cancelButtonTitle forState:UIControlStateNormal];
+			cancelButton.titleEdgeInsets = UIEdgeInsetsMake(1.0, 0.0, 0.0, 0.0);
+			[cancelButton setTitleColor:titleColor forState:UIControlStateNormal];
+			[cancelButton setBackgroundImage:[self imageFromColor:[UIColor colorWithRed:217.0/255.0 green:217.0/255.0 blue:217.0/255.0 alpha:1.0]] forState:UIControlStateHighlighted];
+			cancelButton.titleLabel.font = (otherButtonTitles) ? [UIFont systemFontOfSize:17.0] : titleFont;
+			[cancelButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+			cancelButton.frame = CGRectMake(0.0, yOfs, alertWidth, buttonHeight);
+			cancelButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 		}
-		
+        if (otherButtonTitles != nil)
+        {
+            otherButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            otherButton.tag = 1;
+			[otherButton setTitle:otherButtonTitles forState:UIControlStateNormal];
+			otherButton.titleEdgeInsets = UIEdgeInsetsMake(1.0, 0.0, 0.0, 0.0);
+			[otherButton setTitleColor:titleColor forState:UIControlStateNormal];
+			[otherButton setBackgroundImage:[self imageFromColor:[UIColor colorWithRed:217.0/255.0 green:217.0/255.0 blue:217.0/255.0 alpha:1.0]] forState:UIControlStateHighlighted];
+			otherButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0];
+			[otherButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+			otherButton.frame = CGRectMake((alertWidth / 2.0) + 1, yOfs, alertWidth / 2.0, buttonHeight);
+			otherButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+            
+            cancelButton.frame = CGRectMake(0.0, yOfs, (alertWidth / 2.0) + 0.5, buttonHeight);
+        }
+        yOfs += buttonHeight;
+
 		CGFloat alertHeight = yOfs;
 		[self setupWithSize:CGSizeMake(alertWidth, alertHeight)];
 		
@@ -149,17 +183,18 @@
 		[self.contentView addSubview:titleLabel];
 		[self.contentView addSubview:self.messageLabel];
 		[self.contentView addSubview:lineView];
-		[self.contentView addSubview:button];
+		[self.contentView addSubview:cancelButton];
+        [self.contentView addSubview:otherButton];
     }
     return self;
 }
 
-- (void)cancelButtonTapped:(id)sender
+- (void)buttonTapped:(UIView *)sender
 {
 	[self dismiss];
 	
 	if ([self.delegate respondsToSelector:@selector(alertView:willDismissWithButtonIndex:)]) {
-		[self.delegate alertView:self clickedButtonAtIndex:0];
+		[self.delegate alertView:(UIAlertView *)self clickedButtonAtIndex:sender.tag];
 	}
 }
 
