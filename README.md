@@ -7,21 +7,21 @@ I rushed this together in a few days so it isn't quite perfect, but almost there
 
 Spot the difference!
 
-![UIAlertView](http://lmcd.me/UIAlertView-cutout.png)![LMAlertView](http://lmcd.me/LMAlertView-cutout.png)
+<img src="http://lmcd.me/LMAlertView-custom@2x.png" width="320"><img src="http://lmcd.me/LMAlertView-native@2x.png" width="320">
 
 Star rating demo:
 
-![LMAlertView-review@2x](http://lmcd.me/LMAlertView-review@2x.png)
+![LMAlertView-review@2x](http://lmcd.me/LMAlertView-review@2x.png?2)
 
 Credit card selection demo:
 
-![LMAlertView-card@2x](http://lmcd.me/LMAlertView-card@2x.png)
+![LMAlertView-card@2x](http://lmcd.me/LMAlertView-card@2x.png?2)
 
 Work in progress - embedded view controllers:
 
 ![LMAlertView-storyboard@2x](http://lmcd.me/LMAlertView-storyboard.png)
 
-![LMAlertView-map@2x](http://lmcd.me/LMAlertView-map@2x.png)
+<img src="http://lmcd.me/LMAlertView-map1@2x.png" width="320"><img src="http://lmcd.me/LMAlertView-map2@2x.png" width="320">
 
 Video:
 - https://youtube.com/watch?v=G6n7oNL0-S8&feature=youtu.be (YouTube)
