@@ -193,7 +193,7 @@
 {
 	[self dismiss];
 	
-	if ([self.delegate respondsToSelector:@selector(alertView:willDismissWithButtonIndex:)]) {
+	if ([self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
 		[self.delegate alertView:(UIAlertView *)self clickedButtonAtIndex:sender.tag];
 	}
 }
@@ -204,6 +204,7 @@
 	frame.size = size;
 	
 	self.representationView.frame = frame;
+    _representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, [[UIScreen mainScreen] bounds].size.height / 2.0);
 }
 
 - (CGSize)size
@@ -225,8 +226,8 @@
 	CGRect maskRect = CGRectZero;
 	maskRect.size = size;
 	
-	CGPoint origin = CGPointMake([_backgroundView bounds].size.width/2.0 - maskRect.size.width/2.0, [_backgroundView bounds].size.height/2.0 - maskRect.size.height/2.0);
-	_representationView = [[UIView alloc] initWithFrame:(CGRect){.origin = origin, .size = maskRect.size}];
+	_representationView = [[UIView alloc] initWithFrame:(CGRect){.origin = CGPointZero, .size = size}];
+    _representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, [[UIScreen mainScreen] bounds].size.height / 2.0);
 	_representationView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 	[_representationView.layer setMasksToBounds:YES];
 	[_representationView.layer setCornerRadius:7.0];
