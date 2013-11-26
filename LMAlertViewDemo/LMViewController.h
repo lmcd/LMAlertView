@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "EDStarRating.h"
 
-@interface LMViewController : UIViewController <EDStarRatingProtocol>
+@interface LMViewController : UIViewController <EDStarRatingProtocol, UIAlertViewDelegate>
 
 - (IBAction)nativeButtonTapped:(id)sender;
 - (IBAction)customButtonTapped:(id)sender;

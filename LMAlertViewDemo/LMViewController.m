@@ -110,23 +110,6 @@
 	[self.cardAlertView show];
 }
 
-- (IBAction)unwindFromViewController2:(UIStoryboardSegue *)sender {
-	NSLog(@"unwind yo");
-}
-
-- (UIStoryboardSegue *)segueForUnwindingToViewController:(UIViewController *)toViewController fromViewController:(UIViewController *)fromViewController identifier:(NSString *)identifier {
-    // Instantiate a new CustomUnwindSegue
-    //CustomUnwindSegue *segue = [[CustomUnwindSegue alloc] initWithIdentifier:identifier source:fromViewController destination:toViewController];
-    // Set the target point for the animation to the center of the button in this VC
-    //segue.targetPoint = self.segueButton.center;
-	
-	NSLog(@"toviewcontroller: %@", toViewController);
-	
-	NSLog(@"from: %@", fromViewController);
-	
-    return nil;
-}
-
 - (void)starsSelectionChanged:(EDStarRating *)control rating:(float)rating
 {
 	NSString *ratingDescription;
