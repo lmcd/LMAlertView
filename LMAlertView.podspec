@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'LMAlertView'
-  s.version  = '1.0'
+  s.version  = '0.0.1'
   s.license  = 'MIT'
   s.summary  = 'Open Source, customisable clone of UIAlertView for iOS 7'
   s.homepage = 'https://github.com/lmcd/LMAlertView'
