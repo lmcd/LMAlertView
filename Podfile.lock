@@ -1,0 +1,13 @@
+PODS:
+  - EDStarRating (1.1)
+  - RBBAnimation (0.3.0)
+
+DEPENDENCIES:
+  - EDStarRating (~> 1.1)
+  - RBBAnimation (~> 0.3.0)
+
+SPEC CHECKSUMS:
+  EDStarRating: 6761f41fd040f1cde155e2885dddc96461620f67
+  RBBAnimation: e7f31ed62f760f3caf120b5d943267bd9a8e1f64
+
+COCOAPODS: 0.23.0
