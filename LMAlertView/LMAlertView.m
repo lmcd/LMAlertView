@@ -216,7 +216,7 @@
 {
 	[self dismiss];
 	
-	if ([self.delegate respondsToSelector:@selector(alertView:willDismissWithButtonIndex:)]) {
+	if ([self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
 		[self.delegate alertView:(UIAlertView *)self clickedButtonAtIndex:sender.tag];
 	}
 }

@@ -12,37 +12,34 @@
 
 @interface LMViewController ()
 
-@property (strong, nonatomic) LMAlertView* ratingAlertView;
-@property (strong, nonatomic) LMAlertView* cardAlertView;
+@property (strong, nonatomic) LMAlertView *ratingAlertView;
+@property (strong, nonatomic) LMAlertView *cardAlertView;
 
 @end
 
 @implementation LMViewController
 
-- (void)viewDidLoad
-{
-	[super viewDidLoad];
-	
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (IBAction)nativeButtonTapped:(id)sender
 {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:@"Other", nil];
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+	
+	alertView.delegate = self;
 	
 	[alertView show];
 }
 
 - (IBAction)customButtonTapped:(id)sender
 {
-	LMAlertView *alertView = [[LMAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:@"Other", nil];
+	LMAlertView *alertView = [[LMAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+	
+	alertView.delegate = self;
 	
 	[alertView show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	NSLog(@"Clicked button at index: %li", (long)buttonIndex);
 }
 
 - (IBAction)ratingButtonTapped:(id)sender
@@ -81,32 +78,53 @@
 	
 	UIView *contentView = self.cardAlertView.contentView;
 	
+	CGFloat yOffset = 55.0;
+	
 	UIImageView *card1ImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Visa"]];
-	card1ImageView.frame = CGRectMake(45.0, 55.0, card1ImageView.frame.size.width, card1ImageView.frame.size.height);
+	card1ImageView.frame = CGRectMake(45.0, yOffset, card1ImageView.frame.size.width, card1ImageView.frame.size.height);
 	[contentView addSubview:card1ImageView];
 	
-	UILabel *card1Label = [[UILabel alloc] initWithFrame:CGRectMake(45.0, 87.0, card1ImageView.frame.size.width, 21.0)];
+	UIImageView *card2ImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MasterCard"]];
+	card2ImageView.frame = CGRectMake(110.0, yOffset, card1ImageView.frame.size.width, card1ImageView.frame.size.height);
+	[contentView addSubview:card2ImageView];
+	
+	UIButton *addButton = [UIButton buttonWithType:UIButtonTypeSystem];
+	addButton.frame = CGRectMake(175.0, yOffset, 51.0, 32.0);
+	[addButton setImage:[UIImage imageNamed:@"Plus"] forState:UIControlStateNormal];
+	[contentView addSubview:addButton];
+	
+	yOffset += 32.0;
+	
+	UILabel *card1Label = [[UILabel alloc] initWithFrame:CGRectMake(45.0, yOffset, card1ImageView.frame.size.width, 21.0)];
 	card1Label.text = @"4056";
 	card1Label.font = [UIFont systemFontOfSize:13.0];
 	card1Label.textAlignment = NSTextAlignmentCenter;
 	[contentView addSubview:card1Label];
 	
-	UIImageView *card2ImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MasterCard"]];
-	card2ImageView.frame = CGRectMake(110.0, 55.0, card1ImageView.frame.size.width, card1ImageView.frame.size.height);
-	[contentView addSubview:card2ImageView];
-	
-	UILabel *card2Label = [[UILabel alloc] initWithFrame:CGRectMake(110.0, 87.0, card1ImageView.frame.size.width, 21.0)];
+	UILabel *card2Label = [[UILabel alloc] initWithFrame:CGRectMake(110.0, yOffset, card1ImageView.frame.size.width, 21.0)];
 	card2Label.text = @"3123";
 	card2Label.font = [UIFont systemFontOfSize:13.0];
 	card2Label.textAlignment = NSTextAlignmentCenter;
 	[contentView addSubview:card2Label];
 	
-	UIButton *addButton = [UIButton buttonWithType:UIButtonTypeSystem];
-	addButton.frame = CGRectMake(175.0, 55.0, 51.0, 32.0);
-	[addButton setImage:[UIImage imageNamed:@"Plus"] forState:UIControlStateNormal];
-	[contentView addSubview:addButton];
-	
 	[self.cardAlertView show];
+}
+
+- (IBAction)unwindFromViewController2:(UIStoryboardSegue *)sender {
+	NSLog(@"unwind yo");
+}
+
+- (UIStoryboardSegue *)segueForUnwindingToViewController:(UIViewController *)toViewController fromViewController:(UIViewController *)fromViewController identifier:(NSString *)identifier {
+    // Instantiate a new CustomUnwindSegue
+    //CustomUnwindSegue *segue = [[CustomUnwindSegue alloc] initWithIdentifier:identifier source:fromViewController destination:toViewController];
+    // Set the target point for the animation to the center of the button in this VC
+    //segue.targetPoint = self.segueButton.center;
+	
+	NSLog(@"toviewcontroller: %@", toViewController);
+	
+	NSLog(@"from: %@", fromViewController);
+	
+    return nil;
 }
 
 - (void)starsSelectionChanged:(EDStarRating *)control rating:(float)rating
