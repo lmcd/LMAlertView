@@ -5,6 +5,14 @@ LMAlertView
 
 I rushed this together in a few days so it isn't quite perfect, but almost there!
 
+## Demos
+
+I've provided a handful of demos in the bundled example project. To get them to work, you must first install project dependancies with CocoaPods by running:
+
+```
+pod install
+```
+
 Spot the difference!
 
 <img src="http://lmcd.me/LMAlertView-custom@2x.png" width="320"><img src="http://lmcd.me/LMAlertView-native@2x.png" width="320">
