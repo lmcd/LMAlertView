@@ -227,6 +227,7 @@
 	frame.size = size;
 	
 	self.representationView.frame = frame;
+    _representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, [[UIScreen mainScreen] bounds].size.height / 2.0);
 }
 
 - (CGSize)size
@@ -247,13 +248,13 @@
 	
 	CGRect frame;
 	frame.size = size;
-	frame.origin = CGPointMake([_backgroundView bounds].size.width/2.0 - frame.size.width/2.0, [_backgroundView bounds].size.height/2.0 - frame.size.height/2.0);
 	
 	_representationView = [[UIView alloc] initWithFrame:frame];
+    _representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, [[UIScreen mainScreen] bounds].size.height / 2.0);
+	
 	_representationView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 	[_representationView.layer setMasksToBounds:YES];
 	[_representationView.layer setCornerRadius:7.0];
-	
 	
 	_toolbar = [[UIToolbar alloc] initWithFrame:(CGRect){.size = self.representationView.frame.size}];
 	_toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
