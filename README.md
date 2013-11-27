@@ -40,7 +40,7 @@ Video:
 Use the awesome [CocoaPods](http://cocoapods.org/) to add `LMAlertView` to your project:
 
 ```ruby
-pod 'LMAlertView', :git => 'https://github.com/lmcd/LMAlertView.git'
+pod 'LMAlertView'
 ```
 
 ## Usage
