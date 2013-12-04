@@ -10,6 +10,16 @@
 
 @implementation LMNavigationBar
 
+- (id)initWithCoder:(NSCoder *)decoder
+{
+	self = [super initWithCoder:decoder];
+    if (self) {
+		[self setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:18]}];
+		[self setTitleVerticalPositionAdjustment:-0.5 forBarMetrics:UIBarMetricsDefault];
+    }
+    return self;
+}
+
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
