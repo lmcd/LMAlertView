@@ -32,7 +32,7 @@
 		CGFloat modalWidth = 290.0;
 		
 		// Hide _UIParallaxDimmingView. It's making the transparent nav controller go dark when animating
-		if ([[[view class] description] hasSuffix:@"DimmingView"]){
+		if ([[[view class] description] hasSuffix:@"DimmingView"]) {
 			view.hidden = YES;
 		}
 		
