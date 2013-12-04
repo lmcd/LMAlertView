@@ -28,6 +28,23 @@
 	frame.origin = CGPointMake(-marginWidth, backgroundView.frame.origin.y);
 	
 	backgroundView.frame = frame;
+	
+	for (UIView *subview in [self subviews]) {
+		NSString *className = [[subview class] description];
+		
+		if ([className hasSuffix:@"BackIndicatorView"]) {
+			CGRect frame = subview.frame;
+			frame.origin.x = 2;
+			
+			subview.frame = frame;
+		}
+		else if ([className hasSuffix:@"ItemButtonView"]) {
+			CGRect frame = subview.frame;
+			frame.origin.x = 2;
+			
+			subview.frame = frame;
+		}
+	}
 }
 
 @end
