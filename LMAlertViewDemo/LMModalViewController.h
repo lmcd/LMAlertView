@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LMModalViewController : UIViewController
+@interface LMModalViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic, strong) IBOutlet UIView *headerView;
 
 @end
