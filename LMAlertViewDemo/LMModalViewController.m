@@ -36,6 +36,14 @@
 	[[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)textViewDidChange:(UITextView *)textView
+{
+	int remainingCharacters = 140 - textView.text.length;
+	self.characterCountLabel.text = [NSString stringWithFormat:@"%i", remainingCharacters];
+	
+	self.navigationItem.rightBarButtonItem.enabled = (remainingCharacters >= 0);
+}
+
 - (void)showLocationChooser
 {
 	[self performSegueWithIdentifier:@"Location" sender:self];

@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LMModalViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
+@interface LMModalViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIView *headerView;
+@property (nonatomic, strong) IBOutlet UILabel *characterCountLabel;
 
 @end
