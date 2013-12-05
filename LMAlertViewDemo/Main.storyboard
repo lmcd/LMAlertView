@@ -102,7 +102,7 @@
         <!--Navigation Controller-->
         <scene sceneID="uRl-Dx-s7M">
             <objects>
-                <navigationController storyboardIdentifier="navigationModal" definesPresentationContext="YES" navigationBarHidden="YES" id="7Mj-bp-gc9" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="navigationModal" definesPresentationContext="YES" id="7Mj-bp-gc9" sceneMemberID="viewController">
                     <nil key="simulatedStatusBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bNU-9d-e3o" customClass="LMNavigationBar">
                         <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
