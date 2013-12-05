@@ -36,13 +36,29 @@
 	[[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)showLocationChooser
+{
+	[self performSegueWithIdentifier:@"Location" sender:self];
+}
+
 #pragma mark - UITableViewDelegate delegate methods
 
 #pragma mark - Table view data source
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 	
+	cell.detailTextLabel.text = @"Locating…";
+	
+	UIActivityIndicatorView *acitivityIndicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(255, 12, 20, 20)];
+	[acitivityIndicatorView startAnimating];
+	acitivityIndicatorView.color = cell.detailTextLabel.textColor;
+	cell.accessoryView = acitivityIndicatorView;
+	
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	[self performSelector:@selector(showLocationChooser) withObject:self afterDelay:0.5];
 }
 
 @end
