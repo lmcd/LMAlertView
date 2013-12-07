@@ -16,7 +16,16 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	[self.tweetTextView becomeFirstResponder];
+	if (!animated) {
+		[self.tweetTextView becomeFirstResponder];
+	}
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	if (animated) {
+		[self.tweetTextView becomeFirstResponder];
+	}
 }
 
 - (void)viewDidLoad
@@ -52,6 +61,7 @@
 
 - (void)showLocationChooser
 {
+	[self.tweetTextView resignFirstResponder];
 	[self performSegueWithIdentifier:@"Location" sender:self];
 }
 
