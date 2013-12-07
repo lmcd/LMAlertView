@@ -215,10 +215,10 @@
             </objects>
             <point key="canvasLocation" x="1286" y="-604"/>
         </scene>
-        <!--Table View Controller - Location-->
+        <!--Twitter Location View Controller - Location-->
         <scene sceneID="PTa-HN-qrE">
             <objects>
-                <tableViewController autoresizesArchivedViewToFullSize="NO" id="pac-Te-InY" sceneMemberID="viewController">
+                <tableViewController autoresizesArchivedViewToFullSize="NO" id="pac-Te-InY" customClass="LMTwitterLocationViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Pv1-Ri-9bP">
                         <rect key="frame" x="0.0" y="44" width="290" height="182"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -231,15 +231,15 @@
                         <sections>
                             <tableViewSection id="Wm9-NO-TWj">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="checkmark" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="l7y-yt-6iV" style="IBUITableViewCellStyleDefault" id="z8t-Dq-rtx">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="l7y-yt-6iV" style="IBUITableViewCellStyleDefault" id="z8t-Dq-rtx">
                                         <rect key="frame" x="0.0" y="94" width="290" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z8t-Dq-rtx" id="CzG-xD-3SP">
-                                            <rect key="frame" x="0.0" y="0.0" width="251" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="290" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="None" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="l7y-yt-6iV">
-                                                    <rect key="frame" x="15" y="0.0" width="236" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="260" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -249,15 +249,15 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="fQj-gB-aHD" style="IBUITableViewCellStyleDefault" id="LkT-nP-LQK">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="checkmark" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="fQj-gB-aHD" style="IBUITableViewCellStyleDefault" id="LkT-nP-LQK">
                                         <rect key="frame" x="0.0" y="138" width="290" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LkT-nP-LQK" id="ZJY-b9-JfE">
-                                            <rect key="frame" x="0.0" y="0.0" width="290" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="251" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="London" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fQj-gB-aHD">
-                                                    <rect key="frame" x="15" y="0.0" width="260" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="236" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>

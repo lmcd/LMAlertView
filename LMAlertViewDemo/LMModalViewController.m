@@ -85,4 +85,11 @@
 	[self performSelector:@selector(showLocationChooser) withObject:self afterDelay:0.5];
 }
 
+- (void)setLocationTitle:(NSString *)locationTitle
+{
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+	cell.detailTextLabel.text = locationTitle;
+	cell.accessoryView = nil;
+}
+
 @end

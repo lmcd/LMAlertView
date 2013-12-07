@@ -14,4 +14,6 @@
 @property (nonatomic, strong) IBOutlet UILabel *characterCountLabel;
 @property (nonatomic, strong) IBOutlet UITextView *tweetTextView;
 
+- (void)setLocationTitle:(NSString *)locationTitle;
+
 @end
