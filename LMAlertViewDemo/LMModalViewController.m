@@ -14,6 +14,11 @@
 
 @implementation LMModalViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	[self.tweetTextView becomeFirstResponder];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -33,6 +38,7 @@
 
 - (IBAction)cancelButtonTapped:(id)sender
 {
+	[self.tweetTextView resignFirstResponder];
 	[[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
 }
 

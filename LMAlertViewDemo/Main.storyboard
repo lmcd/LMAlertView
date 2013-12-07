@@ -114,7 +114,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DyJ-aQ-gy7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="847" y="-604"/>
+            <point key="canvasLocation" x="827" y="-604"/>
         </scene>
         <!--Modal View Controller - Twitter-->
         <scene sceneID="dvp-d9-dFW">
@@ -207,12 +207,13 @@
                     <connections>
                         <outlet property="characterCountLabel" destination="Qjk-3s-Fbq" id="AQ6-wS-lng"/>
                         <outlet property="headerView" destination="cpW-w2-SZT" id="7rD-dR-5Ta"/>
+                        <outlet property="tweetTextView" destination="qw4-n3-YFb" id="nCm-Lm-24M"/>
                         <segue destination="pac-Te-InY" kind="push" identifier="Location" id="n0J-sH-qha"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vAS-Oa-WSX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1336" y="-604"/>
+            <point key="canvasLocation" x="1286" y="-604"/>
         </scene>
         <!--Table View Controller - Location-->
         <scene sceneID="PTa-HN-qrE">
@@ -282,7 +283,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2xS-Y4-u2X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1744" y="-604"/>
+            <point key="canvasLocation" x="1714" y="-604"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

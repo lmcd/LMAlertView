@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong) IBOutlet UIView *headerView;
 @property (nonatomic, strong) IBOutlet UILabel *characterCountLabel;
+@property (nonatomic, strong) IBOutlet UITextView *tweetTextView;
 
 @end

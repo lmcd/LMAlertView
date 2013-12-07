@@ -78,8 +78,17 @@
 		destinationViewController.view.frame = self.contentView.frame;
 		
 		[self.contentView addSubview:destinationViewController.view];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     }
     return self;
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+	CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+	
+	self.representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, ([[UIScreen mainScreen] bounds].size.height - keyboardSize.height) / 2.0);
 }
 
 - (id)initWithTitle:(NSString *)title message:(NSString *)message delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...
@@ -227,7 +236,7 @@
 	frame.size = size;
 	
 	self.representationView.frame = frame;
-    _representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, [[UIScreen mainScreen] bounds].size.height / 2.0);
+    self.representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, [[UIScreen mainScreen] bounds].size.height / 2.0);
 }
 
 - (CGSize)size
@@ -372,6 +381,13 @@
 		[self.alertBackgroundView.layer addAnimation:opacityAnimation forKey:@"opacity"];
 		[self.contentView.layer addAnimation:opacityAnimation forKey:@"opacity"];
 	} [CATransaction commit];
+}
+
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
 }
 
 - (void)dismiss
