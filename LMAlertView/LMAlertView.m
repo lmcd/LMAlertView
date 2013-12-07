@@ -166,7 +166,7 @@
 			[lineView addSubview:lineViewInner];
             
             if (cancelButtonTitle && otherButtonTitles) {
-                UIView *lineVerticalViewInner = [[UIView alloc] initWithFrame:CGRectMake((alertWidth / 2.f) + 0.5, 0.5, 0.5, buttonHeight + 0.5)];
+                UIView *lineVerticalViewInner = [[UIView alloc] initWithFrame:CGRectMake((alertWidth / 2.f), 0.5, 0.5, buttonHeight + 0.5)];
                 lineVerticalViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
                 [lineView addSubview:lineVerticalViewInner];
             }
@@ -200,10 +200,10 @@
 			[otherButton setBackgroundImage:[self imageFromColor:[UIColor colorWithRed:217.0/255.0 green:217.0/255.0 blue:217.0/255.0 alpha:1.0]] forState:UIControlStateHighlighted];
 			otherButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0];
 			[otherButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
-			otherButton.frame = CGRectMake((alertWidth / 2.0) + 1, yOffset, alertWidth / 2.0, buttonHeight);
+			otherButton.frame = CGRectMake((alertWidth / 2.0) + 0.5, yOffset, (alertWidth / 2.0) - 0.5, buttonHeight);
 			otherButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
             
-            cancelButton.frame = CGRectMake(0.0, yOffset, (alertWidth / 2.0) + 0.5, buttonHeight);
+            cancelButton.frame = CGRectMake(0.0, yOffset, (alertWidth / 2.0), buttonHeight);
         }
 		
         yOffset += buttonHeight;
