@@ -28,6 +28,15 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+	
+	self.mapView.centerCoordinate = CLLocationCoordinate2DMake(51.511214, -0.119824);
+	
+	MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+    annotation.coordinate = self.mapView.centerCoordinate;
+    annotation.title = @"London";
+	
+    [self.mapView addAnnotation:annotation];
+	[self.mapView selectAnnotation:annotation animated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
