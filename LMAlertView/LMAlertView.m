@@ -235,26 +235,41 @@
 
 - (void)setSize:(CGSize)size animated:(BOOL)animated
 {
-	kSpringAnimationClassName *animation = [self springAnimationForKeyPath:@"bounds"];
+	if (!animated) {
+		[self setSize:size];
+		return;
+	}
+	
+	// This all seems to me like an overly-complicated way of animating the size of representationView
+	// todo - find a cleaner way of doing all of this
+	
+	// todo - move this to LMNavigationController
+	size = CGSizeMake(size.width, size.height + 44);
 	
 	CGRect frame = self.representationView.frame;
-	frame.size = CGSizeMake(290, size.height + 44);
+	frame.size = size;
 	
 	CGRect bounds = self.representationView.layer.bounds;
-	bounds.size = CGSizeMake(290, size.height + 44);
+	bounds.size = size;
 	
+	// Only checking height for now
 	BOOL isBigger = bounds.size.height > self.representationView.layer.bounds.size.height;
 	
+	// Completion block
 	void (^completion)(BOOL finished) = ^(BOOL finished){
 		self.representationView.frame = frame;
 		
 		UIView *controllerView = [self.contentView.subviews firstObject];
 		CGRect contentFrame = controllerView.bounds;
-		contentFrame.size = CGSizeMake(290, size.height + 44);
-		controllerView.center = CGPointMake(290/2, contentFrame.size.height/2);
+		contentFrame.size = size;
+		
+		controllerView.center = CGPointMake(size.width / 2.0, contentFrame.size.height / 2.0);
 		controllerView.bounds = contentFrame;
 		controllerView.clipsToBounds = NO;
 	};
+	
+	// I think a spring animation is being used here, but not sure the params are the same
+	kSpringAnimationClassName *animation = [self springAnimationForKeyPath:@"bounds"];
 	
 	animation.fromValue = [NSValue valueWithCGRect:self.representationView.layer.bounds];
 	animation.toValue = [NSValue valueWithCGRect:bounds];
@@ -373,6 +388,7 @@
 {
 	id<UIApplicationDelegate> appDelegate = [[UIApplication sharedApplication] delegate];
 	
+	// You can have more than one UIWindow in the view hierachy, which is how UIAlertView works
 	self.window = [[UIWindow alloc] initWithFrame:[appDelegate window].frame];
 	
 	LMEmbeddedViewController *viewController = [[LMEmbeddedViewController alloc] init];
@@ -395,6 +411,7 @@
 		UIViewController *viewController2 = [[UIViewController alloc] init];
 		viewController2.view = self.alertContainerView;
 		
+		// We fake "present" this view controller so it can be dismissed elswhere
 		[viewController presentViewController:viewController2 animated:NO completion:nil];
 		
 		[viewController2 addChildViewController:self.controller];
