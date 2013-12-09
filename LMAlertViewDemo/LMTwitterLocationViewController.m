@@ -7,7 +7,7 @@
 //
 
 #import "LMTwitterLocationViewController.h"
-#import "LMModalViewController.h"
+#import "LMTwitterComposeViewController.h"
 
 @interface LMTwitterLocationViewController ()
 
@@ -62,7 +62,7 @@
 	UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
 	selectedCell.accessoryType = UITableViewCellAccessoryCheckmark;
 	
-	LMModalViewController *twitterViewController = (LMModalViewController *)[self backViewController];
+	LMTwitterComposeViewController *twitterViewController = (LMTwitterComposeViewController *)[self backViewController];
 	[twitterViewController setLocationTitle:selectedCell.textLabel.text];
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];

@@ -1,20 +1,20 @@
 //
-//  LMModalViewController.m
+//  LMTwitterComposeViewController.m
 //  LMAlertViewDemo
 //
 //  Created by Lee McDermott on 17/11/2013.
 //  Copyright (c) 2013 Bestir Ltd. All rights reserved.
 //
 
-#import "LMModalViewController.h"
+#import "LMTwitterComposeViewController.h"
 #import "LMEmbeddedViewController.h"
 #import "LMAlertView.h"
 
-@interface LMModalViewController ()
+@interface LMTwitterComposeViewController ()
 
 @end
 
-@implementation LMModalViewController
+@implementation LMTwitterComposeViewController
 
 #pragma mark - UIViewController methods
 

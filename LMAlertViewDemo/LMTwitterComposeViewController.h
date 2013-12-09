@@ -1,12 +1,12 @@
 //
-//  LMModalViewController.h
+//  LMTwitterComposeViewController.m
 //  LMAlertViewDemo
 //
 //  Created by Lee McDermott on 17/11/2013.
 //  Copyright (c) 2013 Bestir Ltd. All rights reserved.
 //
 
-@interface LMModalViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate>
+@interface LMTwitterComposeViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIView *headerView;
 @property (nonatomic, strong) IBOutlet UILabel *characterCountLabel;

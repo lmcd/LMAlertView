@@ -116,10 +116,10 @@
             </objects>
             <point key="canvasLocation" x="827" y="-604"/>
         </scene>
-        <!--Modal View Controller - Twitter-->
+        <!--Twitter Compose View Controller - Twitter-->
         <scene sceneID="dvp-d9-dFW">
             <objects>
-                <tableViewController autoresizesArchivedViewToFullSize="NO" id="O7C-ga-9Zj" customClass="LMModalViewController" sceneMemberID="viewController">
+                <tableViewController autoresizesArchivedViewToFullSize="NO" id="O7C-ga-9Zj" customClass="LMTwitterComposeViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Gln-rR-c8U">
                         <rect key="frame" x="0.0" y="44" width="290" height="182"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
