@@ -119,10 +119,7 @@
 				165F9F7B1831632C00037E82 /* LMAppDelegate.m */,
 				165F9F801831632C00037E82 /* LMViewController.h */,
 				165F9F811831632C00037E82 /* LMViewController.m */,
-				16B47FB61838CED100A06371 /* LMModalViewController.h */,
-				16B47FB71838CED100A06371 /* LMModalViewController.m */,
-				16CCDFA71853296D0059DE8B /* LMTwitterLocationViewController.h */,
-				16CCDFA81853296D0059DE8B /* LMTwitterLocationViewController.m */,
+				16CCDFCC1855B4EA0059DE8B /* Twitter View Controllers */,
 				165F9F831831632C00037E82 /* Images.xcassets */,
 				165F9FAF1831B6A800037E82 /* Main.storyboard */,
 				165F9F721831632C00037E82 /* Supporting Files */,
@@ -139,6 +136,17 @@
 				165F9F791831632C00037E82 /* LMAlertViewDemo-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		16CCDFCC1855B4EA0059DE8B /* Twitter View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				16B47FB61838CED100A06371 /* LMModalViewController.h */,
+				16B47FB71838CED100A06371 /* LMModalViewController.m */,
+				16CCDFA71853296D0059DE8B /* LMTwitterLocationViewController.h */,
+				16CCDFA81853296D0059DE8B /* LMTwitterLocationViewController.m */,
+			);
+			name = "Twitter View Controllers";
 			sourceTree = "<group>";
 		};
 		16E79F6E18359167007175EA /* LMAlertView */ = {
