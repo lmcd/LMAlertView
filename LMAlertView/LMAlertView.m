@@ -61,10 +61,6 @@
 		if ([viewController isKindOfClass:[UINavigationController class]]) {
 			UINavigationController *navigationController = (UINavigationController *)viewController;
 			frontmostViewController = navigationController.visibleViewController;
-			
-			[navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-			navigationController.navigationBar.translucent = YES;
-			navigationController.navigationBar.barStyle = UIBarStyleDefault;
 		}
 		else {
 			frontmostViewController = viewController;

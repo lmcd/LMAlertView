@@ -16,6 +16,10 @@
     if (self) {
 		[self setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:18]}];
 		[self setTitleVerticalPositionAdjustment:-0.5 forBarMetrics:UIBarMetricsDefault];
+		
+		[self setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+		self.translucent = YES;
+		self.barStyle = UIBarStyleDefault;
     }
     return self;
 }
