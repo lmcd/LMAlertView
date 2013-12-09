@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Bestir Ltd. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface LMModalViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIView *headerView;

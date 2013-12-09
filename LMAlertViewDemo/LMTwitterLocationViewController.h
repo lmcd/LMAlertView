@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Bestir Ltd. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
 @interface LMTwitterLocationViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
