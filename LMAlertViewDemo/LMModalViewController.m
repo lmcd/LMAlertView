@@ -14,19 +14,7 @@
 
 @implementation LMModalViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-	if (!animated) {
-		[self.tweetTextView becomeFirstResponder];
-	}
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-	if (animated) {
-		[self.tweetTextView becomeFirstResponder];
-	}
-}
+#pragma mark - UIViewController methods
 
 - (void)viewDidLoad
 {
@@ -48,11 +36,45 @@
 	self.tweetTextView.selectedRange = NSMakeRange(substringRange.location, 0);
 }
 
-- (IBAction)cancelButtonTapped:(id)sender
+- (void)viewWillAppear:(BOOL)animated
 {
-	[self.tweetTextView resignFirstResponder];
-	[[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+	// When the modal is launched
+	// Focus text view/show keyboard immediately
+	if (!animated) {
+		[self.tweetTextView becomeFirstResponder];
+	}
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	// When coming back from the location chooser
+	// Focus text view/show keyboard after animation has finished
+	if (animated) {
+		[self.tweetTextView becomeFirstResponder];
+	}
+}
+
+#pragma mark - UITableViewDelegate delegate methods
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+	
+	cell.detailTextLabel.text = @"Locating…";
+	
+	UIActivityIndicatorView *acitivityIndicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(255, 12, 20, 20)];
+	[acitivityIndicatorView startAnimating];
+	// todo - find accurate colour for this
+	acitivityIndicatorView.color = cell.detailTextLabel.textColor;
+	cell.accessoryView = acitivityIndicatorView;
+	
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	// Fake the loading of location by waiting 0.5 seconds
+	[self performSelector:@selector(showLocationChooser) withObject:self afterDelay:0.5];
+}
+
+#pragma mark - UITextViewDelegate delegate methods
 
 - (void)textViewDidChange:(UITextView *)textView
 {
@@ -64,11 +86,11 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-	NSRange substringRange = [textView.text rangeOfString:@"#lmalertview"];
-	if (range.location >= substringRange.location && range.location <= substringRange.location + substringRange.length) {
+	NSRange suffixRange = [textView.text rangeOfString:@"#lmalertview"];
+	if (range.location >= suffixRange.location && range.location <= suffixRange.location + suffixRange.length) {
 		return NO;
 	}
-
+	
     return YES;
 }
 
@@ -88,30 +110,20 @@
 	}
 }
 
+#pragma mark - IBActions
+
+- (IBAction)cancelButtonTapped:(id)sesnder
+{
+	[self.tweetTextView resignFirstResponder];
+	[[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Other methods
+
 - (void)showLocationChooser
 {
 	[self.tweetTextView resignFirstResponder];
 	[self performSegueWithIdentifier:@"Location" sender:self];
-}
-
-#pragma mark - UITableViewDelegate delegate methods
-
-#pragma mark - Table view data source
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-	
-	cell.detailTextLabel.text = @"Locating…";
-	
-	UIActivityIndicatorView *acitivityIndicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(255, 12, 20, 20)];
-	[acitivityIndicatorView startAnimating];
-	acitivityIndicatorView.color = cell.detailTextLabel.textColor;
-	cell.accessoryView = acitivityIndicatorView;
-	
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	
-	[self performSelector:@selector(showLocationChooser) withObject:self afterDelay:0.5];
 }
 
 - (void)setLocationTitle:(NSString *)locationTitle

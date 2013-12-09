@@ -15,6 +15,8 @@
 
 @implementation LMTwitterLocationViewController
 
+#pragma mark - UIViewController methods
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -50,21 +52,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (UIViewController *)backViewController
-{
-    NSInteger numberOfViewControllers = self.navigationController.viewControllers.count;
-	
-    if (numberOfViewControllers < 2) {
-        return nil;
-	}
-    else {
-        return [self.navigationController.viewControllers objectAtIndex:numberOfViewControllers - 2];
-	}
-}
+#pragma mark - UITableViewDelegate delegate methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	
 	UITableViewCell *lastCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:(BOOL)!indexPath.row inSection:0]];
 	lastCell.accessoryType = UITableViewCellAccessoryNone;
 	
@@ -75,6 +66,20 @@
 	[twitterViewController setLocationTitle:selectedCell.textLabel.text];
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - Other methods
+
+- (UIViewController *)backViewController
+{
+    NSInteger numberOfViewControllers = self.navigationController.viewControllers.count;
+	
+    if (numberOfViewControllers < 2) {
+        return nil;
+	}
+    else {
+        return [self.navigationController.viewControllers objectAtIndex:numberOfViewControllers - 2];
+	}
 }
 
 @end

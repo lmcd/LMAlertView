@@ -12,12 +12,53 @@
 
 @interface LMViewController ()
 
+// ratingAlertView is a property so we can retain its state (number of stars)
 @property (strong, nonatomic) LMAlertView *ratingAlertView;
-@property (strong, nonatomic) LMAlertView *cardAlertView;
 
 @end
 
 @implementation LMViewController
+
+#pragma mark UIAlertViewDelegate delegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	NSLog(@"Clicked button at index: %li", (long)buttonIndex);
+}
+
+#pragma mark EDStarRatingProtocol delegate methods
+
+- (void)starsSelectionChanged:(EDStarRating *)control rating:(float)rating
+{
+	NSString *ratingDescription;
+	
+	switch ([[NSNumber numberWithFloat:rating] integerValue]) {
+		case 0:
+			ratingDescription = @"Abysmal";
+			break;
+		case 1:
+			ratingDescription = @"Piss poor";
+			break;
+		case 2:
+			ratingDescription = @"Ok I guess";
+			break;
+		case 3:
+			ratingDescription = @"Average";
+			break;
+		case 4:
+			ratingDescription = @"Pretty good";
+			break;
+		case 5:
+			ratingDescription = @"Freaking amazing";
+			break;
+		default:
+			return;
+	}
+	
+	self.ratingAlertView.message = ratingDescription;
+}
+
+#pragma mark - IBActions
 
 - (IBAction)nativeButtonTapped:(id)sender
 {
@@ -35,11 +76,6 @@
 	alertView.delegate = self;
 	
 	[alertView show];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	NSLog(@"Clicked button at index: %li", (long)buttonIndex);
 }
 
 - (IBAction)ratingButtonTapped:(id)sender
@@ -73,10 +109,10 @@
 
 - (IBAction)cardButtonTapped:(id)sender
 {
-	self.cardAlertView = [[LMAlertView alloc] initWithTitle:@"Choose a card" message:nil delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil];
-	[self.cardAlertView setSize:CGSizeMake(270.0, 167.0)];
+	LMAlertView *cardAlertView = [[LMAlertView alloc] initWithTitle:@"Choose a card" message:nil delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil];
+	[cardAlertView setSize:CGSizeMake(270.0, 167.0)];
 	
-	UIView *contentView = self.cardAlertView.contentView;
+	UIView *contentView = cardAlertView.contentView;
 	
 	CGFloat yOffset = 55.0;
 	
@@ -107,37 +143,7 @@
 	card2Label.textAlignment = NSTextAlignmentCenter;
 	[contentView addSubview:card2Label];
 	
-	[self.cardAlertView show];
-}
-
-- (void)starsSelectionChanged:(EDStarRating *)control rating:(float)rating
-{
-	NSString *ratingDescription;
-	
-	switch ([[NSNumber numberWithFloat:rating] integerValue]) {
-		case 0:
-			ratingDescription = @"Abysmal";
-			break;
-		case 1:
-			ratingDescription = @"Piss poor";
-			break;
-		case 2:
-			ratingDescription = @"Ok I guess";
-			break;
-		case 3:
-			ratingDescription = @"Average";
-			break;
-		case 4:
-			ratingDescription = @"Pretty good";
-			break;
-		case 5:
-			ratingDescription = @"Freaking amazing";
-			break;
-		default:
-			return;
-	}
-	
-	self.ratingAlertView.message = ratingDescription;
+	[cardAlertView show];
 }
 
 @end
