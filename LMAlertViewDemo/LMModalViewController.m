@@ -7,6 +7,8 @@
 //
 
 #import "LMModalViewController.h"
+#import "LMEmbeddedViewController.h"
+#import "LMAlertView.h"
 
 @interface LMModalViewController ()
 
@@ -52,6 +54,16 @@
 	if (animated) {
 		[self.tweetTextView becomeFirstResponder];
 	}
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+	UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+	
+	LMEmbeddedViewController *alertViewController = (LMEmbeddedViewController *)keyWindow.rootViewController;
+	LMAlertView *alertView = alertViewController.alertView;
+	
+	alertView.keepTopAlignment = YES;
 }
 
 #pragma mark - UITableViewDelegate delegate methods

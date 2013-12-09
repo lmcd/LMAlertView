@@ -25,6 +25,7 @@
 		16B47FC7183A33E800A06371 /* CALayer+ModalAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FC6183A33E800A06371 /* CALayer+ModalAlert.m */; };
 		16B47FCA183B521D00A06371 /* LMEmbeddedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B47FC9183B521D00A06371 /* LMEmbeddedViewController.m */; };
 		16CCDFA91853296D0059DE8B /* LMTwitterLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CCDFA81853296D0059DE8B /* LMTwitterLocationViewController.m */; };
+		16CCDFAC18544C6F0059DE8B /* LMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CCDFAB18544C6F0059DE8B /* LMNavigationController.m */; };
 		E017F5E695B446B2B1B5314D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6ABB7B0B6944B929C0CFAFE /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,8 @@
 		16B47FC9183B521D00A06371 /* LMEmbeddedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMEmbeddedViewController.m; path = ../LMAlertView/LMEmbeddedViewController.m; sourceTree = "<group>"; };
 		16CCDFA71853296D0059DE8B /* LMTwitterLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMTwitterLocationViewController.h; sourceTree = "<group>"; };
 		16CCDFA81853296D0059DE8B /* LMTwitterLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMTwitterLocationViewController.m; sourceTree = "<group>"; };
+		16CCDFAA18544C6F0059DE8B /* LMNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMNavigationController.h; sourceTree = "<group>"; };
+		16CCDFAB18544C6F0059DE8B /* LMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMNavigationController.m; sourceTree = "<group>"; };
 		1FE7E8F0E7304B2287950B17 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		B6ABB7B0B6944B929C0CFAFE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -162,6 +165,8 @@
 				16B47FC6183A33E800A06371 /* CALayer+ModalAlert.m */,
 				16B47FC8183B521D00A06371 /* LMEmbeddedViewController.h */,
 				16B47FC9183B521D00A06371 /* LMEmbeddedViewController.m */,
+				16CCDFAA18544C6F0059DE8B /* LMNavigationController.h */,
+				16CCDFAB18544C6F0059DE8B /* LMNavigationController.m */,
 				169103CD183311F3003DF9E6 /* Radial.png */,
 			);
 			name = LMAlertView;
@@ -276,6 +281,7 @@
 			files = (
 				16B47FB51838993700A06371 /* LMModalSegue.m in Sources */,
 				16B47FBB18396E0100A06371 /* LMNavigationBar.m in Sources */,
+				16CCDFAC18544C6F0059DE8B /* LMNavigationController.m in Sources */,
 				16CCDFA91853296D0059DE8B /* LMTwitterLocationViewController.m in Sources */,
 				16B47FC7183A33E800A06371 /* CALayer+ModalAlert.m in Sources */,
 				165F9F781831632C00037E82 /* main.m in Sources */,

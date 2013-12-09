@@ -8,6 +8,7 @@
 
 #import "LMAlertView.h"
 #import "LMEmbeddedViewController.h"
+#import <CAAnimation+Blocks.h>
 
 @interface LMAlertView ()
 
@@ -78,6 +79,7 @@
 		destinationViewController.view.frame = self.contentView.frame;
 		
 		[self.contentView addSubview:destinationViewController.view];
+		self.contentView.autoresizesSubviews = NO;
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     }
@@ -88,6 +90,7 @@
 {
 	CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
 	
+	self.representationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
 	self.representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, ([[UIScreen mainScreen] bounds].size.height - keyboardSize.height) / 2.0);
 }
 
@@ -228,6 +231,52 @@
 	if ([self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
 		[self.delegate alertView:(UIAlertView *)self clickedButtonAtIndex:sender.tag];
 	}
+}
+
+- (void)setSize:(CGSize)size animated:(BOOL)animated
+{
+	kSpringAnimationClassName *animation = [self springAnimationForKeyPath:@"bounds"];
+	
+	CGRect frame = self.representationView.frame;
+	frame.size = CGSizeMake(290, size.height + 44);
+	
+	CGRect bounds = self.representationView.layer.bounds;
+	bounds.size = CGSizeMake(290, size.height + 44);
+	
+	BOOL isBigger = bounds.size.height > self.representationView.layer.bounds.size.height;
+	
+	void (^completion)(BOOL finished) = ^(BOOL finished){
+		self.representationView.frame = frame;
+		
+		UIView *controllerView = [self.contentView.subviews firstObject];
+		CGRect contentFrame = controllerView.bounds;
+		contentFrame.size = CGSizeMake(290, size.height + 44);
+		controllerView.center = CGPointMake(290/2, contentFrame.size.height/2);
+		controllerView.bounds = contentFrame;
+		controllerView.clipsToBounds = NO;
+	};
+	
+	animation.fromValue = [NSValue valueWithCGRect:self.representationView.layer.bounds];
+	animation.toValue = [NSValue valueWithCGRect:bounds];
+	
+	if (!isBigger) {
+		animation.completion = completion;
+	}
+	
+	if (self.keepTopAlignment) {
+		self.representationView.layer.anchorPoint = CGPointMake(0.5, 0.0);
+		
+		if (isBigger) {
+			completion(YES);
+		}
+	}
+	else {
+		self.representationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+		self.representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, [[UIScreen mainScreen] bounds].size.height / 2.0);
+	}
+	
+	[self.representationView.layer addAnimation:animation forKey:@"bounds"];
+	self.representationView.layer.bounds = bounds;
 }
 
 - (void)setSize:(CGSize)size
