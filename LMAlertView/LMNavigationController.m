@@ -40,10 +40,12 @@
 {
     NSInteger numberOfViewControllers = self.viewControllers.count;
 	
-    if (numberOfViewControllers < 2)
+    if (numberOfViewControllers < 2) {
         return nil;
-    else
+	}
+    else {
         return [self.viewControllers objectAtIndex:numberOfViewControllers - 2];
+	}
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated

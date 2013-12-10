@@ -62,8 +62,8 @@
 		16B47FC9183B521D00A06371 /* LMEmbeddedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMEmbeddedViewController.m; path = ../LMAlertView/LMEmbeddedViewController.m; sourceTree = "<group>"; };
 		16CCDFA71853296D0059DE8B /* LMTwitterLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMTwitterLocationViewController.h; sourceTree = "<group>"; };
 		16CCDFA81853296D0059DE8B /* LMTwitterLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMTwitterLocationViewController.m; sourceTree = "<group>"; };
-		16CCDFAA18544C6F0059DE8B /* LMNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMNavigationController.h; sourceTree = "<group>"; };
-		16CCDFAB18544C6F0059DE8B /* LMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMNavigationController.m; sourceTree = "<group>"; };
+		16CCDFAA18544C6F0059DE8B /* LMNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMNavigationController.h; path = ../LMAlertView/LMNavigationController.h; sourceTree = "<group>"; };
+		16CCDFAB18544C6F0059DE8B /* LMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMNavigationController.m; path = ../LMAlertView/LMNavigationController.m; sourceTree = "<group>"; };
 		16CCDFCD1856E7A60059DE8B /* LMFixedTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMFixedTextView.h; sourceTree = "<group>"; };
 		16CCDFCE1856E7A60059DE8B /* LMFixedTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMFixedTextView.m; sourceTree = "<group>"; };
 		1FE7E8F0E7304B2287950B17 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
