@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Bestir Ltd. All rights reserved.
 //
 
-#import "LMFixedTextView.h"
+#import <LMFixedTextView.h>
 
 @interface LMTwitterComposeViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate>
 
