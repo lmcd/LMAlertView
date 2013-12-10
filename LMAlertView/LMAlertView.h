@@ -30,9 +30,15 @@
 @interface LMAlertView : UIView
 
 @property (nonatomic, strong, readonly) UIView *contentView;
-@property (nonatomic, strong) NSString *message;
 @property (nonatomic, assign) BOOL keepTopAlignment;
 @property (unsafe_unretained) id<UIAlertViewDelegate> delegate;
+
+@property(nonatomic) NSInteger cancelButtonIndex;
+@property(nonatomic, readonly) NSInteger firstOtherButtonIndex;
+@property(nonatomic, copy) NSString *message;
+@property(nonatomic, readonly) NSInteger numberOfButtons;
+@property(nonatomic, copy) NSString *title;
+@property(nonatomic, readonly, getter=isVisible) BOOL visible;
 
 - (id)initWithSize:(CGSize)size;
 - (id)initWithViewController:(UIViewController *)viewController;

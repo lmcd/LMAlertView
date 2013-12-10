@@ -29,6 +29,7 @@
 
 @implementation LMAlertView
 
+// todo - we won't need this when we start using UITableViews for buttons
 - (UIImage *)imageFromColor:(UIColor *)color {
     CGRect rect = CGRectMake(0.0, 0.0, 1.0, 1.0);
     UIGraphicsBeginImageContext(rect.size);
@@ -94,6 +95,9 @@
 {
 	self = [super init];
     if (self) {
+		_cancelButtonIndex = -1;
+		_firstOtherButtonIndex = -1;
+		
 		CGFloat sideMargin = 15.0;
 		CGFloat topBottomMargin = 19.0;
 		CGFloat alertWidth = 270.0;
@@ -112,6 +116,8 @@
         UIButton *otherButton;
 		
 		if (title != nil) {
+			self.title = title;
+			
 			// The UILabels in UIAlertView mysteriously have no paragraph style but STILL have line heights
 			// I suspect there's some UILabel private API fuckery afoot
 			NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
@@ -133,7 +139,7 @@
 			yOffset += titleLabel.frame.size.height;
 		}
 		
-		// 4 px gap between title and message
+		// 4px gap between title and message
 		// Even if a title doesn't exist, the 4px is still present
 		yOffset += 4.0;
 		
@@ -177,7 +183,12 @@
             otherButtonTitles = nil;
         }
         
+		_numberOfButtons = 0;
+		
         if (cancelButtonTitle != nil) {
+			_cancelButtonIndex = 0;
+			_numberOfButtons++;
+			
 			cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
             cancelButton.tag = 0;
 			[cancelButton setTitle:cancelButtonTitle forState:UIControlStateNormal];
@@ -191,6 +202,9 @@
 		}
 		
         if (otherButtonTitles != nil) {
+			_firstOtherButtonIndex = 1;
+			_numberOfButtons++;
+			
             otherButton = [UIButton buttonWithType:UIButtonTypeCustom];
             otherButton.tag = 1;
 			[otherButton setTitle:otherButtonTitles forState:UIControlStateNormal];
@@ -352,16 +366,6 @@
 - (void)setup
 {
 	[self setupWithSize:CGSizeMake(270.0, 152.0)];
-}	
-
-- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag
-{
-	// Temporary bugfix
-	[self removeFromSuperview];
-	
-	// Release window from memory
-	self.window.hidden = YES;
-	self.window = nil;
 }
 
 - (id)springAnimationForKeyPath:(NSString *)keyPath
@@ -413,6 +417,8 @@
 		[viewController2 addChildViewController:self.controller];
 	}
 	
+	_visible = YES;
+	
 	[CATransaction begin]; {
 		CATransform3D transformFrom = CATransform3DMakeScale(1.26, 1.26, 1.0);
 		CATransform3D transformTo = CATransform3DMakeScale(1.0, 1.0, 1.0);
@@ -461,7 +467,16 @@
 		kSpringAnimationClassName *modalTransformAnimation = [self springAnimationForKeyPath:@"transform"];
 		modalTransformAnimation.fromValue = [NSValue valueWithCATransform3D:transformFrom];
 		modalTransformAnimation.toValue = [NSValue valueWithCATransform3D:transformTo];
-		modalTransformAnimation.delegate = self;
+		modalTransformAnimation.completion = ^(BOOL finished){
+			// Temporary bugfix
+			[self removeFromSuperview];
+			
+			// Release window from memory
+			self.window.hidden = YES;
+			self.window = nil;
+			
+			_visible = NO;
+		};
 		self.representationView.layer.transform = transformTo;
 		
 		// Zoom out the modal

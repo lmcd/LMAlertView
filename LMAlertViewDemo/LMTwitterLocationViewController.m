@@ -17,19 +17,9 @@
 
 #pragma mark - UIViewController methods
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
 	
 	self.mapView.centerCoordinate = CLLocationCoordinate2DMake(51.511214, -0.119824);
 	
