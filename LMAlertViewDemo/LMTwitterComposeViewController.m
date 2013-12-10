@@ -34,9 +34,6 @@
 	lineView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	
 	[self.headerView addSubview:lineView];
-	
-	NSRange substringRangeSpace = [self.tweetTextView.text rangeOfString:@" #lmalertview"];
-	self.tweetTextView.selectedRange = NSMakeRange(substringRangeSpace.location, 0);
 }
 
 - (void)viewWillAppear:(BOOL)animated
