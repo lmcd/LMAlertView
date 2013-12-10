@@ -22,7 +22,11 @@
 {
     [super viewDidLoad];
 	
+	NSRange substringRange = [self.tweetTextView.text rangeOfString:@"#lmalertview"];
+	NSMutableAttributedString *attributedText = [self.tweetTextView.attributedText mutableCopy];
+	[attributedText addAttribute:LMFixedTextAttributeName value:[NSNumber numberWithBool:YES] range:substringRange];
 	
+	self.tweetTextView.attributedText = attributedText;
 	
 	UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 137.5, self.view.frame.size.width, 0.5)];
 	// This is the default UITableView separator color
@@ -31,8 +35,8 @@
 	
 	[self.headerView addSubview:lineView];
 	
-	NSRange substringRange = [self.tweetTextView.text rangeOfString:@" #lmalertview"];
-	self.tweetTextView.selectedRange = NSMakeRange(substringRange.location, 0);
+	NSRange substringRangeSpace = [self.tweetTextView.text rangeOfString:@" #lmalertview"];
+	self.tweetTextView.selectedRange = NSMakeRange(substringRangeSpace.location, 0);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -91,32 +95,6 @@
 	self.characterCountLabel.text = [NSString stringWithFormat:@"%i", remainingCharacters];
 	
 	self.navigationItem.rightBarButtonItem.enabled = (remainingCharacters >= 0);
-}
-
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-	NSRange suffixRange = [textView.text rangeOfString:@"#lmalertview"];
-	if (range.location >= suffixRange.location && range.location <= suffixRange.location + suffixRange.length) {
-		return NO;
-	}
-	
-    return YES;
-}
-
-- (void)textViewDidChangeSelection:(UITextView *)textView
-{
-	NSRange range = textView.selectedRange;
-	NSRange suffixRange = [self.tweetTextView.text rangeOfString:@" #lmalertview"];
-	
-	// IF the start of the selection is past the hashtag suffix
-	if (range.location > suffixRange.location) {
-		self.tweetTextView.selectedRange = NSMakeRange(suffixRange.location, 0);
-	}
-	// If the end of the selection crosses over into the hashtag suffix
-	else if (range.location + range.length > suffixRange.location) {
-		int length = [textView.text length] - suffixRange.length - range.location;
-		self.tweetTextView.selectedRange = NSMakeRange(range.location, length);
-	}
 }
 
 #pragma mark - IBActions
