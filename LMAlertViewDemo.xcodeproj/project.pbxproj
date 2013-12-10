@@ -86,6 +86,7 @@
 		165F9F5F1831632C00037E82 = {
 			isa = PBXGroup;
 			children = (
+				16E79F6E18359167007175EA /* LMAlertView */,
 				165F9F711831632C00037E82 /* LMAlertViewDemo */,
 				165F9F6A1831632C00037E82 /* Frameworks */,
 				165F9F691831632C00037E82 /* Products */,
@@ -117,7 +118,6 @@
 		165F9F711831632C00037E82 /* LMAlertViewDemo */ = {
 			isa = PBXGroup;
 			children = (
-				16E79F6E18359167007175EA /* LMAlertView */,
 				165F9F7A1831632C00037E82 /* LMAppDelegate.h */,
 				165F9F7B1831632C00037E82 /* LMAppDelegate.m */,
 				165F9F801831632C00037E82 /* LMViewController.h */,
@@ -170,6 +170,7 @@
 				169103CD183311F3003DF9E6 /* Radial.png */,
 			);
 			name = LMAlertView;
+			path = LMAlertViewDemo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
