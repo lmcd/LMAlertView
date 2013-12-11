@@ -27,10 +27,10 @@
 #define kSpringAnimationClassName RBBSpringAnimation
 #endif
 
-@interface LMAlertView : UIView
+@interface LMAlertView : UIView <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong, readonly) UIView *contentView;
-@property (nonatomic, assign) BOOL keepTopAlignment;
+@property (nonatomic) BOOL keepTopAlignment;
 @property (unsafe_unretained) id<UIAlertViewDelegate> delegate;
 
 @property(nonatomic) NSInteger cancelButtonIndex;

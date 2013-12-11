@@ -8,6 +8,7 @@
 
 #import "LMAlertView.h"
 #import "LMEmbeddedViewController.h"
+#import "LMModalItemTableViewCell.h"
 #import <CAAnimation+Blocks.h>
 
 @interface LMAlertView ()
@@ -25,22 +26,11 @@
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) UIViewController *controller;
 
+@property (nonatomic, strong) NSMutableArray *buttonTitles;
+
 @end
 
 @implementation LMAlertView
-
-// todo - we won't need this when we start using UITableViews for buttons
-- (UIImage *)imageFromColor:(UIColor *)color {
-    CGRect rect = CGRectMake(0.0, 0.0, 1.0, 1.0);
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [color CGColor]);
-    CGContextFillRect(context, rect);
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-	
-    return image;
-}
 
 - (id)initWithSize:(CGSize)size
 {
@@ -98,6 +88,8 @@
 		_cancelButtonIndex = -1;
 		_firstOtherButtonIndex = -1;
 		
+		_buttonTitles = [NSMutableArray arrayWithObjects:cancelButtonTitle, otherButtonTitles, nil];
+		
 		CGFloat sideMargin = 15.0;
 		CGFloat topBottomMargin = 19.0;
 		CGFloat alertWidth = 270.0;
@@ -110,10 +102,7 @@
 		
 		UILabel *titleLabel;
 		UIView *lineView;
-        // This is the default iOS 7 blue tint colour
-        UIColor *titleColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
-		UIButton *cancelButton;
-        UIButton *otherButton;
+		UITableView *buttonTableView, *otherTableView;
 		
 		if (title != nil) {
 			self.title = title;
@@ -169,14 +158,14 @@
 			lineViewInner.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 			
 			[lineView addSubview:lineViewInner];
-            
+			
             if (cancelButtonTitle && otherButtonTitles) {
                 UIView *lineVerticalViewInner = [[UIView alloc] initWithFrame:CGRectMake((alertWidth / 2.f), 0.5, 0.5, buttonHeight + 0.5)];
                 lineVerticalViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
                 [lineView addSubview:lineVerticalViewInner];
             }
         }
-        
+		
         // Buttons setup
         if (otherButtonTitles != nil && cancelButtonTitle == nil) {
             cancelButtonTitle = otherButtonTitles;
@@ -189,34 +178,33 @@
 			_cancelButtonIndex = 0;
 			_numberOfButtons++;
 			
-			cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            cancelButton.tag = 0;
-			[cancelButton setTitle:cancelButtonTitle forState:UIControlStateNormal];
-			cancelButton.titleEdgeInsets = UIEdgeInsetsMake(1.0, 0.0, 0.0, 0.0);
-			[cancelButton setTitleColor:titleColor forState:UIControlStateNormal];
-			[cancelButton setBackgroundImage:[self imageFromColor:[UIColor colorWithRed:217.0/255.0 green:217.0/255.0 blue:217.0/255.0 alpha:1.0]] forState:UIControlStateHighlighted];
-			cancelButton.titleLabel.font = (otherButtonTitles) ? [UIFont systemFontOfSize:17.0] : titleFont;
-			[cancelButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
-			cancelButton.frame = CGRectMake(0.0, yOffset, alertWidth, buttonHeight);
-			cancelButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+			buttonTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, yOffset, alertWidth, buttonHeight)];
+			buttonTableView.backgroundColor = [UIColor clearColor];
+			buttonTableView.delegate = self;
+			buttonTableView.dataSource = self;
+			buttonTableView.tag = _cancelButtonIndex;
+			buttonTableView.scrollEnabled = NO;
+			buttonTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+			buttonTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+
 		}
 		
         if (otherButtonTitles != nil) {
 			_firstOtherButtonIndex = 1;
 			_numberOfButtons++;
 			
-            otherButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            otherButton.tag = 1;
-			[otherButton setTitle:otherButtonTitles forState:UIControlStateNormal];
-			otherButton.titleEdgeInsets = UIEdgeInsetsMake(1.0, 0.0, 0.0, 0.0);
-			[otherButton setTitleColor:titleColor forState:UIControlStateNormal];
-			[otherButton setBackgroundImage:[self imageFromColor:[UIColor colorWithRed:217.0/255.0 green:217.0/255.0 blue:217.0/255.0 alpha:1.0]] forState:UIControlStateHighlighted];
-			otherButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0];
-			[otherButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
-			otherButton.frame = CGRectMake((alertWidth / 2.0) + 0.5, yOffset, (alertWidth / 2.0) - 0.5, buttonHeight);
-			otherButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-            
-            cancelButton.frame = CGRectMake(0.0, yOffset, (alertWidth / 2.0), buttonHeight);
+			otherTableView = [[UITableView alloc] initWithFrame:CGRectMake((alertWidth / 2.0), yOffset, (alertWidth / 2.0), buttonHeight)];
+			otherTableView.backgroundColor = [UIColor clearColor];
+			otherTableView.delegate = self;
+			otherTableView.dataSource = self;
+			otherTableView.tag = _firstOtherButtonIndex;
+			otherTableView.scrollEnabled = NO;
+			otherTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+			otherTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+			
+			CGRect frame = buttonTableView.frame;
+			frame.size.width = (alertWidth / 2.0);
+			buttonTableView.frame = frame;
         }
 		
         yOffset += buttonHeight;
@@ -227,9 +215,9 @@
 		// Add everything to the content view
 		[self.contentView addSubview:titleLabel];
 		[self.contentView addSubview:self.messageLabel];
+		[self.contentView addSubview:buttonTableView];
+        [self.contentView addSubview:otherTableView];
 		[self.contentView addSubview:lineView];
-		[self.contentView addSubview:cancelButton];
-        [self.contentView addSubview:otherButton];
     }
     return self;
 }
@@ -517,6 +505,46 @@
 	
 	self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:message attributes:attributes];
 	self.messageLabel.textAlignment = NSTextAlignmentCenter;
+}
+
+#pragma mark UITableViewDataSource delegate methods
+
+- (id)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSString *labelText;
+	
+	LMModalItemTableViewCell *cell = [[LMModalItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
+	
+	NSInteger buttonIndex;
+	
+	if (self.numberOfButtons <= 2) {
+		buttonIndex = tableView.tag;
+	}
+	else {
+		buttonIndex = indexPath.row;
+	}
+	
+	labelText = self.buttonTitles[buttonIndex];
+	BOOL lastButton = (buttonIndex + 1) == self.numberOfButtons;
+	
+	cell.textLabel.font = lastButton ? [UIFont boldSystemFontOfSize:17.0] : [UIFont systemFontOfSize:17.0];
+	cell.textLabel.text = labelText;
+	
+	return cell;
+}
+
+- (int)tableView:(id)arg1 numberOfRowsInSection:(int)arg2 {
+	if (self.numberOfButtons <= 2) {
+		return 1;
+	}
+	else {
+		return self.numberOfButtons;
+	}
+}
+
+#pragma mark UITableViewDelegateSource delegate methods
+
+- (void)tableView:(id)arg1 didSelectRowAtIndexPath:(id)arg2 {
+	[self dismiss];
 }
 
 @end
