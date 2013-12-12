@@ -209,11 +209,6 @@
 				CLASSPREFIX = LM;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Bestir Ltd";
-				TargetAttributes = {
-					165F9F671831632C00037E82 = {
-						DevelopmentTeam = NSBXZ77GCW;
-					};
-				};
 			};
 			buildConfigurationList = 165F9F631831632C00037E82 /* Build configuration list for PBXProject "LMAlertViewDemo" */;
 			compatibilityVersion = "Xcode 3.2";
