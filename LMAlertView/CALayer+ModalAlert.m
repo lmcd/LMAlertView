@@ -37,7 +37,7 @@
 		}
 		
 		// When pushing a view controller, make the one underneath slide out all the way
-		if ([key isEqualToString:@"position"]) {
+		if ([key isEqualToString:@"position"] && basicAnim.fromValue != nil) {
 			if ([basicAnim.fromValue CGPointValue].x == (modalWidth / 5.0)) {
 				basicAnim.fromValue = [NSValue valueWithCGPoint:CGPointMake(-(modalWidth / 2.0), [basicAnim.fromValue CGPointValue].y)];
 			}
