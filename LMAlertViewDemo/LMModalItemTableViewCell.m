@@ -19,6 +19,14 @@
 		
 		UIColor *titleColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
 		self.textLabel.textColor = titleColor;
+		
+		UIView *contentView = self.contentView;
+		
+		UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, contentView.frame.size.height - 0.5, contentView.frame.size.width, 0.5)];
+		lineView.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+		lineView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		
+		[contentView addSubview:lineView];
     }
     return self;
 }

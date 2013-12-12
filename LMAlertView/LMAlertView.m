@@ -26,7 +26,8 @@
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) UIViewController *controller;
 
-@property (nonatomic, strong) NSMutableArray *buttonTitles;
+@property (nonatomic, strong) NSString *cancelButtonTitle;
+@property (nonatomic, strong) NSMutableArray *otherButtonsTitles;
 
 @end
 
@@ -81,6 +82,19 @@
 	self.representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, ([[UIScreen mainScreen] bounds].size.height - keyboardSize.height) / 2.0);
 }
 
+- (UITableView *)tableViewWithFrame:(CGRect)frame
+{
+	UITableView *buttonTableView = [[UITableView alloc] initWithFrame:frame];
+	buttonTableView.backgroundColor = [UIColor clearColor];
+	buttonTableView.delegate = self;
+	buttonTableView.dataSource = self;
+	buttonTableView.scrollEnabled = NO;
+	buttonTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	buttonTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+	
+	return buttonTableView;
+}
+
 - (id)initWithTitle:(NSString *)title message:(NSString *)message delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...
 {
 	self = [super init];
@@ -88,7 +102,24 @@
 		_cancelButtonIndex = -1;
 		_firstOtherButtonIndex = -1;
 		
-		_buttonTitles = [NSMutableArray arrayWithObjects:cancelButtonTitle, otherButtonTitles, nil];
+		if (otherButtonTitles != nil) {
+			va_list args;
+			va_start(args, otherButtonTitles);
+			_otherButtonsTitles = [[NSMutableArray alloc] initWithObjects:otherButtonTitles, nil];
+			id obj;
+			while ((obj = va_arg(args, id)) != nil) {
+				[_otherButtonsTitles addObject:obj];
+			}
+			va_end(args);
+		}
+		
+		_numberOfButtons = [_otherButtonsTitles count];
+		
+		if (cancelButtonTitle != nil) {
+			_numberOfButtons++;
+			_cancelButtonIndex = 0;
+			_cancelButtonTitle = cancelButtonTitle;
+		}
 		
 		CGFloat sideMargin = 15.0;
 		CGFloat topBottomMargin = 19.0;
@@ -146,7 +177,7 @@
 		yOffset += topBottomMargin;
 		
         // Lines setup
-        if (cancelButtonTitle || otherButtonTitles) {
+        if (self.numberOfButtons > 0) {
 			lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, yOffset - 1.0, alertWidth, 1.0)];
 			lineView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 			
@@ -158,56 +189,48 @@
 			lineViewInner.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 			
 			[lineView addSubview:lineViewInner];
-			
-            if (cancelButtonTitle && otherButtonTitles) {
-                UIView *lineVerticalViewInner = [[UIView alloc] initWithFrame:CGRectMake((alertWidth / 2.f), 0.5, 0.5, buttonHeight + 0.5)];
-                lineVerticalViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
-                [lineView addSubview:lineVerticalViewInner];
-            }
         }
 		
-        // Buttons setup
-        if (otherButtonTitles != nil && cancelButtonTitle == nil) {
-            cancelButtonTitle = otherButtonTitles;
-            otherButtonTitles = nil;
-        }
-        
-		_numberOfButtons = 0;
+		BOOL buttonsShouldStack = (self.numberOfButtons != 2);
+		BOOL sideBySideButtons = !buttonsShouldStack;
 		
-        if (cancelButtonTitle != nil) {
-			_cancelButtonIndex = 0;
-			_numberOfButtons++;
+		if (sideBySideButtons) {
+			CGFloat halfWidth = (alertWidth / 2.0);
 			
-			buttonTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, yOffset, alertWidth, buttonHeight)];
-			buttonTableView.backgroundColor = [UIColor clearColor];
-			buttonTableView.delegate = self;
-			buttonTableView.dataSource = self;
-			buttonTableView.tag = _cancelButtonIndex;
-			buttonTableView.scrollEnabled = NO;
-			buttonTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-			buttonTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-
-		}
-		
-        if (otherButtonTitles != nil) {
+			UIView *lineVerticalViewInner = [[UIView alloc] initWithFrame:CGRectMake(halfWidth, 0.5, 0.5, buttonHeight + 0.5)];
+			lineVerticalViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+			[lineView addSubview:lineVerticalViewInner];
+			
+			buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, halfWidth, buttonHeight)];
+			buttonTableView.tag = 0;
+			
 			_firstOtherButtonIndex = 1;
-			_numberOfButtons++;
 			
-			otherTableView = [[UITableView alloc] initWithFrame:CGRectMake((alertWidth / 2.0), yOffset, (alertWidth / 2.0), buttonHeight)];
-			otherTableView.backgroundColor = [UIColor clearColor];
-			otherTableView.delegate = self;
-			otherTableView.dataSource = self;
-			otherTableView.tag = _firstOtherButtonIndex;
-			otherTableView.scrollEnabled = NO;
-			otherTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-			otherTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+			otherTableView = [self tableViewWithFrame:CGRectMake(halfWidth, yOffset, halfWidth, buttonHeight)];
+			otherTableView.tag = 1;
 			
-			CGRect frame = buttonTableView.frame;
-			frame.size.width = (alertWidth / 2.0);
-			buttonTableView.frame = frame;
-        }
-		
-        yOffset += buttonHeight;
+			yOffset += buttonHeight;
+		}
+		else {
+			NSInteger numberOfOtherButtons = [self.otherButtonsTitles count];
+			
+			if (numberOfOtherButtons > 0) {
+				CGFloat tableHeight = buttonsShouldStack ? numberOfOtherButtons * buttonHeight : buttonHeight;
+				
+				buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, tableHeight)];
+				buttonTableView.tag = 0;
+				
+				yOffset += tableHeight;
+			}
+			
+			if (cancelButtonTitle != nil) {
+				NSLog(@"ds");
+				otherTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, buttonHeight)];
+				otherTableView.tag = 1;
+				
+				yOffset += buttonHeight;
+			}
+		}
 
 		CGFloat alertHeight = yOffset;
 		[self setupWithSize:CGSizeMake(alertWidth, alertHeight)];
@@ -515,16 +538,52 @@
 	LMModalItemTableViewCell *cell = [[LMModalItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
 	
 	NSInteger buttonIndex;
+	BOOL lastButton = NO;
 	
-	if (self.numberOfButtons <= 2) {
-		buttonIndex = tableView.tag;
+	if (self.numberOfButtons == 1) {
+		if (self.cancelButtonTitle != nil) {
+			labelText = self.cancelButtonTitle;
+		}
+		else {
+			labelText = self.otherButtonsTitles[0];
+		}
+
+		lastButton = YES;
 	}
+	// Side by side buttons
+	else if (self.numberOfButtons == 2) {
+		buttonIndex = tableView.tag;
+		
+		if (self.cancelButtonIndex == -1) {
+			labelText = self.otherButtonsTitles[buttonIndex];
+		}
+		else {
+			if (buttonIndex == 0) {
+				labelText = self.cancelButtonTitle;
+			}
+			else {
+				labelText = self.otherButtonsTitles[0];
+			}
+		}
+		
+		lastButton = buttonIndex == 1;
+	}
+	// More than 2 stacked buttons
 	else {
 		buttonIndex = indexPath.row;
+		
+		if (tableView.tag == 1) {
+			labelText = self.cancelButtonTitle;
+			lastButton = YES;
+		}
+		else {
+			labelText = self.otherButtonsTitles[buttonIndex];
+			
+			if (self.cancelButtonIndex == -1 && buttonIndex == ([self.otherButtonsTitles count] - 1)) {
+				lastButton = YES;
+			}
+		}
 	}
-	
-	labelText = self.buttonTitles[buttonIndex];
-	BOOL lastButton = (buttonIndex + 1) == self.numberOfButtons;
 	
 	cell.textLabel.font = lastButton ? [UIFont boldSystemFontOfSize:17.0] : [UIFont systemFontOfSize:17.0];
 	cell.textLabel.text = labelText;
@@ -532,12 +591,17 @@
 	return cell;
 }
 
-- (int)tableView:(id)arg1 numberOfRowsInSection:(int)arg2 {
+- (int)tableView:(UITableView *)tableView numberOfRowsInSection:(int)arg2 {
 	if (self.numberOfButtons <= 2) {
 		return 1;
 	}
 	else {
-		return self.numberOfButtons;
+		if (tableView.tag == 0) {
+			return [self.otherButtonsTitles count];
+		}
+		else {
+			return 1;
+		}
 	}
 }
 
