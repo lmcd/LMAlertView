@@ -64,8 +64,8 @@
 		16CCDFA81853296D0059DE8B /* LMTwitterLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMTwitterLocationViewController.m; sourceTree = "<group>"; };
 		16CCDFAA18544C6F0059DE8B /* LMNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMNavigationController.h; path = ../LMAlertView/LMNavigationController.h; sourceTree = "<group>"; };
 		16CCDFAB18544C6F0059DE8B /* LMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMNavigationController.m; path = ../LMAlertView/LMNavigationController.m; sourceTree = "<group>"; };
-		16CCDFD0185832520059DE8B /* LMModalItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMModalItemTableViewCell.h; sourceTree = "<group>"; };
-		16CCDFD1185832520059DE8B /* LMModalItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMModalItemTableViewCell.m; sourceTree = "<group>"; };
+		16CCDFD0185832520059DE8B /* LMModalItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMModalItemTableViewCell.h; path = ../LMAlertView/LMModalItemTableViewCell.h; sourceTree = "<group>"; };
+		16CCDFD1185832520059DE8B /* LMModalItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMModalItemTableViewCell.m; path = ../LMAlertView/LMModalItemTableViewCell.m; sourceTree = "<group>"; };
 		1FE7E8F0E7304B2287950B17 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		B6ABB7B0B6944B929C0CFAFE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
