@@ -19,6 +19,8 @@
 		
 		UIColor *titleColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
 		self.textLabel.textColor = titleColor;
+		
+		self.textLabel.adjustsFontSizeToFitWidth = YES;
     }
     return self;
 }
