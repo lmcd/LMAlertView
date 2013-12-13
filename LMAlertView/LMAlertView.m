@@ -526,7 +526,8 @@
 
 #pragma mark UITableViewDataSource delegate methods
 
-- (id)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (id)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
 	NSString *labelText;
 	
 	LMModalItemTableViewCell *cell = [[LMModalItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
@@ -585,7 +586,8 @@
 	return cell;
 }
 
-- (int)tableView:(UITableView *)tableView numberOfRowsInSection:(int)arg2 {
+- (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
 	if (self.numberOfButtons <= 2) {
 		return 1;
 	}
@@ -601,7 +603,8 @@
 
 #pragma mark UITableViewDelegateSource delegate methods
 
-- (void)tableView:(id)arg1 didSelectRowAtIndexPath:(id)arg2 {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
 	[self dismiss];
 }
 
