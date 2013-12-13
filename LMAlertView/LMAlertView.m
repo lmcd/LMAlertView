@@ -224,7 +224,6 @@
 			}
 			
 			if (cancelButtonTitle != nil) {
-				NSLog(@"ds");
 				otherTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, buttonHeight)];
 				otherTableView.tag = 1;
 				
