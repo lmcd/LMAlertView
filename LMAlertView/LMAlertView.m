@@ -538,7 +538,7 @@
 	LMModalItemTableViewCell *cell = [[LMModalItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
 	
 	NSInteger buttonIndex;
-	BOOL lastButton = NO;
+	BOOL boldButton = NO;
 	
 	if (self.numberOfButtons == 1) {
 		if (self.cancelButtonTitle != nil) {
@@ -548,7 +548,7 @@
 			labelText = self.otherButtonsTitles[0];
 		}
 
-		lastButton = YES;
+		boldButton = YES;
 	}
 	// Side by side buttons
 	else if (self.numberOfButtons == 2) {
@@ -566,7 +566,7 @@
 			}
 		}
 		
-		lastButton = buttonIndex == 1;
+		boldButton = buttonIndex == 1;
 	}
 	// More than 2 stacked buttons
 	else {
@@ -574,18 +574,18 @@
 		
 		if (tableView.tag == 1) {
 			labelText = self.cancelButtonTitle;
-			lastButton = YES;
+			boldButton = YES;
 		}
 		else {
 			labelText = self.otherButtonsTitles[buttonIndex];
 			
 			if (self.cancelButtonIndex == -1 && buttonIndex == ([self.otherButtonsTitles count] - 1)) {
-				lastButton = YES;
+				boldButton = YES;
 			}
 		}
 	}
 	
-	cell.textLabel.font = lastButton ? [UIFont boldSystemFontOfSize:17.0] : [UIFont systemFontOfSize:17.0];
+	cell.textLabel.font = boldButton ? [UIFont boldSystemFontOfSize:17.0] : [UIFont systemFontOfSize:17.0];
 	cell.textLabel.text = labelText;
 	
 	return cell;
