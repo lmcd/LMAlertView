@@ -373,11 +373,6 @@
 	[self.alertContainerView addSubview:self.representationView];
 }
 
-- (void)setup
-{
-	[self setupWithSize:CGSizeMake(270.0, 152.0)];
-}
-
 - (id)springAnimationForKeyPath:(NSString *)keyPath
 {
 	kSpringAnimationClassName *animation = [[kSpringAnimationClassName alloc] init];
