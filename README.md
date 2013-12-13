@@ -62,3 +62,4 @@ UIView *contentView = alertView.contentView;
 
 - [RBBAnimation](https://github.com/robb/RBBAnimation) - I wouldn't have bothered with this if there wasn't a drop-in `CASpringAnimation` replacement. Thanks @robb!
 - [EDStarRating](https://github.com/erndev/EDStarRating) - The star rating control used in the demo
+- [CAAnimationBlocks](https://github.com/xissburg/CAAnimationBlocks)
