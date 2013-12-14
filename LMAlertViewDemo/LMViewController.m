@@ -26,6 +26,16 @@
 	NSLog(@"Clicked button at index: %li", (long)buttonIndex);
 }
 
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+	NSLog(@"Did dismiss with button at index: %li", (long)buttonIndex);
+}
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+	NSLog(@"Will dismiss with button at index: %li", (long)buttonIndex);
+}
+
 #pragma mark EDStarRatingProtocol delegate methods
 
 - (void)starsSelectionChanged:(EDStarRating *)control rating:(float)rating
