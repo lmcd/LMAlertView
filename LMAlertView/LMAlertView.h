@@ -39,6 +39,7 @@
 @property(nonatomic, readonly) NSInteger numberOfButtons;
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, readonly, getter=isVisible) BOOL visible;
+@property(nonatomic) BOOL buttonsShouldStack;
 
 - (id)initWithSize:(CGSize)size;
 - (id)initWithViewController:(UIViewController *)viewController;

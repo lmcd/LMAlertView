@@ -98,6 +98,16 @@
 	return tableView;
 }
 
+- (void)setButtonsShouldStack:(BOOL)buttonsShouldStack
+{
+	_buttonsShouldStack = buttonsShouldStack;
+	
+	if (self.numberOfButtons == 2) {
+		[self.buttonTableView reloadData];
+		[self.otherTableView reloadData];
+	}
+}
+
 - (id)initWithTitle:(NSString *)title message:(NSString *)message delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...
 {
 	self = [super init];
