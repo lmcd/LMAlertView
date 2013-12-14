@@ -393,6 +393,29 @@
 	return animation;
 }
 
+- (void)transformAlertContainerViewForOrientation{
+#define DegreesToRadians(degrees) (degrees * M_PI / 180)
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    CGAffineTransform transform;
+    switch (orientation) {
+        case UIInterfaceOrientationLandscapeLeft:
+            transform = CGAffineTransformMakeRotation(-DegreesToRadians(90));
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            transform = CGAffineTransformMakeRotation(DegreesToRadians(90));
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
+            break;
+        case UIInterfaceOrientationPortrait:
+        default:
+            transform = CGAffineTransformMakeRotation(DegreesToRadians(0));
+            break;
+    }
+    
+    [self.alertContainerView setTransform:transform];
+}
+
 - (void)show
 {
 	id<UIApplicationDelegate> appDelegate = [[UIApplication sharedApplication] delegate];
@@ -411,6 +434,8 @@
 	self.window.windowLevel = UIWindowLevelAlert;
 	self.window.hidden = NO;
 	
+    [self transformAlertContainerViewForOrientation];
+    
 	[self.window makeKeyAndVisible];
 	
 	if (self.controller == nil) {
