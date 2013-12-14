@@ -56,6 +56,13 @@
 	[twitterViewController setLocationTitle:selectedCell.textLabel.text];
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	if (indexPath.row == 0) {
+		[self.mapView deselectAnnotation:self.mapView.annotations.firstObject animated:YES];
+	}
+	else {
+		[self.mapView selectAnnotation:self.mapView.annotations.firstObject animated:YES];
+	}
 }
 
 #pragma mark - Other methods
