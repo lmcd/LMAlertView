@@ -105,6 +105,8 @@
 		_cancelButtonIndex = -1;
 		_firstOtherButtonIndex = -1;
 		
+		_delegate = delegate;
+		
 		if (otherButtonTitles != nil) {
 			va_list args;
 			va_start(args, otherButtonTitles);
