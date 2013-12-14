@@ -26,7 +26,7 @@
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) UIViewController *controller;
 
-@property (nonatomic, strong) NSString *cancelButtonTitle;
+@property (nonatomic, copy) NSString *cancelButtonTitle;
 @property (nonatomic, strong) NSMutableArray *otherButtonsTitles;
 
 @end
