@@ -534,6 +534,7 @@
 	
 	NSInteger buttonIndex;
 	BOOL boldButton = NO;
+	BOOL lastRow = NO;
 	
 	if (self.numberOfButtons == 1) {
 		if (self.cancelButtonTitle != nil) {
@@ -544,6 +545,7 @@
 		}
 
 		boldButton = YES;
+		lastRow = YES;
 	}
 	// Side by side buttons
 	else if (self.numberOfButtons == 2) {
@@ -562,6 +564,7 @@
 		}
 		
 		boldButton = buttonIndex == 1;
+		lastRow = YES;
 	}
 	// More than 2 stacked buttons
 	else {
@@ -569,7 +572,9 @@
 		
 		if (tableView.tag == 1) {
 			labelText = self.cancelButtonTitle;
+			
 			boldButton = YES;
+			lastRow = YES;
 		}
 		else {
 			labelText = self.otherButtonsTitles[buttonIndex];
@@ -580,6 +585,7 @@
 		}
 	}
 	
+	cell.lineView.hidden = lastRow;
 	cell.textLabel.font = boldButton ? [UIFont boldSystemFontOfSize:17.0] : [UIFont systemFontOfSize:17.0];
 	cell.textLabel.text = labelText;
 	
