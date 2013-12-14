@@ -50,6 +50,6 @@
 - (CGSize)size;
 
 - (void)show;
-- (void)dismiss;
+- (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated;
 
 @end

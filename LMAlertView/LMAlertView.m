@@ -258,15 +258,6 @@
     return self;
 }
 
-- (void)buttonTapped:(UIView *)sender
-{
-	[self dismiss];
-	
-	if ([self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
-		[self.delegate alertView:(UIAlertView *)self clickedButtonAtIndex:sender.tag];
-	}
-}
-
 - (void)setSize:(CGSize)size animated:(BOOL)animated
 {
 	if (!animated) {
@@ -477,8 +468,35 @@
                                                   object:nil];
 }
 
-- (void)dismiss
+- (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated
 {
+	if ([self.delegate respondsToSelector:@selector(alertView:willDismissWithButtonIndex:)]) {
+		[self.delegate alertView:(UIAlertView *)self willDismissWithButtonIndex:buttonIndex];
+	}
+
+	// Completion block
+	void (^completion)(BOOL finished) = ^(BOOL finished){
+		// Temporary bugfix
+		[self removeFromSuperview];
+		
+		// Release window from memory
+		self.window.hidden = YES;
+		self.window = nil;
+		
+		_visible = NO;
+		
+		[self.buttonTableView deselectRowAtIndexPath:self.buttonTableView.indexPathForSelectedRow animated:NO];
+		[self.otherTableView deselectRowAtIndexPath:self.otherTableView.indexPathForSelectedRow animated:NO];
+		
+		if ([self.delegate respondsToSelector:@selector(alertView:didDismissWithButtonIndex:)]) {
+			[self.delegate alertView:(UIAlertView *)self didDismissWithButtonIndex:buttonIndex];
+		}
+	};
+	
+	if (!animated) {
+		completion(YES);
+	}
+	
 	[CATransaction begin]; {
 		CATransform3D transformFrom = CATransform3DMakeScale(1.0, 1.0, 1.0);
 		CATransform3D transformTo = CATransform3DMakeScale(0.840, 0.840, 1.0);
@@ -486,19 +504,7 @@
 		kSpringAnimationClassName *modalTransformAnimation = [self springAnimationForKeyPath:@"transform"];
 		modalTransformAnimation.fromValue = [NSValue valueWithCATransform3D:transformFrom];
 		modalTransformAnimation.toValue = [NSValue valueWithCATransform3D:transformTo];
-		modalTransformAnimation.completion = ^(BOOL finished){
-			// Temporary bugfix
-			[self removeFromSuperview];
-			
-			// Release window from memory
-			self.window.hidden = YES;
-			self.window = nil;
-			
-			_visible = NO;
-			
-			[self.buttonTableView deselectRowAtIndexPath:self.buttonTableView.indexPathForSelectedRow animated:NO];
-			[self.otherTableView deselectRowAtIndexPath:self.otherTableView.indexPathForSelectedRow animated:NO];
-		};
+		modalTransformAnimation.completion = completion;
 		self.representationView.layer.transform = transformTo;
 		
 		// Zoom out the modal
@@ -628,7 +634,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[self dismiss];
+	if ([self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
+		[self.delegate alertView:(UIAlertView *)self clickedButtonAtIndex:0];
+	}
+	
+	[self dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 @end
