@@ -87,15 +87,15 @@
 
 - (UITableView *)tableViewWithFrame:(CGRect)frame
 {
-	UITableView *buttonTableView = [[UITableView alloc] initWithFrame:frame];
-	buttonTableView.backgroundColor = [UIColor clearColor];
-	buttonTableView.delegate = self;
-	buttonTableView.dataSource = self;
-	buttonTableView.scrollEnabled = NO;
-	buttonTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	buttonTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+	UITableView *tableView = [[UITableView alloc] initWithFrame:frame];
+	tableView.backgroundColor = [UIColor clearColor];
+	tableView.delegate = self;
+	tableView.dataSource = self;
+	tableView.scrollEnabled = NO;
+	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 	
-	return buttonTableView;
+	return tableView;
 }
 
 - (id)initWithTitle:(NSString *)title message:(NSString *)message delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...
