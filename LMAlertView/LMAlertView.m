@@ -560,6 +560,8 @@
 	BOOL lastRow = NO;
 	
 	if (self.numberOfButtons == 1) {
+		buttonIndex = 0;
+		
 		if (self.cancelButtonTitle != nil) {
 			labelText = self.cancelButtonTitle;
 		}
@@ -587,7 +589,6 @@
 		}
 		
 		boldButton = buttonIndex == 1;
-		lastRow = YES;
 	}
 	// More than 2 stacked buttons
 	else {
@@ -605,9 +606,12 @@
 			if (self.cancelButtonIndex == -1 && buttonIndex == ([self.otherButtonsTitles count] - 1)) {
 				boldButton = YES;
 			}
+			
+			buttonIndex++;
 		}
 	}
 	
+	cell.tag = buttonIndex;
 	cell.lineView.hidden = lastRow;
 	cell.textLabel.font = boldButton ? [UIFont boldSystemFontOfSize:17.0] : [UIFont systemFontOfSize:17.0];
 	cell.textLabel.text = labelText;
@@ -634,11 +638,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+	NSInteger buttonIndex = cell.tag;
+	
 	if ([self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
-		[self.delegate alertView:(UIAlertView *)self clickedButtonAtIndex:0];
+		[self.delegate alertView:(UIAlertView *)self clickedButtonAtIndex:buttonIndex];
 	}
 	
-	[self dismissWithClickedButtonIndex:0 animated:YES];
+	[self dismissWithClickedButtonIndex:buttonIndex animated:YES];
 }
 
 @end
