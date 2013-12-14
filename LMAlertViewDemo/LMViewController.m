@@ -72,18 +72,15 @@
 
 - (IBAction)nativeButtonTapped:(id)sender
 {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-	
-	alertView.delegate = self;
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
 	
 	[alertView show];
 }
 
 - (IBAction)customButtonTapped:(id)sender
 {
-	LMAlertView *alertView = [[LMAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+	LMAlertView *alertView = [[LMAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
 	
-	alertView.delegate = self;
 	
 	[alertView show];
 }
