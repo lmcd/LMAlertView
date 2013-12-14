@@ -21,6 +21,14 @@
 		self.textLabel.textColor = titleColor;
 		
 		self.textLabel.adjustsFontSizeToFitWidth = YES;
+		
+		UIView *contentView = self.contentView;
+		
+		_lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, contentView.frame.size.height - 0.5, contentView.frame.size.width, 0.5)];
+		_lineView.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+		_lineView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		
+		[contentView addSubview:_lineView];
     }
     return self;
 }

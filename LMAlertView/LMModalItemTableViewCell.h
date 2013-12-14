@@ -10,4 +10,6 @@
 
 @interface LMModalItemTableViewCell : UITableViewCell
 
+@property (nonatomic, strong, readonly) UIView *lineView;
+
 @end
