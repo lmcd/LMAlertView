@@ -23,6 +23,9 @@
 
 @property (nonatomic, strong) UILabel *messageLabel;
 
+@property (nonatomic, strong) UITableView *buttonTableView;
+@property (nonatomic, strong) UITableView *otherTableView;
+
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) UIViewController *controller;
 
@@ -133,7 +136,6 @@
 		
 		UILabel *titleLabel;
 		UIView *lineView;
-		UITableView *buttonTableView, *otherTableView;
 		
 		if (title != nil) {
 			self.title = title;
@@ -201,13 +203,13 @@
 			lineVerticalViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
 			[lineView addSubview:lineVerticalViewInner];
 			
-			buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, halfWidth, buttonHeight)];
-			buttonTableView.tag = 0;
+			_buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, halfWidth, buttonHeight)];
+			_buttonTableView.tag = 0;
 			
 			_firstOtherButtonIndex = 1;
 			
-			otherTableView = [self tableViewWithFrame:CGRectMake(halfWidth, yOffset, halfWidth, buttonHeight)];
-			otherTableView.tag = 1;
+			_otherTableView = [self tableViewWithFrame:CGRectMake(halfWidth, yOffset, halfWidth, buttonHeight)];
+			_otherTableView.tag = 1;
 			
 			yOffset += buttonHeight;
 		}
@@ -217,15 +219,15 @@
 			if (numberOfOtherButtons > 0) {
 				CGFloat tableHeight = buttonsShouldStack ? numberOfOtherButtons * buttonHeight : buttonHeight;
 				
-				buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, tableHeight)];
-				buttonTableView.tag = 0;
+				_buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, tableHeight)];
+				_buttonTableView.tag = 0;
 				
 				yOffset += tableHeight;
 			}
 			
 			if (cancelButtonTitle != nil) {
-				otherTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, buttonHeight)];
-				otherTableView.tag = 1;
+				_otherTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, buttonHeight)];
+				_otherTableView.tag = 1;
 				
 				yOffset += buttonHeight;
 			}
@@ -237,8 +239,8 @@
 		// Add everything to the content view
 		[self.contentView addSubview:titleLabel];
 		[self.contentView addSubview:self.messageLabel];
-		[self.contentView addSubview:buttonTableView];
-        [self.contentView addSubview:otherTableView];
+		[self.contentView addSubview:self.buttonTableView];
+        [self.contentView addSubview:self.otherTableView];
 		[self.contentView addSubview:lineView];
     }
     return self;
@@ -481,6 +483,9 @@
 			self.window = nil;
 			
 			_visible = NO;
+			
+			[self.buttonTableView deselectRowAtIndexPath:self.buttonTableView.indexPathForSelectedRow animated:NO];
+			[self.otherTableView deselectRowAtIndexPath:self.otherTableView.indexPathForSelectedRow animated:NO];
 		};
 		self.representationView.layer.transform = transformTo;
 		
