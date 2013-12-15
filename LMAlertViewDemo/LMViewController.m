@@ -9,6 +9,7 @@
 #import "LMViewController.h"
 #import "LMAppDelegate.h"
 #import "LMAlertView.h"
+#import "LMModalItemTableViewCell.h"
 
 @interface LMViewController ()
 
@@ -54,7 +55,7 @@
 	
 	switch ([[NSNumber numberWithFloat:rating] integerValue]) {
 		case 0:
-			ratingDescription = @"Abysmal";
+			ratingDescription = @"Not yet rated";
 			break;
 		case 1:
 			ratingDescription = @"Piss poor";
@@ -74,6 +75,9 @@
 		default:
 			return;
 	}
+	
+	LMModalItemTableViewCell *cell = [self.ratingAlertView buttonCellForIndex:self.ratingAlertView.firstOtherButtonIndex];
+	cell.isEnabled = (rating > 0);
 	
 	self.ratingAlertView.message = ratingDescription;
 }
@@ -109,8 +113,12 @@
 		return;
 	}
 	
-	self.ratingAlertView = [[LMAlertView alloc] initWithTitle:@"Rate this movie" message:@"Average" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil];
+	self.ratingAlertView = [[LMAlertView alloc] initWithTitle:@"Rate this movie" message:@"Average" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Rate", nil];
 	CGSize size = self.ratingAlertView.size;
+	
+	LMModalItemTableViewCell *cell = [self.ratingAlertView buttonCellForIndex: self.ratingAlertView.firstOtherButtonIndex];
+	cell.isEnabled = NO;
+	
 	[self.ratingAlertView setSize:CGSizeMake(size.width, 152.0)];
 	
 	UIView *contentView = self.ratingAlertView.contentView;
@@ -123,7 +131,7 @@
 	starRating.horizontalMargin = 12.0;
 	starRating.editable = YES;
 	starRating.displayMode = EDStarRatingDisplayFull;
-	starRating.rating = 3;
+	starRating.rating = 0;
 	starRating.backgroundColor = [UIColor clearColor];
 	
 	[contentView addSubview:starRating];

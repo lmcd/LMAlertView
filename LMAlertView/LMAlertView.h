@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LMModalItemTableViewCell.h"
 
 #ifdef USE_PRIVATE_SPRING_ANIMATION_CLASS
 #define kSpringAnimationClassName CASpringAnimation
@@ -51,5 +52,7 @@
 
 - (void)show;
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated;
+
+- (LMModalItemTableViewCell *)buttonCellForIndex:(NSInteger)buttonIndex;
 
 @end

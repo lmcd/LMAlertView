@@ -37,6 +37,7 @@
 {
 	_isEnabled = isEnabled;
 	self.textLabel.enabled = isEnabled;
+	self.userInteractionEnabled = isEnabled;
 }
 
 @end

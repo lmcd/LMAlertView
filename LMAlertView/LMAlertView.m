@@ -242,6 +242,9 @@
 		
 		_buttonTableView.tag = 0;
 		_otherTableView.tag = 1;
+		
+		[_buttonTableView reloadData];
+		[_otherTableView reloadData];
 
 		CGFloat alertHeight = yOffset;
 		[self setupWithSize:CGSizeMake(alertWidth, alertHeight)];
@@ -683,6 +686,40 @@
 	}
 	
 	[self dismissWithClickedButtonIndex:buttonIndex animated:YES];
+}
+
+- (UITableViewCell *)buttonCellForIndex:(NSInteger)buttonIndex
+{
+	UITableView *theTableView;
+	NSInteger rowIndex = 0;
+	
+	NSLog(@"index: %i", buttonIndex);
+	
+	if (self.numberOfButtons == 1) {
+		theTableView = self.buttonTableView;
+		rowIndex = 0;
+	}
+	// Side by side buttons
+	else if (self.numberOfButtons == 2) {
+		if (buttonIndex == self.cancelButtonIndex) {
+			theTableView = self.buttonTableView;
+		}
+		else {
+			theTableView = self.otherTableView;
+		}
+	}
+	// More than 2 stacked buttons
+	else {
+		if (buttonIndex == self.cancelButtonIndex) {
+			theTableView = self.otherTableView;
+		}
+		else {
+			theTableView = self.buttonTableView;
+			rowIndex = 1;
+		}
+	}
+	
+	return [theTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:rowIndex inSection:0]];
 }
 
 @end
