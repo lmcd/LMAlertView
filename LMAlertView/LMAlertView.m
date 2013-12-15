@@ -416,12 +416,38 @@
     [self.alertContainerView setTransform:transform];
 }
 
+- (UIColor *)desaturatedColorFromColor:(UIColor *)color
+{
+	CGFloat red = 0;
+	CGFloat green = 0;
+	CGFloat blue = 0;
+	CGFloat alpha = 0;
+	
+	[color getRed:&red green:&green blue:&blue alpha:&alpha];
+	
+	CGFloat mean = (red + green + blue) / 3.0;
+	
+	return [UIColor colorWithRed:mean green:mean blue:mean alpha:alpha];
+}
+
 - (void)show
 {
 	id<UIApplicationDelegate> appDelegate = [[UIApplication sharedApplication] delegate];
+	UIWindow *mainWindow = [appDelegate window];
 	
 	// You can have more than one UIWindow in the view hierachy, which is how UIAlertView works
-	self.window = [[UIWindow alloc] initWithFrame:[appDelegate window].frame];
+	self.window = [[UIWindow alloc] initWithFrame:mainWindow.frame];
+	
+	BOOL shouldDesaturateUI = YES;
+	UIView *snapshot;
+	
+	if (shouldDesaturateUI) {
+		snapshot = [mainWindow snapshotViewAfterScreenUpdates:YES];
+		[self.alertContainerView insertSubview:snapshot atIndex:0];
+		
+		UIColor *tintColor = mainWindow.tintColor;
+		mainWindow.tintColor = [self desaturatedColorFromColor:tintColor];
+	}
 	
 	LMEmbeddedViewController *viewController = [[LMEmbeddedViewController alloc] init];
 	viewController.alertView = self;
@@ -454,6 +480,17 @@
 	_visible = YES;
 	
 	[CATransaction begin]; {
+		if (shouldDesaturateUI) {
+			kSpringAnimationClassName *snapshotAnimation = [self springAnimationForKeyPath:@"opacity"];
+			snapshotAnimation.fromValue = @1.0f;
+			snapshotAnimation.toValue = @0.0f;
+			snapshotAnimation.completion =  ^(BOOL finished){
+				[snapshot removeFromSuperview];
+			};
+			snapshot.layer.opacity = 0.0;
+			[snapshot.layer addAnimation:snapshotAnimation forKey:@"opacity"];
+		}
+		
 		CATransform3D transformFrom = CATransform3DMakeScale(1.26, 1.26, 1.0);
 		CATransform3D transformTo = CATransform3DMakeScale(1.0, 1.0, 1.0);
 		
@@ -498,6 +535,20 @@
 		[self.delegate alertView:(UIAlertView *)self willDismissWithButtonIndex:buttonIndex];
 	}
 
+	id<UIApplicationDelegate> appDelegate = [[UIApplication sharedApplication] delegate];
+	UIWindow *mainWindow = [appDelegate window];
+	
+	BOOL shouldDesaturateUI = YES;
+	UIView *snapshot;
+	
+	if (shouldDesaturateUI) {
+		snapshot = [mainWindow snapshotViewAfterScreenUpdates:YES];
+		[self.alertContainerView insertSubview:snapshot atIndex:0];
+		
+		UIColor *tintColor = mainWindow.tintColor;
+		mainWindow.tintColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+	}
+	
 	// Completion block
 	void (^completion)(BOOL finished) = ^(BOOL finished){
 		// Temporary bugfix
@@ -522,6 +573,17 @@
 	}
 	
 	[CATransaction begin]; {
+		if (shouldDesaturateUI) {
+			kSpringAnimationClassName *snapshotAnimation = [self springAnimationForKeyPath:@"opacity"];
+			snapshotAnimation.fromValue = @1.0f;
+			snapshotAnimation.toValue = @0.0f;
+			snapshotAnimation.completion =  ^(BOOL finished){
+				[snapshot removeFromSuperview];
+			};
+			snapshot.layer.opacity = 0.0;
+			[snapshot.layer addAnimation:snapshotAnimation forKey:@"opacity"];
+		}
+		
 		CATransform3D transformFrom = CATransform3DMakeScale(1.0, 1.0, 1.0);
 		CATransform3D transformTo = CATransform3DMakeScale(0.840, 0.840, 1.0);
 		
