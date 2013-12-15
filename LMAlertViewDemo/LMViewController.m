@@ -23,17 +23,27 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	NSLog(@"Clicked button at index: %li", (long)buttonIndex);
+	NSLog(@"%@: Clicked button at index: %li", [alertView class] , (long)buttonIndex);
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-	NSLog(@"Did dismiss with button at index: %li", (long)buttonIndex);
+	NSLog(@"%@: Did dismiss with button at index: %li", [alertView class] , (long)buttonIndex);
 }
 
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-	NSLog(@"Will dismiss with button at index: %li", (long)buttonIndex);
+	NSLog(@"%@: Will dismiss with button at index: %li", [alertView class] , (long)buttonIndex);
+}
+
+- (void)willPresentAlertView:(UIAlertView *)alertView
+{
+	NSLog(@"%@: Will present alert view", [alertView class]);
+}
+
+- (void)didPresentAlertView:(UIAlertView *)alertView
+{
+	NSLog(@"%@: Did present alert view", [alertView class]);
 }
 
 #pragma mark EDStarRatingProtocol delegate methods
@@ -74,6 +84,10 @@
 {
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
 	
+	NSLog(@"%@: First other button index: %i", [alertView class], alertView.firstOtherButtonIndex);
+	NSLog(@"%@: Cancel button index: %i", [alertView class], alertView.cancelButtonIndex);
+	NSLog(@"%@: Number of buttons: %i", [alertView class], alertView.numberOfButtons);
+	
 	[alertView show];
 }
 
@@ -81,6 +95,9 @@
 {
 	LMAlertView *alertView = [[LMAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
 	
+	NSLog(@"%@: First other button index: %i", [alertView class], alertView.firstOtherButtonIndex);
+	NSLog(@"%@: Cancel button index: %i", [alertView class], alertView.cancelButtonIndex);
+	NSLog(@"%@: Number of buttons: %i", [alertView class], alertView.numberOfButtons);
 	
 	[alertView show];
 }
@@ -92,7 +109,7 @@
 		return;
 	}
 	
-	self.ratingAlertView = [[LMAlertView alloc] initWithTitle:@"Rate this movie" message:@"Average" delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil];
+	self.ratingAlertView = [[LMAlertView alloc] initWithTitle:@"Rate this movie" message:@"Average" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil];
 	CGSize size = self.ratingAlertView.size;
 	[self.ratingAlertView setSize:CGSizeMake(size.width, 152.0)];
 	
@@ -116,7 +133,7 @@
 
 - (IBAction)cardButtonTapped:(id)sender
 {
-	LMAlertView *cardAlertView = [[LMAlertView alloc] initWithTitle:@"Choose a card" message:nil delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil];
+	LMAlertView *cardAlertView = [[LMAlertView alloc] initWithTitle:@"Choose a card" message:nil delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil];
 	[cardAlertView setSize:CGSizeMake(270.0, 167.0)];
 	
 	UIView *contentView = cardAlertView.contentView;
