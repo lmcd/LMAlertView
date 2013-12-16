@@ -698,8 +698,6 @@
 	UITableView *theTableView;
 	NSInteger rowIndex = 0;
 	
-	NSLog(@"index: %i", buttonIndex);
-	
 	if (self.numberOfButtons == 1) {
 		theTableView = self.buttonTableView;
 		rowIndex = 0;
