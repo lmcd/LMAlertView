@@ -89,7 +89,7 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
 	NSInteger remainingCharacters = 140 - textView.text.length;
-	self.characterCountLabel.text = [NSString stringWithFormat:@"%i", remainingCharacters];
+	self.characterCountLabel.text = [NSString stringWithFormat:@"%li", (long)remainingCharacters];
 	
 	self.navigationItem.rightBarButtonItem.enabled = (remainingCharacters >= 0);
 }

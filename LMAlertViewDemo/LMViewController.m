@@ -88,9 +88,9 @@
 {
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
 	
-	NSLog(@"%@: First other button index: %i", [alertView class], alertView.firstOtherButtonIndex);
-	NSLog(@"%@: Cancel button index: %i", [alertView class], alertView.cancelButtonIndex);
-	NSLog(@"%@: Number of buttons: %i", [alertView class], alertView.numberOfButtons);
+	NSLog(@"%@: First other button index: %li", [alertView class], (long)alertView.firstOtherButtonIndex);
+	NSLog(@"%@: Cancel button index: %li", [alertView class], (long)alertView.cancelButtonIndex);
+	NSLog(@"%@: Number of buttons: %li", [alertView class], (long)alertView.numberOfButtons);
 	
 	[alertView show];
 }
@@ -99,9 +99,9 @@
 {
 	LMAlertView *alertView = [[LMAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
 	
-	NSLog(@"%@: First other button index: %i", [alertView class], alertView.firstOtherButtonIndex);
-	NSLog(@"%@: Cancel button index: %i", [alertView class], alertView.cancelButtonIndex);
-	NSLog(@"%@: Number of buttons: %i", [alertView class], alertView.numberOfButtons);
+	NSLog(@"%@: First other button index: %li", [alertView class], (long)alertView.firstOtherButtonIndex);
+	NSLog(@"%@: Cancel button index: %li", [alertView class], (long)alertView.cancelButtonIndex);
+	NSLog(@"%@: Number of buttons: %li", [alertView class], (long)alertView.numberOfButtons);
 	
 	[alertView show];
 }
