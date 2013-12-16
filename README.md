@@ -19,11 +19,11 @@ Spot the difference!
 
 Star rating demo:
 
-![LMAlertView-review@2x](http://lmcd.me/LMAlertView-review@2x.png?2)
+![LMAlertView-review@2x](http://lmcd.me/LMAlertView-review@2x.png?3)
 
 Credit card selection demo:
 
-![LMAlertView-card@2x](http://lmcd.me/LMAlertView-card@2x.png?2)
+![LMAlertView-card@2x](http://lmcd.me/LMAlertView-card@2x.png?3)
 
 Work in progress - embedded view controllers:
 
