@@ -671,7 +671,7 @@
 	return cell;
 }
 
-- (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if (self.numberOfButtons <= 2) {
 		return 1;
