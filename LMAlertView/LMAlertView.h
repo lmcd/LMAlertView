@@ -30,6 +30,7 @@
 
 @interface LMAlertView : UIView <UITableViewDataSource, UITableViewDelegate>
 
+@property (nonatomic, strong) UIColor *tintColor;
 @property (nonatomic, strong, readonly) UIView *contentView;
 @property (nonatomic) BOOL keepTopAlignment;
 @property (unsafe_unretained) id<UIAlertViewDelegate> delegate;
