@@ -112,11 +112,6 @@
 {
 	_tintColor = tintColor;
 	self.window.tintColor = tintColor;
-	
-	// todo - this shouldn't be necessary
-	for (int i = 0; i < self.numberOfButtons; i++) {
-		[self buttonCellForIndex:i].tintColor = tintColor;
-	}
 }
 
 - (id)initWithTitle:(NSString *)title message:(NSString *)message delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...

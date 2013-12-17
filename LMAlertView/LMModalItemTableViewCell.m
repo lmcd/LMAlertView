@@ -17,7 +17,6 @@
         self.backgroundColor = [UIColor clearColor];
 		
 		self.textLabel.textAlignment = NSTextAlignmentCenter;
-		self.textLabel.textColor = self.tintColor;
 		self.textLabel.adjustsFontSizeToFitWidth = YES;
 		
 		UIView *contentView = self.contentView;
@@ -31,11 +30,9 @@
     return self;
 }
 
-- (void)setTintColor:(UIColor *)tintColor
+- (void)tintColorDidChange
 {
-	[super setTintColor:tintColor];
-	
-	self.textLabel.textColor = tintColor;
+	self.textLabel.textColor = self.tintColor;
 }
 
 - (void)setIsEnabled:(BOOL)isEnabled
