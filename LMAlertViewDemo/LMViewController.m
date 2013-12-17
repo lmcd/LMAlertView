@@ -165,7 +165,7 @@
 	addButton.layer.cornerRadius = 5.0;
 	addButton.layer.masksToBounds = YES;
 	addButton.layer.borderWidth = 1.0;
-	addButton.layer.borderColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0].CGColor;
+	addButton.layer.borderColor = addButton.tintColor.CGColor;
 	[addButton setImage:[UIImage imageNamed:@"Plus"] forState:UIControlStateNormal];
 	[contentView addSubview:addButton];
 	
