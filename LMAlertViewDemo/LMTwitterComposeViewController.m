@@ -89,9 +89,13 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
 	NSInteger remainingCharacters = 140 - textView.text.length;
+	BOOL postEnabled = (remainingCharacters >= 0);
+	
+	self.characterCountLabel.textColor = [UIColor colorWithRed:(postEnabled ? 0.0 : 255.0) green:0.0 blue:0.0 alpha:0.5];
+	
 	self.characterCountLabel.text = [NSString stringWithFormat:@"%li", (long)remainingCharacters];
 	
-	self.navigationItem.rightBarButtonItem.enabled = (remainingCharacters >= 0);
+	self.navigationItem.rightBarButtonItem.enabled = postEnabled;
 }
 
 #pragma mark - IBActions
