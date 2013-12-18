@@ -173,6 +173,7 @@
 			titleLabel = [[UILabel alloc] init];
 			titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:attributes];
 			titleLabel.numberOfLines = 0;
+			titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 			titleLabel.textAlignment = NSTextAlignmentCenter;
 			
 			CGSize sizeThatFits = [titleLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
@@ -188,6 +189,7 @@
 		if (message != nil) {
 			self.messageLabel = [[UILabel alloc] init];
 			self.messageLabel.numberOfLines = 0;
+			self.messageLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 			self.message = message;
 			
 			CGSize sizeThatFits = [self.messageLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
