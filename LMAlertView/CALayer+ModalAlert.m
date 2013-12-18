@@ -23,11 +23,26 @@
 	method_exchangeImplementations(originalMethod, overrideMethod);
 }
 
-- (void)_addAnimation:(CAAnimation *)anim forKey:(NSString *)key {
-	UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+- (UIWindow *)windowForView:(UIView *)view
+{
+	UIView *tempView = view;
 	
-	if ([keyWindow.rootViewController isKindOfClass:[LMEmbeddedViewController class]]) {
-		UIView *view = [self delegate];
+	while (tempView.superview != nil) {
+		tempView = tempView.superview;
+		
+		if ([tempView isKindOfClass:[UIWindow class]]) {
+			return (UIWindow *)tempView;
+		}
+	}
+	
+	return nil;
+}
+
+- (void)_addAnimation:(CAAnimation *)anim forKey:(NSString *)key {
+	UIView *view = [self delegate];
+	UIWindow *window = [self windowForView:view];
+	
+	if ([window.rootViewController isKindOfClass:[LMEmbeddedViewController class]]) {
 		CABasicAnimation *basicAnim = (CABasicAnimation *)anim;
 		CGFloat modalWidth = 290.0;
 		
