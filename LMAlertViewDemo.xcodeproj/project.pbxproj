@@ -31,7 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		165F9F681831632C00037E82 /* LMAlertViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LMAlertViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		165F9F681831632C00037E82 /* LMAlertView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LMAlertView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		165F9F6B1831632C00037E82 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		165F9F6D1831632C00037E82 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		165F9F6F1831632C00037E82 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -100,7 +100,7 @@
 		165F9F691831632C00037E82 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				165F9F681831632C00037E82 /* LMAlertViewDemo.app */,
+				165F9F681831632C00037E82 /* LMAlertView.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -197,7 +197,7 @@
 			);
 			name = LMAlertViewDemo;
 			productName = animationtest;
-			productReference = 165F9F681831632C00037E82 /* LMAlertViewDemo.app */;
+			productReference = 165F9F681831632C00037E82 /* LMAlertView.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -396,7 +396,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LMAlertViewDemo/LMAlertViewDemo-Prefix.pch";
 				INFOPLIST_FILE = "LMAlertViewDemo/LMAlertViewDemo-Info.plist";
-				PRODUCT_NAME = LMAlertViewDemo;
+				PRODUCT_NAME = LMAlertView;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -417,7 +417,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LMAlertViewDemo/LMAlertViewDemo-Prefix.pch";
 				INFOPLIST_FILE = "LMAlertViewDemo/LMAlertViewDemo-Info.plist";
-				PRODUCT_NAME = LMAlertViewDemo;
+				PRODUCT_NAME = LMAlertView;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
