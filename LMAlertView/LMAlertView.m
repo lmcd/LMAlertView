@@ -21,6 +21,7 @@
 
 @property (nonatomic, strong, readonly) UIToolbar *toolbar;
 
+@property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *messageLabel;
 
 @property (nonatomic, strong) UITableView *buttonTableView;
@@ -150,36 +151,20 @@
 		CGFloat buttonHeight = 44.0;
 		CGFloat labelWidth = alertWidth - (sideMargin * 2.0);
 		
-		UIFont *titleFont = [UIFont boldSystemFontOfSize:17.0];
-		
 		CGFloat yOffset = topBottomMargin;
-		
-		UILabel *titleLabel;
+        
 		UIView *lineView;
 		
 		if (title != nil) {
+            self.titleLabel = [[UILabel alloc] init];
+            self.titleLabel.numberOfLines = 0;
+            self.titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 			self.title = title;
 			
-			// The UILabels in UIAlertView mysteriously have no paragraph style but STILL have line heights
-			// I suspect there's some UILabel private API fuckery afoot
-			NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-			//[paragrahStyle setLineSpacing:2];
+			CGSize sizeThatFits = [self.titleLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
+			self.titleLabel.frame = CGRectMake(sideMargin, yOffset, labelWidth, sizeThatFits.height);
 			
-			NSDictionary *attributes = @{
-										 NSParagraphStyleAttributeName: paragrahStyle,
-										 NSFontAttributeName: titleFont
-										 };
-			
-			titleLabel = [[UILabel alloc] init];
-			titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:attributes];
-			titleLabel.numberOfLines = 0;
-			titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-			titleLabel.textAlignment = NSTextAlignmentCenter;
-			
-			CGSize sizeThatFits = [titleLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
-			titleLabel.frame = CGRectMake(sideMargin, yOffset, labelWidth, sizeThatFits.height);
-			
-			yOffset += titleLabel.frame.size.height;
+			yOffset += self.titleLabel.frame.size.height;
 		}
 		
 		// 4px gap between title and message
@@ -253,12 +238,12 @@
 		
 		[_buttonTableView reloadData];
 		[_otherTableView reloadData];
-
+        
 		CGFloat alertHeight = yOffset;
 		[self setupWithSize:CGSizeMake(alertWidth, alertHeight)];
 		
 		// Add everything to the content view
-		[self.contentView addSubview:titleLabel];
+		[self.contentView addSubview:self.titleLabel];
 		[self.contentView addSubview:self.messageLabel];
 		[self.contentView addSubview:self.buttonTableView];
         [self.contentView addSubview:self.otherTableView];
@@ -495,7 +480,7 @@
 		
 		// Fade in the gray background
 		[self.backgroundView.layer addAnimation:opacityAnimation forKey:@"opacity"];
-
+        
 		// Fade in the modal
 		// Would love to fade in all these things at once, but UIToolbar doesn't like it
 		[self.toolbar.layer addAnimation:opacityAnimation forKey:@"opacity"];
@@ -516,7 +501,7 @@
 	if ([self.delegate respondsToSelector:@selector(alertView:willDismissWithButtonIndex:)]) {
 		[self.delegate alertView:(UIAlertView *)self willDismissWithButtonIndex:buttonIndex];
 	}
-
+    
 	// Completion block
 	void (^completion)(BOOL finished) = ^(BOOL finished){
 		// Temporary bugfix
@@ -572,17 +557,37 @@
 	} [CATransaction commit];
 }
 
+-(void) setTitle:(NSString *)title
+{
+    _title = title;
+    
+    UIFont *titleFont = [UIFont boldSystemFontOfSize:17.0];
+    
+    // The UILabels in UIAlertView mysteriously have no paragraph style but STILL have line heights
+    // I suspect there's some UILabel private API fuckery afoot
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    //[paragrahStyle setLineSpacing:2];
+    
+    NSDictionary *attributes = @{
+                                 NSParagraphStyleAttributeName: paragraphStyle,
+                                 NSFontAttributeName: titleFont
+                                 };
+    
+    self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:attributes];
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
+}
+
 - (void)setMessage:(NSString *)message
 {
 	_message = message;
 	
 	UIFont *messageFont = [UIFont systemFontOfSize:14.0];
 	
-	NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+	NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
 	//[paragrahStyle setLineSpacing:2];
 	
 	NSDictionary *attributes = @{
-								 NSParagraphStyleAttributeName: paragrahStyle,
+								 NSParagraphStyleAttributeName: paragraphStyle,
 								 NSFontAttributeName: messageFont
 								 };
 	
@@ -616,7 +621,7 @@
 		else {
 			labelText = self.otherButtonsTitles[0];
 		}
-
+        
 		boldButton = YES;
 		lastRow = YES;
 	}
