@@ -42,6 +42,7 @@
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, readonly, getter=isVisible) BOOL visible;
 @property(nonatomic) BOOL buttonsShouldStack;
+@property(nonatomic) BOOL autoRotate;
 
 - (id)initWithSize:(CGSize)size;
 - (id)initWithViewController:(UIViewController *)viewController;
