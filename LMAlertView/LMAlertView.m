@@ -33,6 +33,8 @@
 @property (nonatomic, copy) NSString *cancelButtonTitle;
 @property (nonatomic, strong) NSMutableArray *otherButtonsTitles;
 
+- (void)setupWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles;
+
 @end
 
 @implementation LMAlertView
@@ -119,137 +121,145 @@
 {
 	self = [super init];
     if (self) {
-		_cancelButtonIndex = -1;
-		_firstOtherButtonIndex = -1;
-		
-		_delegate = delegate;
-		
-		if (otherButtonTitles != nil) {
-			va_list args;
-			va_start(args, otherButtonTitles);
-			_otherButtonsTitles = [[NSMutableArray alloc] initWithObjects:otherButtonTitles, nil];
-			id obj;
-			while ((obj = va_arg(args, id)) != nil) {
-				[_otherButtonsTitles addObject:obj];
-			}
-			va_end(args);
-			
-			_firstOtherButtonIndex = 1;
-		}
-		
-		_numberOfButtons = [_otherButtonsTitles count];
-		
-		if (cancelButtonTitle != nil) {
-			_numberOfButtons++;
-			_cancelButtonIndex = 0;
-			_cancelButtonTitle = cancelButtonTitle;
-		}
-		
-		CGFloat sideMargin = 15.0;
-		CGFloat topBottomMargin = 19.0;
-		CGFloat alertWidth = 270.0;
-		CGFloat buttonHeight = 44.0;
-		CGFloat labelWidth = alertWidth - (sideMargin * 2.0);
-		
-		CGFloat yOffset = topBottomMargin;
-        
-		UIView *lineView;
-		
-		if (title != nil) {
-            self.titleLabel = [[UILabel alloc] init];
-            self.titleLabel.numberOfLines = 0;
-            self.titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-			self.title = title;
-			
-			CGSize sizeThatFits = [self.titleLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
-			self.titleLabel.frame = CGRectMake(sideMargin, yOffset, labelWidth, sizeThatFits.height);
-			
-			yOffset += self.titleLabel.frame.size.height;
-		}
-		
-		// 4px gap between title and message
-		// Even if a title doesn't exist, the 4px is still present
-		yOffset += 4.0;
-		
-		if (message != nil) {
-			self.messageLabel = [[UILabel alloc] init];
-			self.messageLabel.numberOfLines = 0;
-			self.messageLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-			self.message = message;
-			
-			CGSize sizeThatFits = [self.messageLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
-			self.messageLabel.frame = CGRectMake(sideMargin, yOffset, labelWidth, sizeThatFits.height);
-			
-			yOffset += self.messageLabel.frame.size.height;
-		}
-		
-		yOffset += topBottomMargin;
-		
-        // Lines setup
-        if (self.numberOfButtons > 0) {
-			lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, yOffset - 1.0, alertWidth, 1.0)];
-			lineView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-			
-			// We put our 0.5px high view in to a container that's 1px high
-			// This is because autoresizing was rounding up to 1 and messing things up
-			// autolayout might fix this
-			UIView *lineViewInner = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.5, alertWidth, 0.5)];
-			lineViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
-			lineViewInner.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-			
-			[lineView addSubview:lineViewInner];
+        _delegate = delegate;
+        NSMutableArray *newOtherButtonTitles;
+        if (otherButtonTitles != nil) {
+            va_list args;
+            va_start(args, otherButtonTitles);
+            newOtherButtonTitles = [[NSMutableArray alloc] initWithObjects:otherButtonTitles, nil];
+            id obj;
+            while ((obj = va_arg(args, id)) != nil) {
+                [newOtherButtonTitles addObject:obj];
+            }
+            va_end(args);
         }
-		
-		BOOL sideBySideButtons = (self.numberOfButtons == 2);
-		BOOL buttonsShouldStack = !sideBySideButtons;
-		
-		if (sideBySideButtons) {
-			CGFloat halfWidth = (alertWidth / 2.0);
-			
-			UIView *lineVerticalViewInner = [[UIView alloc] initWithFrame:CGRectMake(halfWidth, 0.5, 0.5, buttonHeight + 0.5)];
-			lineVerticalViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
-			[lineView addSubview:lineVerticalViewInner];
-			
-			_buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, halfWidth, buttonHeight)];
-			_otherTableView = [self tableViewWithFrame:CGRectMake(halfWidth, yOffset, halfWidth, buttonHeight)];
-			
-			yOffset += buttonHeight;
-		}
-		else {
-			NSInteger numberOfOtherButtons = [self.otherButtonsTitles count];
-			
-			if (numberOfOtherButtons > 0) {
-				CGFloat tableHeight = buttonsShouldStack ? numberOfOtherButtons * buttonHeight : buttonHeight;
-				
-				_buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, tableHeight)];
-				
-				yOffset += tableHeight;
-			}
-			
-			if (cancelButtonTitle != nil) {
-				_otherTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, buttonHeight)];
-				
-				yOffset += buttonHeight;
-			}
-		}
-		
-		_buttonTableView.tag = 0;
-		_otherTableView.tag = 1;
-		
-		[_buttonTableView reloadData];
-		[_otherTableView reloadData];
-        
-		CGFloat alertHeight = yOffset;
-		[self setupWithSize:CGSizeMake(alertWidth, alertHeight)];
-		
-		// Add everything to the content view
-		[self.contentView addSubview:self.titleLabel];
-		[self.contentView addSubview:self.messageLabel];
-		[self.contentView addSubview:self.buttonTableView];
-        [self.contentView addSubview:self.otherTableView];
-		[self.contentView addSubview:lineView];
+
+        [self setupWithTitle:title message:message cancelButtonTitle:cancelButtonTitle otherButtonTitles:newOtherButtonTitles];
     }
     return self;
+}
+
+- (void)setupWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles;
+{
+    _cancelButtonIndex = -1;
+    _firstOtherButtonIndex = -1;
+    _cancelButtonTitle = nil;
+    if (otherButtonTitles != nil) {
+        _otherButtonsTitles = [[NSMutableArray alloc] initWithArray:otherButtonTitles];
+        _firstOtherButtonIndex = 1;
+    }
+
+    _numberOfButtons = [_otherButtonsTitles count];
+
+    if (cancelButtonTitle != nil) {
+        _numberOfButtons++;
+        _cancelButtonIndex = 0;
+        _cancelButtonTitle = cancelButtonTitle;
+    }
+
+    CGFloat sideMargin = 15.0;
+    CGFloat topBottomMargin = 19.0;
+    CGFloat alertWidth = 270.0;
+    CGFloat buttonHeight = 44.0;
+    CGFloat labelWidth = alertWidth - (sideMargin * 2.0);
+
+    CGFloat yOffset = topBottomMargin;
+
+    UIView *lineView;
+
+    if (title != nil) {
+        self.titleLabel = [[UILabel alloc] init];
+        self.titleLabel.numberOfLines = 0;
+        self.titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.title = title;
+
+        CGSize sizeThatFits = [self.titleLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
+        self.titleLabel.frame = CGRectMake(sideMargin, yOffset, labelWidth, sizeThatFits.height);
+
+        yOffset += self.titleLabel.frame.size.height;
+    }
+
+    // 4px gap between title and message
+    // Even if a title doesn't exist, the 4px is still present
+    yOffset += 4.0;
+
+    if (message != nil) {
+        self.messageLabel = [[UILabel alloc] init];
+        self.messageLabel.numberOfLines = 0;
+        self.messageLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.message = message;
+
+        CGSize sizeThatFits = [self.messageLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
+        self.messageLabel.frame = CGRectMake(sideMargin, yOffset, labelWidth, sizeThatFits.height);
+
+        yOffset += self.messageLabel.frame.size.height;
+    }
+
+    yOffset += topBottomMargin;
+
+    // Lines setup
+    if (self.numberOfButtons > 0) {
+        lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, yOffset - 1.0, alertWidth, 1.0)];
+        lineView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+
+        // We put our 0.5px high view in to a container that's 1px high
+        // This is because autoresizing was rounding up to 1 and messing things up
+        // autolayout might fix this
+        UIView *lineViewInner = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.5, alertWidth, 0.5)];
+        lineViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+        lineViewInner.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+
+        [lineView addSubview:lineViewInner];
+    }
+
+    BOOL sideBySideButtons = (self.numberOfButtons == 2);
+    BOOL buttonsShouldStack = !sideBySideButtons;
+
+    if (sideBySideButtons) {
+        CGFloat halfWidth = (alertWidth / 2.0);
+
+        UIView *lineVerticalViewInner = [[UIView alloc] initWithFrame:CGRectMake(halfWidth, 0.5, 0.5, buttonHeight + 0.5)];
+        lineVerticalViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+        [lineView addSubview:lineVerticalViewInner];
+
+        _buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, halfWidth, buttonHeight)];
+        _otherTableView = [self tableViewWithFrame:CGRectMake(halfWidth, yOffset, halfWidth, buttonHeight)];
+
+        yOffset += buttonHeight;
+    }
+    else {
+        NSInteger numberOfOtherButtons = [self.otherButtonsTitles count];
+
+        if (numberOfOtherButtons > 0) {
+            CGFloat tableHeight = buttonsShouldStack ? numberOfOtherButtons * buttonHeight : buttonHeight;
+
+            _buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, tableHeight)];
+
+            yOffset += tableHeight;
+        }
+
+        if (cancelButtonTitle != nil) {
+            _otherTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, buttonHeight)];
+
+            yOffset += buttonHeight;
+        }
+    }
+
+    _buttonTableView.tag = 0;
+    _otherTableView.tag = 1;
+
+    [_buttonTableView reloadData];
+    [_otherTableView reloadData];
+
+    CGFloat alertHeight = yOffset;
+    [self setupWithSize:CGSizeMake(alertWidth, alertHeight)];
+
+    // Add everything to the content view
+    [self.contentView addSubview:self.titleLabel];
+    [self.contentView addSubview:self.messageLabel];
+    [self.contentView addSubview:self.buttonTableView];
+    [self.contentView addSubview:self.otherTableView];
+    [self.contentView addSubview:lineView];
 }
 
 - (void)setSize:(CGSize)size animated:(BOOL)animated
@@ -737,6 +747,37 @@
 	}
 	
 	return [theTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:rowIndex inSection:0]];
+}
+
+# pragma mark - to comply with the UIAlertView API
+
+- (NSInteger)addButtonWithTitle:(NSString *)title
+{
+    NSString *oldTitle = [self.title copy];
+    NSString *oldMessage = [self.message copy];
+    NSString *oldCancelTitle = [self.cancelButtonTitle copy];
+    NSMutableArray *allTitles = [[NSMutableArray alloc] initWithArray:self.otherButtonsTitles copyItems:YES];
+    [allTitles addObject:title];
+    [self setupWithTitle:oldTitle message:oldMessage cancelButtonTitle:oldCancelTitle otherButtonTitles:allTitles];
+
+    return self.numberOfButtons - 1;
+}
+
+- (NSString *)buttonTitleAtIndex:(NSInteger)buttonIndex
+{
+    NSString *buttonTitle;
+    if (self.cancelButtonTitle) {
+        if (buttonIndex == 0) {
+             buttonTitle = self.cancelButtonTitle;
+        }
+        else {
+            buttonTitle = [self.otherButtonsTitles objectAtIndex:buttonIndex -1];
+        }
+    }
+    else {
+        buttonTitle = [self.otherButtonsTitles objectAtIndex:buttonIndex];
+    }
+    return buttonTitle;
 }
 
 @end
