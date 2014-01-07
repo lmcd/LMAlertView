@@ -97,8 +97,13 @@
 
 - (IBAction)customButtonTapped:(id)sender
 {
-	LMAlertView *alertView = [[LMAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-	
+    LMAlertView *alertView = [[LMAlertView alloc] initWithTitle:@"Test" message:@"Message here" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+
+    //[alertView addButtonWithTitle:@"3rd"];
+    for (NSInteger titleIndex = 0; titleIndex < alertView.numberOfButtons; titleIndex++) {
+        NSLog(@"%@: button title for index %i is: %@", [alertView class], titleIndex, [alertView buttonTitleAtIndex:titleIndex]);
+    }
+    
 	NSLog(@"%@: First other button index: %li", [alertView class], (long)alertView.firstOtherButtonIndex);
 	NSLog(@"%@: Cancel button index: %li", [alertView class], (long)alertView.cancelButtonIndex);
 	NSLog(@"%@: Number of buttons: %li", [alertView class], (long)alertView.numberOfButtons);
