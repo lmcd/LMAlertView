@@ -171,6 +171,7 @@
         self.titleLabel = [[UILabel alloc] init];
         self.titleLabel.numberOfLines = 0;
         self.titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.titleLabel.backgroundColor = [UIColor clearColor]; // IOS 6
         self.title = title;
 
         CGSize sizeThatFits = [self.titleLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
@@ -187,6 +188,7 @@
         self.messageLabel = [[UILabel alloc] init];
         self.messageLabel.numberOfLines = 0;
         self.messageLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.messageLabel.backgroundColor = [UIColor clearColor]; // IOS 6
         self.message = message;
 
         CGSize sizeThatFits = [self.messageLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
