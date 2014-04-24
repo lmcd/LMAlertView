@@ -15,9 +15,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/lmcd/LMFixedTextView.git
 
 SPEC CHECKSUMS:
-  CAAnimationBlocks: b70f877c5b92734abef270152187d3287d84e8f8
-  EDStarRating: 6761f41fd040f1cde155e2885dddc96461620f67
+  CAAnimationBlocks: 0b18c88fcdffc0b8bb5e4c2ef57096f85119bb4d
+  EDStarRating: 4954b62647884e7b2d37c4720d4a1f758b5a3435
   LMFixedTextView: 794f1423096e30f88a856ef49a791af08e5c6efe
   RBBAnimation: e7f31ed62f760f3caf120b5d943267bd9a8e1f64
 
-COCOAPODS: 0.28.0
+COCOAPODS: 0.32.1
