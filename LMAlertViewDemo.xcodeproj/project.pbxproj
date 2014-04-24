@@ -27,6 +27,7 @@
 		16CCDFA91853296D0059DE8B /* LMTwitterLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CCDFA81853296D0059DE8B /* LMTwitterLocationViewController.m */; };
 		16CCDFAC18544C6F0059DE8B /* LMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CCDFAB18544C6F0059DE8B /* LMNavigationController.m */; };
 		16CCDFD2185832520059DE8B /* LMModalItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CCDFD1185832520059DE8B /* LMModalItemTableViewCell.m */; };
+		984508EE19090DFA0017DE75 /* UIDevice+SystemVersionNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 984508ED19090DFA0017DE75 /* UIDevice+SystemVersionNumber.m */; };
 		E017F5E695B446B2B1B5314D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6ABB7B0B6944B929C0CFAFE /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +68,8 @@
 		16CCDFD0185832520059DE8B /* LMModalItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMModalItemTableViewCell.h; path = ../LMAlertView/LMModalItemTableViewCell.h; sourceTree = "<group>"; };
 		16CCDFD1185832520059DE8B /* LMModalItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMModalItemTableViewCell.m; path = ../LMAlertView/LMModalItemTableViewCell.m; sourceTree = "<group>"; };
 		1FE7E8F0E7304B2287950B17 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		984508EC19090DFA0017DE75 /* UIDevice+SystemVersionNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIDevice+SystemVersionNumber.h"; path = "LMAlertView/UIDevice+SystemVersionNumber.h"; sourceTree = SOURCE_ROOT; };
+		984508ED19090DFA0017DE75 /* UIDevice+SystemVersionNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIDevice+SystemVersionNumber.m"; path = "LMAlertView/UIDevice+SystemVersionNumber.m"; sourceTree = SOURCE_ROOT; };
 		B6ABB7B0B6944B929C0CFAFE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -173,6 +176,8 @@
 				16CCDFAA18544C6F0059DE8B /* LMNavigationController.h */,
 				16CCDFAB18544C6F0059DE8B /* LMNavigationController.m */,
 				169103CD183311F3003DF9E6 /* Radial.png */,
+				984508EC19090DFA0017DE75 /* UIDevice+SystemVersionNumber.h */,
+				984508ED19090DFA0017DE75 /* UIDevice+SystemVersionNumber.m */,
 			);
 			name = LMAlertView;
 			path = LMAlertViewDemo;
@@ -285,6 +290,7 @@
 				16CCDFAC18544C6F0059DE8B /* LMNavigationController.m in Sources */,
 				16CCDFA91853296D0059DE8B /* LMTwitterLocationViewController.m in Sources */,
 				16B47FC7183A33E800A06371 /* CALayer+ModalAlert.m in Sources */,
+				984508EE19090DFA0017DE75 /* UIDevice+SystemVersionNumber.m in Sources */,
 				16CCDFD2185832520059DE8B /* LMModalItemTableViewCell.m in Sources */,
 				165F9F781831632C00037E82 /* main.m in Sources */,
 				165F9F7C1831632C00037E82 /* LMAppDelegate.m in Sources */,

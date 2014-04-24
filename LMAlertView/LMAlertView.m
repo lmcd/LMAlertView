@@ -10,6 +10,7 @@
 #import "LMEmbeddedViewController.h"
 #import "LMModalItemTableViewCell.h"
 #import <CAAnimation+Blocks.h>
+#import "UIDevice+SystemVersionNumber.h"
 
 @interface LMAlertView ()
 
@@ -114,7 +115,9 @@
 - (void)setTintColor:(UIColor *)tintColor
 {
 	_tintColor = tintColor;
-	self.window.tintColor = tintColor;
+    
+    if([UIDevice currentDevice].systemVersionNumber >= 7.0)
+        self.window.tintColor = tintColor;
 }
 
 - (id)initWithTitle:(NSString *)title message:(NSString *)message delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...
@@ -430,7 +433,8 @@
 	
 	// You can have more than one UIWindow in the view hierachy, which is how UIAlertView works
 	self.window = [[UIWindow alloc] initWithFrame:[appDelegate window].frame];
-	self.window.tintColor = self.tintColor;
+    if([UIDevice currentDevice].systemVersionNumber >= 7.0)
+        self.window.tintColor = self.tintColor;
 	
 	LMEmbeddedViewController *viewController = [[LMEmbeddedViewController alloc] init];
 	viewController.alertView = self;
