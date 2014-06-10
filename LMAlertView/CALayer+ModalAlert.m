@@ -27,7 +27,7 @@
 {
 	UIView *tempView = view;
 	
-	while (tempView.superview != nil) {
+	while ([tempView respondsToSelector:@selector(superview)] && tempView.superview != nil) {
 		tempView = tempView.superview;
 		
 		if ([tempView isKindOfClass:[UIWindow class]]) {
