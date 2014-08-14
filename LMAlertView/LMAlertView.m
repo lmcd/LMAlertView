@@ -423,7 +423,7 @@
 - (void)show
 {
 	if ([self.delegate respondsToSelector:@selector(willPresentAlertView:)]) {
-		[self.delegate willPresentAlertView:self];
+		[self.delegate willPresentAlertView:(UIAlertView *)self];
 	}
 	
 	id<UIApplicationDelegate> appDelegate = [[UIApplication sharedApplication] delegate];
@@ -472,7 +472,7 @@
 		modalTransformAnimation.toValue = [NSValue valueWithCATransform3D:transformTo];
 		modalTransformAnimation.completion = ^(BOOL finished){
 			if ([self.delegate respondsToSelector:@selector(didPresentAlertView:)]) {
-				[self.delegate didPresentAlertView:self];
+				[self.delegate didPresentAlertView:(UIAlertView *)self];
 			}
 		};
 		self.representationView.layer.transform = transformTo;
