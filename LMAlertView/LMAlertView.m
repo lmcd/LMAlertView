@@ -679,7 +679,8 @@
 	cell.lineView.hidden = lastRow;
 	cell.textLabel.font = boldButton ? [UIFont boldSystemFontOfSize:17.0] : [UIFont systemFontOfSize:17.0];
 	cell.textLabel.text = labelText;
-	
+    cell.textLabel.textColor = self.tintColor;
+    
 	return cell;
 }
 
