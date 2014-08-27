@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.source   = { :git => 'https://github.com/lmcd/LMAlertView.git', :tag => 'v1.1.0' }
   s.requires_arc = true
 
-  s.ios.deployment_target = '7.0'
+  s.ios.deployment_target = '6.0'
   s.dependency 'RBBAnimation', '~> 0.3.0'
   s.dependency 'CAAnimationBlocks', '~> 0.0.1'
 
