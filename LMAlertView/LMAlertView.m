@@ -401,20 +401,33 @@
 #define DegreesToRadians(degrees) (degrees * M_PI / 180)
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     CGAffineTransform transform;
-    switch (orientation) {
-        case UIInterfaceOrientationLandscapeLeft:
-            transform = CGAffineTransformMakeRotation(-DegreesToRadians(90));
-            break;
-        case UIInterfaceOrientationLandscapeRight:
-            transform = CGAffineTransformMakeRotation(DegreesToRadians(90));
-            break;
-        case UIInterfaceOrientationPortraitUpsideDown:
-            transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
-            break;
-        case UIInterfaceOrientationPortrait:
-        default:
-            transform = CGAffineTransformMakeRotation(DegreesToRadians(0));
-            break;
+    
+    BOOL ignoreOrientation = NO;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    if ([[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)]) {
+        ignoreOrientation = YES;
+    }
+#endif
+    
+    if (ignoreOrientation) {
+        transform = CGAffineTransformMakeRotation(DegreesToRadians(0));
+    }
+    else {
+    	switch (orientation) {
+		case UIInterfaceOrientationLandscapeLeft:
+	            transform = CGAffineTransformMakeRotation(-DegreesToRadians(90));
+	            break;
+	        case UIInterfaceOrientationLandscapeRight:
+	            transform = CGAffineTransformMakeRotation(DegreesToRadians(90));
+	            break;
+	        case UIInterfaceOrientationPortraitUpsideDown:
+	            transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
+	            break;
+	        case UIInterfaceOrientationPortrait:
+	        default:
+	            transform = CGAffineTransformMakeRotation(DegreesToRadians(0));
+	            break;
+    	}
     }
     
     [self.alertContainerView setTransform:transform];
