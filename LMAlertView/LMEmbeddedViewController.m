@@ -19,6 +19,14 @@
 	[self.alertView dismissWithClickedButtonIndex:-1 animated:YES];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (self.controllerToShow) {
+        [self presentViewController:self.controllerToShow animated:NO completion:nil];
+        self.controllerToShow = nil;
+    }
+}
+
 - (BOOL)shouldAutorotate
 {
     return self.alertView.autoRotate;

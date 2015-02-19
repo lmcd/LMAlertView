@@ -455,7 +455,7 @@
 		viewController2.view = self.alertContainerView;
 		
 		// We fake "present" this view controller so it can be dismissed elswhere
-		[viewController presentViewController:viewController2 animated:NO completion:nil];
+		viewController.controllerToShow = viewController2;
 		
 		[viewController2 addChildViewController:self.controller];
 	}
