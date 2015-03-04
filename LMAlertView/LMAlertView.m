@@ -82,7 +82,7 @@
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-	CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+	CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
 	
 	self.representationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
 	self.representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, ([[UIScreen mainScreen] bounds].size.height - keyboardSize.height) / 2.0);
@@ -519,6 +519,8 @@
 		
 		// Release window from memory
 		self.window.hidden = YES;
+        [self.window.rootViewController.presentedViewController.childViewControllers makeObjectsPerformSelector:@selector(removeFromParentViewController)];
+        [self.window.rootViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
 		self.window = nil;
 		
 		_visible = NO;
