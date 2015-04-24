@@ -521,6 +521,9 @@
 		self.window.hidden = YES;
 		self.window = nil;
 		
+		UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+		[window makeKeyAndVisible];
+		
 		_visible = NO;
 		
 		[self.buttonTableView deselectRowAtIndexPath:self.buttonTableView.indexPathForSelectedRow animated:NO];
