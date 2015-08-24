@@ -42,7 +42,7 @@
 	UIView *view = [self delegate];
 	UIWindow *window = [self windowForView:view];
 	
-	if ([window.rootViewController isKindOfClass:[LMEmbeddedViewController class]]) {
+	if ([window.rootViewController isKindOfClass:[LMEmbeddedViewController class]] && [anim isKindOfClass:[CABasicAnimation class]]) {
 		CABasicAnimation *basicAnim = (CABasicAnimation *)anim;
 		CGFloat modalWidth = 290.0;
 		
