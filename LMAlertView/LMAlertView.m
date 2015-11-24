@@ -9,29 +9,41 @@
 #import "LMAlertView.h"
 #import "LMEmbeddedViewController.h"
 #import "LMModalItemTableViewCell.h"
-#import <CAAnimation+Blocks.h>
 
-@interface LMAlertView ()
+#define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
+#define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+#define DegreesToRadians(degrees)					(degrees * M_PI / 180)
 
-@property (nonatomic, strong, readonly) UIView *alertContainerView;
-@property (nonatomic, strong, readonly) UIView *backgroundView;
+static CGFloat sideMargin = 15.0f;
+static CGFloat topBottomMargin = 19.0f;
+static CGFloat alertWidth = 270.0f;
+static CGFloat buttonHeight = 44.0f;
 
-@property (nonatomic, strong, readonly) UIView *representationView;
-@property (nonatomic, strong, readonly) UIView *alertBackgroundView;
+@interface LMAlertView () {
+	UIViewController *frontmostViewController;
+	UIViewController *destinationViewController;
+	UINavigationController *navigationController;
+	UITableView *tableview;
+	CGAffineTransform transform;
+	kSpringAnimationClassName *animation;
+}
 
-@property (nonatomic, strong, readonly) UIToolbar *toolbar;
-
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *messageLabel;
-
-@property (nonatomic, strong) UITableView *buttonTableView;
-@property (nonatomic, strong) UITableView *otherTableView;
-
-@property (nonatomic, strong) UIWindow *window;
-@property (nonatomic, strong) UIViewController *controller;
-
-@property (nonatomic, copy) NSString *cancelButtonTitle;
-@property (nonatomic, strong) NSMutableArray *otherButtonsTitles;
+@property (strong, nonatomic, readonly)	UIView				*alertContainerView;
+@property (strong, nonatomic, readonly) UIView				*backgroundView;
+@property (strong, nonatomic, readonly) UIView				*representationView;
+@property (strong, nonatomic, readonly) UIView				*alertBackgroundView;
+@property (strong, nonatomic, readonly) UIToolbar			*toolbar;
+@property (strong, nonatomic)			UILabel				*titleLabel;
+@property (strong, nonatomic)			UILabel				*messageLabel;
+@property (strong, nonatomic)			UITableView			*buttonTableView;
+@property (strong, nonatomic)			UITableView			*otherTableView;
+@property (strong, nonatomic)			UIWindow			*window;
+@property (strong, nonatomic)			UIViewController	*controller;
+@property (copy, nonatomic)				NSString			*cancelButtonTitle;
+@property (strong, nonatomic)			NSMutableArray		*otherButtonsTitles;
 
 - (void)setupWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles;
 
@@ -39,37 +51,30 @@
 
 @implementation LMAlertView
 
-- (id)initWithSize:(CGSize)size
-{
+- (id)initWithSize:(CGSize)size {
     self = [super init];
-    if (self) {
+
+	if (self) {
         [self setupWithSize:size];
     }
-    return self;
+
+	return self;
 }
 
-- (id)initWithViewController:(UIViewController *)viewController
-{
+- (id)initWithViewController:(UIViewController *)viewController {
     self = [super init];
-    if (self) {
-		_controller = viewController;
-		
-		UIViewController *frontmostViewController;
-		
+
+	if (self) {
 		if ([viewController isKindOfClass:[UINavigationController class]]) {
-			UINavigationController *navigationController = (UINavigationController *)viewController;
+			navigationController = (UINavigationController *)viewController;
 			frontmostViewController = navigationController.visibleViewController;
-		}
-		else {
+		} else {
 			frontmostViewController = viewController;
 		}
 		
-		CGSize size = frontmostViewController.view.frame.size;
-		size.height += 44.0;
+		[self setupWithSize:CGSizeMake(frontmostViewController.view.frame.size.width, frontmostViewController.view.frame.size.height + 44)];
 		
-		[self setupWithSize:size];
-		
-		UIViewController *destinationViewController = viewController;
+		destinationViewController = viewController;
 		destinationViewController.view.frame = self.contentView.frame;
 		
 		[self.contentView addSubview:destinationViewController.view];
@@ -77,53 +82,45 @@
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     }
+
     return self;
 }
 
-- (void)keyboardWillShow:(NSNotification *)notification
-{
+- (void)keyboardWillShow:(NSNotification *)notification {
 	CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
 	
 	self.representationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
 	self.representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, ([[UIScreen mainScreen] bounds].size.height - keyboardSize.height) / 2.0);
 }
 
-- (UITableView *)tableViewWithFrame:(CGRect)frame
-{
-	UITableView *tableView = [[UITableView alloc] initWithFrame:frame];
-	tableView.backgroundColor = [UIColor clearColor];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.scrollEnabled = NO;
-	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+- (UITableView *)tableViewWithFrame:(CGRect)frame {
+	tableview = [[UITableView alloc] initWithFrame:frame];
+	tableview.backgroundColor = [UIColor clearColor];
+	tableview.delegate = self;
+	tableview.dataSource = self;
+	tableview.scrollEnabled = NO;
+	tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+	tableview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 	
-	return tableView;
+	return tableview;
 }
 
-- (void)setButtonsShouldStack:(BOOL)buttonsShouldStack
-{
-	_buttonsShouldStack = buttonsShouldStack;
-	
-	if (self.numberOfButtons == 2) {
-		[self.buttonTableView reloadData];
-		[self.otherTableView reloadData];
+- (void)setTintColor:(UIColor *)tintColor {
+	self.tintColor = tintColor;
+    //tintcolor only works from iOS7
+	if (!SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+        self.window.tintColor = tintColor;
 	}
 }
 
-- (void)setTintColor:(UIColor *)tintColor
-{
-	_tintColor = tintColor;
-	self.window.tintColor = tintColor;
-}
-
-- (id)initWithTitle:(NSString *)title message:(NSString *)message delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...
-{
+- (id)initWithTitle:(NSString *)title message:(NSString *)message delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ... {
 	self = [super init];
-    if (self) {
-        _delegate = delegate;
+
+	if (self) {
+        self.delegate = delegate;
         NSMutableArray *newOtherButtonTitles;
-        if (otherButtonTitles != nil) {
+
+		if (otherButtonTitles != nil) {
             va_list args;
             va_start(args, otherButtonTitles);
             newOtherButtonTitles = [[NSMutableArray alloc] initWithObjects:otherButtonTitles, nil];
@@ -131,19 +128,21 @@
             while ((obj = va_arg(args, id)) != nil) {
                 [newOtherButtonTitles addObject:obj];
             }
+
             va_end(args);
         }
 
         [self setupWithTitle:title message:message cancelButtonTitle:cancelButtonTitle otherButtonTitles:newOtherButtonTitles];
     }
+
     return self;
 }
 
-- (void)setupWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles;
-{
-    _cancelButtonIndex = -1;
+- (void)setupWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles; {
+    self.cancelButtonIndex = -1;
     _firstOtherButtonIndex = -1;
     _cancelButtonTitle = nil;
+
     if (otherButtonTitles != nil) {
         _otherButtonsTitles = [[NSMutableArray alloc] initWithArray:otherButtonTitles];
         _firstOtherButtonIndex = 1;
@@ -157,10 +156,6 @@
         _cancelButtonTitle = cancelButtonTitle;
     }
 
-    CGFloat sideMargin = 15.0;
-    CGFloat topBottomMargin = 19.0;
-    CGFloat alertWidth = 270.0;
-    CGFloat buttonHeight = 44.0;
     CGFloat labelWidth = alertWidth - (sideMargin * 2.0);
 
     CGFloat yOffset = topBottomMargin;
@@ -212,44 +207,43 @@
         [lineView addSubview:lineViewInner];
     }
 
-    BOOL sideBySideButtons = (self.numberOfButtons == 2);
-    BOOL buttonsShouldStack = !sideBySideButtons;
+	BOOL sideBySideButtons = (self.numberOfButtons == 2);
+	BOOL buttonsShouldStack = !sideBySideButtons;
 
-    if (sideBySideButtons) {
-        CGFloat halfWidth = (alertWidth / 2.0);
+	if (sideBySideButtons) {
+		CGFloat halfWidth = (alertWidth / 2.0);
 
-        UIView *lineVerticalViewInner = [[UIView alloc] initWithFrame:CGRectMake(halfWidth, 0.5, 0.5, buttonHeight + 0.5)];
-        lineVerticalViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
-        [lineView addSubview:lineVerticalViewInner];
+		UIView *lineVerticalViewInner = [[UIView alloc] initWithFrame:CGRectMake(halfWidth, 0.5, 0.5, buttonHeight + 0.5)];
+		lineVerticalViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+		[lineView addSubview:lineVerticalViewInner];
 
-        _buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, halfWidth, buttonHeight)];
-        _otherTableView = [self tableViewWithFrame:CGRectMake(halfWidth, yOffset, halfWidth, buttonHeight)];
+		self.buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, halfWidth, buttonHeight)];
+		self.otherTableView = [self tableViewWithFrame:CGRectMake(halfWidth, yOffset, halfWidth, buttonHeight)];
 
-        yOffset += buttonHeight;
-    }
-    else {
-        NSInteger numberOfOtherButtons = [self.otherButtonsTitles count];
+		yOffset += buttonHeight;
+	} else {
+		NSInteger numberOfOtherButtons = [self.otherButtonsTitles count];
 
-        if (numberOfOtherButtons > 0) {
-            CGFloat tableHeight = buttonsShouldStack ? numberOfOtherButtons * buttonHeight : buttonHeight;
+		if (numberOfOtherButtons > 0) {
+			CGFloat tableHeight = buttonsShouldStack ? numberOfOtherButtons * buttonHeight : buttonHeight;
 
-            _buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, tableHeight)];
+			self.buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, tableHeight)];
 
-            yOffset += tableHeight;
-        }
+			yOffset += tableHeight;
+		}
 
-        if (cancelButtonTitle != nil) {
-            _otherTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, buttonHeight)];
+		if (cancelButtonTitle != nil) {
+			self.otherTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, buttonHeight)];
 
-            yOffset += buttonHeight;
-        }
-    }
+			yOffset += buttonHeight;
+		}
+	}
 
-    _buttonTableView.tag = 0;
-    _otherTableView.tag = 1;
+    self.buttonTableView.tag = 0;
+    self.otherTableView.tag = 1;
 
-    [_buttonTableView reloadData];
-    [_otherTableView reloadData];
+    [self.buttonTableView reloadData];
+    [self.otherTableView reloadData];
 
     CGFloat alertHeight = yOffset;
     [self setupWithSize:CGSizeMake(alertWidth, alertHeight)];
@@ -262,8 +256,7 @@
     [self.contentView addSubview:lineView];
 }
 
-- (void)setSize:(CGSize)size animated:(BOOL)animated
-{
+- (void)setSize:(CGSize)size animated:(BOOL)animated {
 	if (!animated) {
 		[self setSize:size];
 		return;
@@ -298,13 +291,13 @@
 	};
 	
 	// I think a spring animation is being used here, but not sure the params are the same
-	kSpringAnimationClassName *animation = [self springAnimationForKeyPath:@"bounds"];
+	animation = [self springAnimationForKeyPath:@"bounds"];
 	
 	animation.fromValue = [NSValue valueWithCGRect:self.representationView.layer.bounds];
 	animation.toValue = [NSValue valueWithCGRect:bounds];
 	
 	if (!isBigger) {
-		animation.completion = completion;
+		//animation.completion = completion;
 	}
 	
 	if (self.keepTopAlignment) {
@@ -313,8 +306,7 @@
 		if (isBigger) {
 			completion(YES);
 		}
-	}
-	else {
+	} else {
 		self.representationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
 		self.representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, [[UIScreen mainScreen] bounds].size.height / 2.0);
 	}
@@ -323,8 +315,7 @@
 	self.representationView.layer.bounds = bounds;
 }
 
-- (void)setSize:(CGSize)size
-{
+- (void)setSize:(CGSize)size {
 	CGRect frame = self.representationView.frame;
 	frame.size = size;
 	
@@ -332,58 +323,57 @@
     self.representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, [[UIScreen mainScreen] bounds].size.height / 2.0);
 }
 
-- (CGSize)size
-{
+- (CGSize)size {
 	return self.representationView.frame.size;
 }
 
-- (void)setupWithSize:(CGSize)size
-{
+- (void)setupWithSize:(CGSize)size {
 	CGSize screenSize = [[UIScreen mainScreen] bounds].size;
 	
 	// Main container that fits the whole screen
 	_alertContainerView = [[UIView alloc] initWithFrame:(CGRect){.size = screenSize}];
-	_alertContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	self.alertContainerView.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin);
 	
-	_backgroundView = [[UIView alloc] initWithFrame:_alertContainerView.frame];
-	_backgroundView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.4];
-	_backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	[_alertContainerView addSubview:_backgroundView];
+	_backgroundView = [[UIView alloc] initWithFrame:self.alertContainerView.frame];
+	self.backgroundView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.4];
+	self.backgroundView.autoresizingMask = self.alertContainerView.autoresizingMask;
 	
 	_representationView = [[UIView alloc] initWithFrame:(CGRect){.size = size}];
-    _representationView.center = CGPointMake(screenSize.width / 2.0, screenSize.height / 2.0);
+    self.representationView.center = CGPointMake(screenSize.width / 2.0, screenSize.height / 2.0);
 	
-	_representationView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-	[_representationView.layer setMasksToBounds:YES];
-	[_representationView.layer setCornerRadius:7.0];
+	self.representationView.autoresizingMask = self.alertContainerView.autoresizingMask;
+
+	[self.representationView.layer setMasksToBounds:YES];
+	[self.representationView.layer setCornerRadius:7.0];
 	
 	_toolbar = [[UIToolbar alloc] initWithFrame:(CGRect){.size = self.representationView.frame.size}];
-	_toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	
-	[self.representationView addSubview:_toolbar];
+	self.toolbar.autoresizingMask = self.alertContainerView.autoresizingMask;
+
+	[self.representationView addSubview:self.toolbar];
 	
 	_alertBackgroundView = [[UIView alloc] initWithFrame:(CGRect){.size = self.representationView.frame.size}];
-	_alertBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	self.alertBackgroundView.autoresizingMask = self.alertContainerView.autoresizingMask;
 	
 	UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Radial.png"]];
-	imageView.frame = _toolbar.frame;
-	imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	[_alertBackgroundView addSubview:imageView];
+	imageView.frame = self.toolbar.frame;
+	imageView.autoresizingMask = self.alertContainerView.autoresizingMask;
+
+	[self.alertBackgroundView addSubview:imageView];
 	
-	[self.representationView addSubview:_alertBackgroundView];
+	[self.representationView addSubview:self.alertBackgroundView];
 	
 	_contentView = [[UIView alloc] initWithFrame:(CGRect){.size = self.representationView.frame.size}];
-	_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	[self.representationView addSubview:_contentView];
-	
+	self.contentView.autoresizingMask = self.alertContainerView.autoresizingMask;
+
+	[self.representationView addSubview:self.contentView];
 	[self.representationView addSubview:self];
-	
+
+	[self.alertContainerView addSubview:self.backgroundView];
 	[self.alertContainerView addSubview:self.representationView];
 }
 
-- (kSpringAnimationClassName *)springAnimationForKeyPath:(NSString *)keyPath
-{
-	kSpringAnimationClassName *animation = [[kSpringAnimationClassName alloc] init];
+- (kSpringAnimationClassName *)springAnimationForKeyPath:(NSString *)keyPath {
+	animation = [[kSpringAnimationClassName alloc] init];
 	
 	// Values reversed engineered from iOS 7 UIAlertView
 	animation.keyPath = keyPath;
@@ -397,40 +387,43 @@
 	return animation;
 }
 
-- (void)transformAlertContainerViewForOrientation{
-#define DegreesToRadians(degrees) (degrees * M_PI / 180)
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    CGAffineTransform transform;
-    switch (orientation) {
-        case UIInterfaceOrientationLandscapeLeft:
-            transform = CGAffineTransformMakeRotation(-DegreesToRadians(90));
-            break;
-        case UIInterfaceOrientationLandscapeRight:
-            transform = CGAffineTransformMakeRotation(DegreesToRadians(90));
-            break;
-        case UIInterfaceOrientationPortraitUpsideDown:
-            transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
-            break;
-        case UIInterfaceOrientationPortrait:
-        default:
-            transform = CGAffineTransformMakeRotation(DegreesToRadians(0));
-            break;
-    }
-    
-    [self.alertContainerView setTransform:transform];
+- (void)transformAlertContainerViewForOrientation {
+	if (IS_IPAD) {
+		switch ([[UIDevice currentDevice] orientation]) {
+			case UIInterfaceOrientationLandscapeLeft:
+				transform = CGAffineTransformMakeRotation(-DegreesToRadians(90));
+				break;
+			case UIInterfaceOrientationLandscapeRight:
+				transform = CGAffineTransformMakeRotation(DegreesToRadians(90));
+				break;
+			case UIInterfaceOrientationPortraitUpsideDown:
+				transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
+				break;
+			case UIInterfaceOrientationPortrait:
+				transform = CGAffineTransformMakeRotation(DegreesToRadians(0));
+			default:
+				transform = CGAffineTransformMakeRotation(DegreesToRadians(0));
+				break;
+		}
+
+		[UIView animateWithDuration:0.33 animations:^{
+			[self.representationView setTransform:self->transform];
+		}];
+	}
 }
 
-- (void)show
-{
+- (void)show {
 	if ([self.delegate respondsToSelector:@selector(willPresentAlertView:)]) {
 		[self.delegate willPresentAlertView:self];
 	}
 	
-	id<UIApplicationDelegate> appDelegate = [[UIApplication sharedApplication] delegate];
+	// You can have more than one UIWindow in the view hierachy, which is how LMAlertView works
+	self.window = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
 	
-	// You can have more than one UIWindow in the view hierachy, which is how UIAlertView works
-	self.window = [[UIWindow alloc] initWithFrame:[appDelegate window].frame];
-	self.window.tintColor = self.tintColor;
+    // application crashes if setTintColor is used on iOS 6
+	if (!SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+		self.window.tintColor = self.tintColor;
+	}
 	
 	LMEmbeddedViewController *viewController = [[LMEmbeddedViewController alloc] init];
 	viewController.alertView = self;
@@ -449,8 +442,7 @@
 	
 	if (self.controller == nil) {
 		viewController.view = self.alertContainerView;
-	}
-	else {
+	} else {
 		UIViewController *viewController2 = [[UIViewController alloc] init];
 		viewController2.view = self.alertContainerView;
 		
@@ -460,21 +452,20 @@
 		[viewController2 addChildViewController:self.controller];
 	}
 	
-	_visible = YES;
+	self->_visible = YES;
 	
 	[CATransaction begin]; {
-		CATransform3D transformFrom = CATransform3DMakeScale(1.26, 1.26, 1.0);
 		CATransform3D transformTo = CATransform3DMakeScale(1.0, 1.0, 1.0);
 		
 		kSpringAnimationClassName *modalTransformAnimation = [self springAnimationForKeyPath:@"transform"];
-		modalTransformAnimation.fromValue = [NSValue valueWithCATransform3D:transformFrom];
+		modalTransformAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.26, 1.26, 1.0)];
 		// CASpringAnimation has all toValues as nil, but RBBSpringAnimation doesn't support it
 		modalTransformAnimation.toValue = [NSValue valueWithCATransform3D:transformTo];
-		modalTransformAnimation.completion = ^(BOOL finished){
-			if ([self.delegate respondsToSelector:@selector(didPresentAlertView:)]) {
-				[self.delegate didPresentAlertView:self];
-			}
-		};
+//		modalTransformAnimation.completion = ^(BOOL finished){
+//			if ([self.delegate respondsToSelector:@selector(didPresentAlertView:)]) {
+//				[self.delegate didPresentAlertView:self];
+//			}
+//		};
 		self.representationView.layer.transform = transformTo;
 		
 		// Zoom in the modal
@@ -497,52 +488,58 @@
 		[self.alertBackgroundView.layer addAnimation:opacityAnimation forKey:@"opacity"];
 		[self.contentView.layer addAnimation:opacityAnimation forKey:@"opacity"];
 	} [CATransaction commit];
+
+	UIDevice *device = [UIDevice currentDevice];
+	[device beginGeneratingDeviceOrientationNotifications];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(orientationChanged)
+												 name:UIDeviceOrientationDidChangeNotification
+											   object:device];
 }
 
-- (void)dealloc
-{
+- (void)orientationChanged {
+	[self transformAlertContainerViewForOrientation];
+}
+
+- (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardWillShowNotification
                                                   object:nil];
 }
 
-- (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated
-{
+- (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
 	if ([self.delegate respondsToSelector:@selector(alertView:willDismissWithButtonIndex:)]) {
-		[self.delegate alertView:(UIAlertView *)self willDismissWithButtonIndex:buttonIndex];
+		[self.delegate alertView:(LMAlertView *)self willDismissWithButtonIndex:buttonIndex];
 	}
     
 	// Completion block
 	void (^completion)(BOOL finished) = ^(BOOL finished){
-		// Temporary bugfix
-		[self removeFromSuperview];
-		
-		// Release window from memory
 		self.window.hidden = YES;
-		self.window = nil;
+
+		//[self removeFromSuperview];
+		//self.window = nil;
 		
-		_visible = NO;
+		self->_visible = NO;
 		
 		[self.buttonTableView deselectRowAtIndexPath:self.buttonTableView.indexPathForSelectedRow animated:NO];
 		[self.otherTableView deselectRowAtIndexPath:self.otherTableView.indexPathForSelectedRow animated:NO];
 		
 		if ([self.delegate respondsToSelector:@selector(alertView:didDismissWithButtonIndex:)]) {
-			[self.delegate alertView:(UIAlertView *)self didDismissWithButtonIndex:buttonIndex];
+			[self.delegate alertView:(LMAlertView *)self didDismissWithButtonIndex:buttonIndex];
 		}
 	};
 	
-	if (!animated) {
+//	if (!animated) {
 		completion(YES);
-	}
+//	}
 	
 	[CATransaction begin]; {
-		CATransform3D transformFrom = CATransform3DMakeScale(1.0, 1.0, 1.0);
 		CATransform3D transformTo = CATransform3DMakeScale(0.840, 0.840, 1.0);
 		
 		kSpringAnimationClassName *modalTransformAnimation = [self springAnimationForKeyPath:@"transform"];
-		modalTransformAnimation.fromValue = [NSValue valueWithCATransform3D:transformFrom];
+		modalTransformAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0, 1.0, 1.0)];
 		modalTransformAnimation.toValue = [NSValue valueWithCATransform3D:transformTo];
-		modalTransformAnimation.completion = completion;
+//		modalTransformAnimation.completion = completion;
 		self.representationView.layer.transform = transformTo;
 		
 		// Zoom out the modal
@@ -568,57 +565,44 @@
 }
 
 -(void) setTitle:(NSString *)title
-{
-    _title = title;
-    
-    UIFont *titleFont = [UIFont boldSystemFontOfSize:17.0];
-    
     // The UILabels in UIAlertView mysteriously have no paragraph style but STILL have line heights
     // I suspect there's some UILabel private API fuckery afoot
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     //[paragrahStyle setLineSpacing:2];
     
     NSDictionary *attributes = @{
-                                 NSParagraphStyleAttributeName: paragraphStyle,
-                                 NSFontAttributeName: titleFont
+                                 NSParagraphStyleAttributeName:paragraphStyle,
+                                 NSFontAttributeName:[UIFont boldSystemFontOfSize:17.0]
                                  };
     
     self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:attributes];
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
 }
 
-- (void)setMessage:(NSString *)message
-{
-	_message = message;
-	
-	UIFont *messageFont = [UIFont systemFontOfSize:14.0];
-	
+- (void)setMessage:(NSString *)message {
 	NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-	//[paragrahStyle setLineSpacing:2];
 	
 	NSDictionary *attributes = @{
-								 NSParagraphStyleAttributeName: paragraphStyle,
-								 NSFontAttributeName: messageFont
+								 NSParagraphStyleAttributeName:paragraphStyle,
+								 NSFontAttributeName:[UIFont systemFontOfSize:14.0]
 								 };
 	
 	self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:message attributes:attributes];
 	self.messageLabel.textAlignment = NSTextAlignmentCenter;
 }
 
-- (bool)hasCancelButton
-{
+- (bool)hasCancelButton {
 	return (self.cancelButtonIndex != -1);
 }
 
 #pragma mark UITableViewDataSource delegate methods
 
-- (id)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (id)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSString *labelText;
 	
 	LMModalItemTableViewCell *cell = [[LMModalItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
 	
-	NSInteger buttonIndex;
+	NSInteger buttonIndex = 0;
 	BOOL boldButton = NO;
 	BOOL lastRow = NO;
 	
@@ -627,8 +611,7 @@
 		
 		if ([self hasCancelButton]) {
 			labelText = self.cancelButtonTitle;
-		}
-		else {
+		} else {
 			labelText = self.otherButtonsTitles[0];
 		}
         
@@ -642,83 +625,53 @@
 		if ([self hasCancelButton]) {
 			if (buttonIndex == 0) {
 				labelText = self.cancelButtonTitle;
-			}
-			else {
+			} else {
 				labelText = self.otherButtonsTitles[0];
 			}
-		}
-		else {
+		} else {
 			labelText = self.otherButtonsTitles[buttonIndex];
 		}
 		
 		boldButton = buttonIndex == 1;
 		lastRow = YES;
 	}
-	// More than 2 stacked buttons
-	else {
-		buttonIndex = indexPath.row;
-		
-		if (tableView.tag == 1) {
-			labelText = self.cancelButtonTitle;
-			
-			boldButton = YES;
-			lastRow = YES;
-		}
-		else {
-			labelText = self.otherButtonsTitles[buttonIndex];
-			
-			if (![self hasCancelButton] && buttonIndex == ([self.otherButtonsTitles count] - 1)) {
-				boldButton = YES;
-			}
-			
-			buttonIndex++;
-		}
-	}
 	
 	cell.tag = buttonIndex;
 	cell.lineView.hidden = lastRow;
 	cell.textLabel.font = boldButton ? [UIFont boldSystemFontOfSize:17.0] : [UIFont systemFontOfSize:17.0];
 	cell.textLabel.text = labelText;
+    cell.textLabel.textColor = [UIColor colorWithRed:0 green:.5 blue:1 alpha:1];
 	
 	return cell;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (self.numberOfButtons <= 2) {
 		return 1;
-	}
-	else {
+	} else {
 		if (tableView.tag == 0) {
 			return [self.otherButtonsTitles count];
-		}
-		else {
+		} else {
 			return 1;
 		}
 	}
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return 44.0;
 }
 
 #pragma mark UITableViewDelegateSource delegate methods
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-	NSInteger buttonIndex = cell.tag;
-	
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if ([self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
-		[self.delegate alertView:(UIAlertView *)self clickedButtonAtIndex:buttonIndex];
+		[self.delegate alertView:(LMAlertView *)self clickedButtonAtIndex:[tableView cellForRowAtIndexPath:indexPath].tag];
 	}
 	
-	[self dismissWithClickedButtonIndex:buttonIndex animated:YES];
+	[self dismissWithClickedButtonIndex:[tableView cellForRowAtIndexPath:indexPath].tag animated:YES];
 }
 
-- (UITableViewCell *)buttonCellForIndex:(NSInteger)buttonIndex
-{
+- (UITableViewCell *)buttonCellForIndex:(NSInteger)buttonIndex {
 	UITableView *theTableView;
 	NSInteger rowIndex = 0;
 	
@@ -730,19 +683,8 @@
 	else if (self.numberOfButtons == 2) {
 		if (buttonIndex == self.cancelButtonIndex) {
 			theTableView = self.buttonTableView;
-		}
-		else {
+		} else {
 			theTableView = self.otherTableView;
-		}
-	}
-	// More than 2 stacked buttons
-	else {
-		if (buttonIndex == self.cancelButtonIndex) {
-			theTableView = self.otherTableView;
-		}
-		else {
-			theTableView = self.buttonTableView;
-			rowIndex = 1;
 		}
 	}
 	
@@ -751,32 +693,31 @@
 
 # pragma mark - to comply with the UIAlertView API
 
-- (NSInteger)addButtonWithTitle:(NSString *)title
-{
-    NSString *oldTitle = [self.title copy];
-    NSString *oldMessage = [self.message copy];
-    NSString *oldCancelTitle = [self.cancelButtonTitle copy];
+- (NSInteger)addButtonWithTitle:(NSString *)title {
     NSMutableArray *allTitles = [[NSMutableArray alloc] initWithArray:self.otherButtonsTitles copyItems:YES];
     [allTitles addObject:title];
-    [self setupWithTitle:oldTitle message:oldMessage cancelButtonTitle:oldCancelTitle otherButtonTitles:allTitles];
+
+	[self setupWithTitle:[self.title copy]
+				 message:[self.message copy]
+	   cancelButtonTitle:[self.cancelButtonTitle copy]
+	   otherButtonTitles:allTitles];
 
     return self.numberOfButtons - 1;
 }
 
-- (NSString *)buttonTitleAtIndex:(NSInteger)buttonIndex
-{
+- (NSString *)buttonTitleAtIndex:(NSInteger)buttonIndex {
     NSString *buttonTitle;
-    if (self.cancelButtonTitle) {
+
+	if (self.cancelButtonTitle) {
         if (buttonIndex == 0) {
              buttonTitle = self.cancelButtonTitle;
-        }
-        else {
+        } else {
             buttonTitle = [self.otherButtonsTitles objectAtIndex:buttonIndex -1];
         }
-    }
-    else {
+    } else {
         buttonTitle = [self.otherButtonsTitles objectAtIndex:buttonIndex];
     }
+
     return buttonTitle;
 }
 

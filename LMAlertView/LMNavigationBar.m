@@ -8,6 +8,8 @@
 
 #import "LMNavigationBar.h"
 
+static CGFloat marginWidth = 6.0;
+
 @implementation LMNavigationBar
 
 - (id)initWithCoder:(NSCoder *)decoder
@@ -24,11 +26,8 @@
     return self;
 }
 
-- (void)layoutSubviews
-{
+- (void)layoutSubviews {
 	[super layoutSubviews];
-	
-	CGFloat marginWidth = 6.0;
 	
 	CGRect superviewFrame = self.superview.frame;
 	

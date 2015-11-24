@@ -10,6 +10,8 @@
 #import "LMEmbeddedViewController.h"
 #import <objc/runtime.h>
 
+static CGFloat modalWidth = 290.0;
+
 @implementation CALayer (ModalAlert)
 
 + (void)load
@@ -25,6 +27,10 @@
 
 - (UIWindow *)windowForView:(UIView *)view
 {
+    if (![view isKindOfClass:[UIView class]]) {
+        return nil;
+    }
+    
 	UIView *tempView = view;
 	
 	while (tempView.superview != nil) {
@@ -44,7 +50,6 @@
 	
 	if ([window.rootViewController isKindOfClass:[LMEmbeddedViewController class]]) {
 		CABasicAnimation *basicAnim = (CABasicAnimation *)anim;
-		CGFloat modalWidth = 290.0;
 		
 		// Hide _UIParallaxDimmingView. It's making the transparent nav controller go dark when animating
 		if ([[[view class] description] hasSuffix:@"DimmingView"]) {
