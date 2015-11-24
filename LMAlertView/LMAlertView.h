@@ -23,11 +23,11 @@
 - (float)stiffness;
 - (float)velocity;
 @end
+
 #else
-#import <RBBSpringAnimation.h>
+#import "RBBSpringAnimation.h"
 #define kSpringAnimationClassName RBBSpringAnimation
 #endif
-
 
 @interface LMAlertView : UIView <UITableViewDataSource, UITableViewDelegate>
 
