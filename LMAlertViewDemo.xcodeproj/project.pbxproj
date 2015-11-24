@@ -207,7 +207,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = LM;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Bestir Ltd";
 			};
 			buildConfigurationList = 165F9F631831632C00037E82 /* Build configuration list for PBXProject "LMAlertViewDemo" */;
@@ -313,7 +313,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -328,6 +327,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -352,7 +352,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -396,6 +395,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LMAlertViewDemo/LMAlertViewDemo-Prefix.pch";
 				INFOPLIST_FILE = "LMAlertViewDemo/LMAlertViewDemo-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bestir.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = LMAlertView;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -417,6 +417,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LMAlertViewDemo/LMAlertViewDemo-Prefix.pch";
 				INFOPLIST_FILE = "LMAlertViewDemo/LMAlertViewDemo-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bestir.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = LMAlertView;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
