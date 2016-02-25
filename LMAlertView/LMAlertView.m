@@ -17,11 +17,6 @@
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 #define DegreesToRadians(degrees)					(degrees * M_PI / 180)
 
-static CGFloat sideMargin = 15.0f;
-static CGFloat topBottomMargin = 19.0f;
-static CGFloat alertWidth = 270.0f;
-static CGFloat buttonHeight = 44.0f;
-
 @interface LMAlertView () {
 	UIViewController *frontmostViewController;
 	UIViewController *destinationViewController;
@@ -139,6 +134,11 @@ static CGFloat buttonHeight = 44.0f;
 }
 
 - (void)setupWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles; {
+	const CGFloat sideMargin = 15.0f;
+	const CGFloat topBottomMargin = 19.0f;
+	const CGFloat alertWidth = 270.0f;
+	const CGFloat buttonHeight = 44.0f;
+	
     self.cancelButtonIndex = -1;
     _firstOtherButtonIndex = -1;
     _cancelButtonTitle = nil;
@@ -388,7 +388,7 @@ static CGFloat buttonHeight = 44.0f;
 }
 
 - (void)transformAlertContainerViewForOrientation {
-	if (IS_IPAD) {
+	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
 		switch ([[UIDevice currentDevice] orientation]) {
 			case UIInterfaceOrientationLandscapeLeft:
 				transform = CGAffineTransformMakeRotation(-DegreesToRadians(90));
@@ -564,19 +564,19 @@ static CGFloat buttonHeight = 44.0f;
 	} [CATransaction commit];
 }
 
--(void) setTitle:(NSString *)title
-    // The UILabels in UIAlertView mysteriously have no paragraph style but STILL have line heights
-    // I suspect there's some UILabel private API fuckery afoot
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    //[paragrahStyle setLineSpacing:2];
-    
-    NSDictionary *attributes = @{
-                                 NSParagraphStyleAttributeName:paragraphStyle,
-                                 NSFontAttributeName:[UIFont boldSystemFontOfSize:17.0]
-                                 };
-    
-    self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:attributes];
-    self.titleLabel.textAlignment = NSTextAlignmentCenter;
+- (void)setTitle:(NSString *)title {
+	// The UILabels in UIAlertView mysteriously have no paragraph style but STILL have line heights
+	// I suspect there's some UILabel private API fuckery afoot
+	NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+	//[paragrahStyle setLineSpacing:2];
+	
+	NSDictionary *attributes = @{
+								 NSParagraphStyleAttributeName:paragraphStyle,
+								 NSFontAttributeName:[UIFont boldSystemFontOfSize:17.0]
+								 };
+	
+	self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:attributes];
+	self.titleLabel.textAlignment = NSTextAlignmentCenter;
 }
 
 - (void)setMessage:(NSString *)message {
