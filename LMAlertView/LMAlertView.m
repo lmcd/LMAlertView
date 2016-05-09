@@ -9,7 +9,7 @@
 #import "LMAlertView.h"
 #import "LMEmbeddedViewController.h"
 #import "LMModalItemTableViewCell.h"
-#import <CAAnimation+Blocks.h>
+#import "CAAnimation+Blocks.h"
 
 @interface LMAlertView ()
 
