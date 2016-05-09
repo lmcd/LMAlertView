@@ -24,7 +24,7 @@
 - (float)velocity;
 @end
 #else
-#import "RBBSpringAnimation.h"
+#import <RBBAnimation/RBBSpringAnimation.h>
 #define kSpringAnimationClassName RBBSpringAnimation
 #endif
 
