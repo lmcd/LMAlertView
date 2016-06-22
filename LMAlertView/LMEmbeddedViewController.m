@@ -25,11 +25,11 @@
         [self presentViewController:self.controllerToShow animated:NO completion:nil];
         self.controllerToShow = nil;
     }
-}
-
-- (BOOL)shouldAutorotate
-{
-    return self.alertView.autoRotate;
+    
+    __weak typeof(self) self_ = self;
+    [NSNotificationCenter.defaultCenter addObserverForName:@"DismissAlertView" object:nil queue:nil usingBlock:^(NSNotification *note) {
+        [self_ dismissViewControllerAnimated:NO completion:nil];
+    }];
 }
 
 @end

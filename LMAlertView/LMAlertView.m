@@ -9,7 +9,7 @@
 #import "LMAlertView.h"
 #import "LMEmbeddedViewController.h"
 #import "LMModalItemTableViewCell.h"
-#import <CAAnimation+Blocks.h>
+#import "CAAnimation+Blocks.h"
 
 @interface LMAlertView ()
 
@@ -21,7 +21,6 @@
 
 @property (nonatomic, strong, readonly) UIToolbar *toolbar;
 
-@property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *messageLabel;
 
 @property (nonatomic, strong) UITableView *buttonTableView;
@@ -32,8 +31,6 @@
 
 @property (nonatomic, copy) NSString *cancelButtonTitle;
 @property (nonatomic, strong) NSMutableArray *otherButtonsTitles;
-
-- (void)setupWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles;
 
 @end
 
@@ -75,9 +72,21 @@
 		[self.contentView addSubview:destinationViewController.view];
 		self.contentView.autoresizesSubviews = NO;
 		
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
     }
     return self;
+}
+
+BOOL systemVersionGOE(NSString *v) {
+    return ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending);
+}
+
+BOOL systemVersionL(NSString *v) {
+    return ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending);
+}
+
+BOOL iOS7() {
+    return systemVersionGOE(@"7.0") && systemVersionL(@"8.0");
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -85,7 +94,22 @@
 	CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
 	
 	self.representationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
-	self.representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, ([[UIScreen mainScreen] bounds].size.height - keyboardSize.height) / 2.0);
+    CGRect bounds = [[UIScreen mainScreen] bounds];
+    CGFloat boundsWidth = bounds.size.width;
+    CGFloat boundsHeight = bounds.size.height;
+    CGFloat keyboardHeight = keyboardSize.height;
+    
+    if (iOS7()) {
+        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        CGFloat boundsWidthBackup = boundsWidth;
+        boundsWidth = UIInterfaceOrientationIsPortrait(orientation) ? boundsWidth : boundsHeight;
+        boundsHeight = UIInterfaceOrientationIsPortrait(orientation) ? boundsHeight : boundsWidthBackup;
+        keyboardHeight = UIInterfaceOrientationIsPortrait(orientation) ? keyboardHeight : keyboardSize.width;
+    }
+    
+    [UIView animateWithDuration:.3 animations:^{
+        self.representationView.center = CGPointMake(boundsWidth / 2.0, (boundsHeight - keyboardHeight) / 2.0);
+    }];
 }
 
 - (UITableView *)tableViewWithFrame:(CGRect)frame
@@ -121,145 +145,151 @@
 {
 	self = [super init];
     if (self) {
-        _delegate = delegate;
-        NSMutableArray *newOtherButtonTitles;
-        if (otherButtonTitles != nil) {
-            va_list args;
-            va_start(args, otherButtonTitles);
-            newOtherButtonTitles = [[NSMutableArray alloc] initWithObjects:otherButtonTitles, nil];
-            id obj;
-            while ((obj = va_arg(args, id)) != nil) {
-                [newOtherButtonTitles addObject:obj];
-            }
-            va_end(args);
+		_cancelButtonIndex = -1;
+		_firstOtherButtonIndex = -1;
+		
+		_delegate = delegate;
+		
+		if (otherButtonTitles != nil) {
+			va_list args;
+			va_start(args, otherButtonTitles);
+			_otherButtonsTitles = [[NSMutableArray alloc] initWithObjects:otherButtonTitles, nil];
+			id obj;
+			while ((obj = va_arg(args, id)) != nil) {
+				[_otherButtonsTitles addObject:obj];
+			}
+			va_end(args);
+			
+			_firstOtherButtonIndex = 1;
+		}
+		
+		_numberOfButtons = [_otherButtonsTitles count];
+		
+		if (cancelButtonTitle != nil) {
+			_numberOfButtons++;
+			_cancelButtonIndex = 0;
+			_cancelButtonTitle = cancelButtonTitle;
+		}
+		
+		CGFloat sideMargin = 15.0;
+		CGFloat topBottomMargin = 19.0;
+		CGFloat alertWidth = 270.0;
+		CGFloat buttonHeight = 44.0;
+		CGFloat labelWidth = alertWidth - (sideMargin * 2.0);
+		
+		UIFont *titleFont = [UIFont boldSystemFontOfSize:17.0];
+		
+		CGFloat yOffset = topBottomMargin;
+		
+		UILabel *titleLabel;
+		UIView *lineView;
+		
+		if (title != nil) {
+			self.title = title;
+			
+			// The UILabels in UIAlertView mysteriously have no paragraph style but STILL have line heights
+			// I suspect there's some UILabel private API fuckery afoot
+			NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+			//[paragrahStyle setLineSpacing:2];
+			
+			NSDictionary *attributes = @{
+										 NSParagraphStyleAttributeName: paragrahStyle,
+										 NSFontAttributeName: titleFont
+										 };
+			
+			titleLabel = [[UILabel alloc] init];
+			titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:attributes];
+			titleLabel.numberOfLines = 0;
+			titleLabel.textAlignment = NSTextAlignmentCenter;
+			
+			CGSize sizeThatFits = [titleLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
+			titleLabel.frame = CGRectMake(sideMargin, yOffset, labelWidth, sizeThatFits.height);
+			
+			yOffset += titleLabel.frame.size.height;
+		}
+		
+		// 4px gap between title and message
+		// Even if a title doesn't exist, the 4px is still present
+		yOffset += 4.0;
+		
+		if (message != nil) {
+			self.messageLabel = [[UILabel alloc] init];
+			self.messageLabel.numberOfLines = 0;
+			self.message = message;
+			
+			CGSize sizeThatFits = [self.messageLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
+			self.messageLabel.frame = CGRectMake(sideMargin, yOffset, labelWidth, sizeThatFits.height);
+			
+			yOffset += self.messageLabel.frame.size.height;
+		}
+		
+		yOffset += topBottomMargin;
+		
+        // Lines setup
+        if (self.numberOfButtons > 0) {
+			lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, yOffset - 1.0, alertWidth, 1.0)];
+			lineView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+			
+			// We put our 0.5px high view in to a container that's 1px high
+			// This is because autoresizing was rounding up to 1 and messing things up
+			// autolayout might fix this
+			UIView *lineViewInner = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.5, alertWidth, 0.5)];
+			lineViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+			lineViewInner.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+			
+			[lineView addSubview:lineViewInner];
         }
+		
+		BOOL sideBySideButtons = (self.numberOfButtons == 2);
+		BOOL buttonsShouldStack = !sideBySideButtons;
+		
+		if (sideBySideButtons) {
+			CGFloat halfWidth = (alertWidth / 2.0);
+			
+			UIView *lineVerticalViewInner = [[UIView alloc] initWithFrame:CGRectMake(halfWidth, 0.5, 0.5, buttonHeight + 0.5)];
+			lineVerticalViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+			[lineView addSubview:lineVerticalViewInner];
+			
+			_buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, halfWidth, buttonHeight)];
+			_otherTableView = [self tableViewWithFrame:CGRectMake(halfWidth, yOffset, halfWidth, buttonHeight)];
+			
+			yOffset += buttonHeight;
+		}
+		else {
+			NSInteger numberOfOtherButtons = [self.otherButtonsTitles count];
+			
+			if (numberOfOtherButtons > 0) {
+				CGFloat tableHeight = buttonsShouldStack ? numberOfOtherButtons * buttonHeight : buttonHeight;
+				
+				_buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, tableHeight)];
+				
+				yOffset += tableHeight;
+			}
+			
+			if (cancelButtonTitle != nil) {
+				_otherTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, buttonHeight)];
+				
+				yOffset += buttonHeight;
+			}
+		}
+		
+		_buttonTableView.tag = 0;
+		_otherTableView.tag = 1;
+		
+		[_buttonTableView reloadData];
+		[_otherTableView reloadData];
 
-        [self setupWithTitle:title message:message cancelButtonTitle:cancelButtonTitle otherButtonTitles:newOtherButtonTitles];
+		CGFloat alertHeight = yOffset;
+		[self setupWithSize:CGSizeMake(alertWidth, alertHeight)];
+		
+		// Add everything to the content view
+		[self.contentView addSubview:titleLabel];
+		[self.contentView addSubview:self.messageLabel];
+		[self.contentView addSubview:self.buttonTableView];
+        [self.contentView addSubview:self.otherTableView];
+		[self.contentView addSubview:lineView];
     }
     return self;
-}
-
-- (void)setupWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles;
-{
-    _cancelButtonIndex = -1;
-    _firstOtherButtonIndex = -1;
-    _cancelButtonTitle = nil;
-    if (otherButtonTitles != nil) {
-        _otherButtonsTitles = [[NSMutableArray alloc] initWithArray:otherButtonTitles];
-        _firstOtherButtonIndex = 1;
-    }
-
-    _numberOfButtons = [_otherButtonsTitles count];
-
-    if (cancelButtonTitle != nil) {
-        _numberOfButtons++;
-        _cancelButtonIndex = 0;
-        _cancelButtonTitle = cancelButtonTitle;
-    }
-
-    CGFloat sideMargin = 15.0;
-    CGFloat topBottomMargin = 19.0;
-    CGFloat alertWidth = 270.0;
-    CGFloat buttonHeight = 44.0;
-    CGFloat labelWidth = alertWidth - (sideMargin * 2.0);
-
-    CGFloat yOffset = topBottomMargin;
-
-    UIView *lineView;
-
-    if (title != nil) {
-        self.titleLabel = [[UILabel alloc] init];
-        self.titleLabel.numberOfLines = 0;
-        self.titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        self.title = title;
-
-        CGSize sizeThatFits = [self.titleLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
-        self.titleLabel.frame = CGRectMake(sideMargin, yOffset, labelWidth, sizeThatFits.height);
-
-        yOffset += self.titleLabel.frame.size.height;
-    }
-
-    // 4px gap between title and message
-    // Even if a title doesn't exist, the 4px is still present
-    yOffset += 4.0;
-
-    if (message != nil) {
-        self.messageLabel = [[UILabel alloc] init];
-        self.messageLabel.numberOfLines = 0;
-        self.messageLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        self.message = message;
-
-        CGSize sizeThatFits = [self.messageLabel sizeThatFits:CGSizeMake(labelWidth, MAXFLOAT)];
-        self.messageLabel.frame = CGRectMake(sideMargin, yOffset, labelWidth, sizeThatFits.height);
-
-        yOffset += self.messageLabel.frame.size.height;
-    }
-
-    yOffset += topBottomMargin;
-
-    // Lines setup
-    if (self.numberOfButtons > 0) {
-        lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, yOffset - 1.0, alertWidth, 1.0)];
-        lineView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-
-        // We put our 0.5px high view in to a container that's 1px high
-        // This is because autoresizing was rounding up to 1 and messing things up
-        // autolayout might fix this
-        UIView *lineViewInner = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.5, alertWidth, 0.5)];
-        lineViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
-        lineViewInner.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-
-        [lineView addSubview:lineViewInner];
-    }
-
-    BOOL sideBySideButtons = (self.numberOfButtons == 2);
-    BOOL buttonsShouldStack = !sideBySideButtons;
-
-    if (sideBySideButtons) {
-        CGFloat halfWidth = (alertWidth / 2.0);
-
-        UIView *lineVerticalViewInner = [[UIView alloc] initWithFrame:CGRectMake(halfWidth, 0.5, 0.5, buttonHeight + 0.5)];
-        lineVerticalViewInner.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
-        [lineView addSubview:lineVerticalViewInner];
-
-        _buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, halfWidth, buttonHeight)];
-        _otherTableView = [self tableViewWithFrame:CGRectMake(halfWidth, yOffset, halfWidth, buttonHeight)];
-
-        yOffset += buttonHeight;
-    }
-    else {
-        NSInteger numberOfOtherButtons = [self.otherButtonsTitles count];
-
-        if (numberOfOtherButtons > 0) {
-            CGFloat tableHeight = buttonsShouldStack ? numberOfOtherButtons * buttonHeight : buttonHeight;
-
-            _buttonTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, tableHeight)];
-
-            yOffset += tableHeight;
-        }
-
-        if (cancelButtonTitle != nil) {
-            _otherTableView = [self tableViewWithFrame:CGRectMake(0.0, yOffset, alertWidth, buttonHeight)];
-
-            yOffset += buttonHeight;
-        }
-    }
-
-    _buttonTableView.tag = 0;
-    _otherTableView.tag = 1;
-
-    [_buttonTableView reloadData];
-    [_otherTableView reloadData];
-
-    CGFloat alertHeight = yOffset;
-    [self setupWithSize:CGSizeMake(alertWidth, alertHeight)];
-
-    // Add everything to the content view
-    [self.contentView addSubview:self.titleLabel];
-    [self.contentView addSubview:self.messageLabel];
-    [self.contentView addSubview:self.buttonTableView];
-    [self.contentView addSubview:self.otherTableView];
-    [self.contentView addSubview:lineView];
 }
 
 - (void)setSize:(CGSize)size animated:(BOOL)animated
@@ -397,29 +427,6 @@
 	return animation;
 }
 
-- (void)transformAlertContainerViewForOrientation{
-#define DegreesToRadians(degrees) (degrees * M_PI / 180)
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    CGAffineTransform transform;
-    switch (orientation) {
-        case UIInterfaceOrientationLandscapeLeft:
-            transform = CGAffineTransformMakeRotation(-DegreesToRadians(90));
-            break;
-        case UIInterfaceOrientationLandscapeRight:
-            transform = CGAffineTransformMakeRotation(DegreesToRadians(90));
-            break;
-        case UIInterfaceOrientationPortraitUpsideDown:
-            transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
-            break;
-        case UIInterfaceOrientationPortrait:
-        default:
-            transform = CGAffineTransformMakeRotation(DegreesToRadians(0));
-            break;
-    }
-    
-    [self.alertContainerView setTransform:transform];
-}
-
 - (void)show
 {
 	if ([self.delegate respondsToSelector:@selector(willPresentAlertView:)]) {
@@ -442,8 +449,6 @@
 	// Same window level as regular alert views (above main window and status bar)
 	self.window.windowLevel = UIWindowLevelAlert;
 	self.window.hidden = NO;
-	
-    [self transformAlertContainerViewForOrientation];
     
 	[self.window makeKeyAndVisible];
 	
@@ -455,7 +460,9 @@
 		viewController2.view = self.alertContainerView;
 		
 		// We fake "present" this view controller so it can be dismissed elswhere
-		viewController.controllerToShow = viewController2;
+        viewController.controllerToShow = viewController2;
+//        [viewController presentViewController:viewController2 animated:NO completion:nil];
+		
 		
 		[viewController2 addChildViewController:self.controller];
 	}
@@ -490,7 +497,7 @@
 		
 		// Fade in the gray background
 		[self.backgroundView.layer addAnimation:opacityAnimation forKey:@"opacity"];
-        
+
 		// Fade in the modal
 		// Would love to fade in all these things at once, but UIToolbar doesn't like it
 		[self.toolbar.layer addAnimation:opacityAnimation forKey:@"opacity"];
@@ -502,7 +509,7 @@
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillShowNotification
+                                                    name:UIKeyboardDidShowNotification
                                                   object:nil];
 }
 
@@ -511,7 +518,7 @@
 	if ([self.delegate respondsToSelector:@selector(alertView:willDismissWithButtonIndex:)]) {
 		[self.delegate alertView:(UIAlertView *)self willDismissWithButtonIndex:buttonIndex];
 	}
-    
+
 	// Completion block
 	void (^completion)(BOOL finished) = ^(BOOL finished){
 		// Temporary bugfix
@@ -569,37 +576,17 @@
 	} [CATransaction commit];
 }
 
--(void) setTitle:(NSString *)title
-{
-    _title = title;
-    
-    UIFont *titleFont = [UIFont boldSystemFontOfSize:17.0];
-    
-    // The UILabels in UIAlertView mysteriously have no paragraph style but STILL have line heights
-    // I suspect there's some UILabel private API fuckery afoot
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    //[paragrahStyle setLineSpacing:2];
-    
-    NSDictionary *attributes = @{
-                                 NSParagraphStyleAttributeName: paragraphStyle,
-                                 NSFontAttributeName: titleFont
-                                 };
-    
-    self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:attributes];
-    self.titleLabel.textAlignment = NSTextAlignmentCenter;
-}
-
 - (void)setMessage:(NSString *)message
 {
 	_message = message;
 	
 	UIFont *messageFont = [UIFont systemFontOfSize:14.0];
 	
-	NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+	NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
 	//[paragrahStyle setLineSpacing:2];
 	
 	NSDictionary *attributes = @{
-								 NSParagraphStyleAttributeName: paragraphStyle,
+								 NSParagraphStyleAttributeName: paragrahStyle,
 								 NSFontAttributeName: messageFont
 								 };
 	
@@ -633,7 +620,7 @@
 		else {
 			labelText = self.otherButtonsTitles[0];
 		}
-        
+
 		boldButton = YES;
 		lastRow = YES;
 	}
@@ -749,37 +736,6 @@
 	}
 	
 	return [theTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:rowIndex inSection:0]];
-}
-
-# pragma mark - to comply with the UIAlertView API
-
-- (NSInteger)addButtonWithTitle:(NSString *)title
-{
-    NSString *oldTitle = [self.title copy];
-    NSString *oldMessage = [self.message copy];
-    NSString *oldCancelTitle = [self.cancelButtonTitle copy];
-    NSMutableArray *allTitles = [[NSMutableArray alloc] initWithArray:self.otherButtonsTitles copyItems:YES];
-    [allTitles addObject:title];
-    [self setupWithTitle:oldTitle message:oldMessage cancelButtonTitle:oldCancelTitle otherButtonTitles:allTitles];
-
-    return self.numberOfButtons - 1;
-}
-
-- (NSString *)buttonTitleAtIndex:(NSInteger)buttonIndex
-{
-    NSString *buttonTitle;
-    if (self.cancelButtonTitle) {
-        if (buttonIndex == 0) {
-             buttonTitle = self.cancelButtonTitle;
-        }
-        else {
-            buttonTitle = [self.otherButtonsTitles objectAtIndex:buttonIndex -1];
-        }
-    }
-    else {
-        buttonTitle = [self.otherButtonsTitles objectAtIndex:buttonIndex];
-    }
-    return buttonTitle;
 }
 
 @end
