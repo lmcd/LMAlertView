@@ -12,5 +12,6 @@
 @interface LMEmbeddedViewController : UIViewController
 
 @property (weak, nonatomic) LMAlertView *alertView;
+@property (nonatomic, retain) UIViewController *controllerToShow;
 
 @end
