@@ -9,7 +9,7 @@
 #import "LMAlertView.h"
 #import "LMEmbeddedViewController.h"
 #import "LMModalItemTableViewCell.h"
-#import <CAAnimation+Blocks.h>
+#import <CAAnimationBlocks/CAAnimation+Blocks.h>
 
 @interface LMAlertView ()
 
@@ -520,6 +520,9 @@
 		// Release window from memory
 		self.window.hidden = YES;
 		self.window = nil;
+		
+		UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+		[window makeKeyAndVisible];
 		
 		_visible = NO;
 		
