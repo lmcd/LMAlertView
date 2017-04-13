@@ -259,7 +259,9 @@
     [self.contentView addSubview:self.messageLabel];
     [self.contentView addSubview:self.buttonTableView];
     [self.contentView addSubview:self.otherTableView];
-    [self.contentView addSubview:lineView];
+    if (lineView) {	
+        [self.contentView addSubview:lineView];
+    }
 }
 
 - (void)setSize:(CGSize)size animated:(BOOL)animated
